@@ -184,20 +184,25 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem}
   main{padding:1rem}
   header{padding:.85rem 1rem}
 }
+.logout-btn{padding:7px 18px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.25);background:transparent;color:rgba(255,255,255,0.75);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s}
+.logout-btn:hover{background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.5)}
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">La <span>Mesa</span><small>La Iglesia &amp; Sabrosía</small></div>
-  <div class="badge" id="main-badge"><span class="dot"></span><span id="badge-txt">Cargando...</span></div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="logout-btn" id="logout-btn" style="display:none" onclick="cerrarSesionAdmin()">Cerrar sesión</button>
+    <div class="badge" id="main-badge"><span class="dot"></span><span id="badge-txt">Cargando...</span></div>
+  </div>
 </header>
 
 <div class="banner" id="banner"></div>
 
 <div class="tabs">
   <button class="tab active" onclick="goTab('menu',this)">Carta</button>
-  <button class="tab" onclick="goTab('pedidos',this)">Pedidos <span class="tab-badge" id="ped-count" style="display:none">0</span></button>
+  <button class="tab" id="tab-btn-pedidos" style="display:none" onclick="goTab('pedidos',this)">Pedidos <span class="tab-badge" id="ped-count" style="display:none">0</span></button>
   <button class="tab" onclick="goTab('admin',this)">Admin</button>
 </div>
 
@@ -213,7 +218,7 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem}
     <div class="menu-grid" id="menu-grid"><div class="empty">Cargando carta...</div></div>
   </div>
 
-  <!-- PEDIDOS -->
+  <!-- PEDIDOS (solo admin) -->
   <div id="tab-pedidos" class="panel">
     <div class="ped-filters">
       <button class="filter-btn active" onclick="filtrar('todos',this)">Todos</button>
@@ -495,6 +500,8 @@ function updateTabBadge(){
   const c=document.getElementById('ped-count'), n=Object.keys(allPedidos).length;
   c.textContent=n; c.style.display=n>0?'inline-flex':'none';
   if(document.getElementById('admin-ped-count')) document.getElementById('admin-ped-count').textContent='('+n+' en total)';
+  // Actualizar stats en carta en tiempo real
+  document.getElementById('s-ped').textContent=n;
 }
 
 /* ── MENÚ ── */
@@ -766,10 +773,14 @@ function exportarCSV(){
 
 /* ── TABS ── */
 function goTab(name,el){
+  // Proteger pestaña pedidos si no es admin
+  if(name==='pedidos'&&!adminOk) return;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active'); document.getElementById('tab-'+name).classList.add('active');
+  if(el) el.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
   if(name==='admin'&&!adminOk){ document.getElementById('admin-lock').style.display='block'; document.getElementById('admin-content').style.display='none'; }
+  if(name==='pedidos'&&adminOk){ renderPedidosFiltrados(); }
 }
 
 /* ── ADMIN LOGIN ── */
@@ -778,9 +789,25 @@ function checkPass(){
     adminOk=true;
     document.getElementById('admin-lock').style.display='none';
     document.getElementById('admin-content').style.display='block';
+    document.getElementById('tab-btn-pedidos').style.display='';
+    document.getElementById('logout-btn').style.display='';
     renderAdminPlatos(); renderAdminPedidos(); renderResumen();
     toast('Bienvenido, administrador','success');
   } else { toast('Contraseña incorrecta','error'); }
+}
+
+/* ── CERRAR SESIÓN ADMIN ── */
+function cerrarSesionAdmin(){
+  adminOk=false;
+  document.getElementById('admin-lock').style.display='block';
+  document.getElementById('admin-content').style.display='none';
+  document.getElementById('tab-btn-pedidos').style.display='none';
+  document.getElementById('logout-btn').style.display='none';
+  document.getElementById('admin-pass').value='';
+  // Si estaba en pestaña pedidos o admin, volver a carta
+  const activePanels=['tab-pedidos'];
+  activePanels.forEach(pid=>{ if(document.getElementById(pid).classList.contains('active')){ goTab('menu', document.querySelector('.tab')); } });
+  toast('Sesión cerrada');
 }
 
 /* ── TOAST ── */
