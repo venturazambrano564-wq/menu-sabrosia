@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menú — La Iglesia & Sabrosía</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F7F3EC;--warm:#EDE5D8;--brown:#3D2B1F;--brown-mid:#7A5C48;
+  --brown-light:#B89880;--gold:#C8960C;--gold-light:#F0C94A;
+  --iglesia:#1B3A4B;--sabrosia:#7A2020;--green:#2D5A27;--red:#8B1A1A;
+  --border:rgba(61,43,31,0.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--brown);min-height:100vh}
+
+header{background:var(--brown);color:var(--cream);padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;position:sticky;top:0;z-index:50;box-shadow:0 2px 16px rgba(0,0,0,0.2)}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700}
+.logo span{color:var(--gold-light)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:5px 14px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85)}
+.badge.cerrado{border-color:rgba(224,82,82,0.5);color:#ffaaaa}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gold-light);flex-shrink:0}
+.badge.cerrado .dot{background:#ff7070}
+
+.tabs{display:flex;background:var(--warm);border-bottom:1px solid var(--border);overflow-x:auto}
+.tab{flex:1;padding:13px 8px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--brown-mid);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;min-width:80px}
+.tab:hover{color:var(--brown);background:rgba(61,43,31,0.04)}
+.tab.active{color:var(--brown);border-bottom-color:var(--gold)}
+
+.panel{display:none}.panel.active{display:block}
+
+.banner{padding:10px 2rem;font-size:13px;font-weight:500;text-align:center;display:none}
+.banner.show{display:block}
+.banner.cerrado-banner{background:var(--red);color:#fff}
+
+main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem}
+
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:2rem}
+.stat{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px 14px;text-align:center}
+.stat .lbl{font-size:11px;color:var(--brown-light);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.stat .val{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--brown)}
+.stat .val.ok{color:var(--green)}.stat .val.warn{color:var(--gold)}.stat .val.bad{color:var(--red)}
+
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.plato-card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.plato-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(61,43,31,0.1)}
+.plato-img{width:100%;height:140px;background:var(--warm);display:flex;align-items:center;justify-content:center;color:var(--brown-light);font-size:13px;overflow:hidden}
+.plato-img img{width:100%;height:140px;object-fit:cover;display:block}
+.plato-body{padding:11px 13px 14px}
+.plato-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;margin-bottom:10px}
+.btn-pedir{width:100%;padding:8px;border-radius:8px;border:1.5px solid var(--brown);background:transparent;color:var(--brown);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-pedir:hover:not(:disabled){background:var(--brown);color:var(--cream)}
+.btn-pedir:disabled{opacity:.4;cursor:not-allowed;border-color:var(--brown-light);color:var(--brown-light)}
+
+.overlay{position:fixed;inset:0;background:rgba(30,15,5,0.55);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+.overlay.show{display:flex}
+.modal{background:var(--cream);border-radius:18px;padding:2rem;width:100%;max-width:370px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-height:90vh;overflow-y:auto}
+.modal-plato{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--brown-mid);margin-bottom:1.5rem}
+
+.field-group{margin-bottom:1.1rem}
+.field-group>label{display:block;font-size:11px;font-weight:600;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+.opts-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt-btn{padding:11px 8px;border-radius:10px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--brown);text-align:center;transition:all .15s}
+.opt-btn:hover{border-color:var(--brown-mid)}
+.opt-btn.sel{border-color:var(--gold);background:#FDF3DC;color:#6B4C00}
+.err-msg{font-size:12px;color:var(--red);margin-top:5px;display:none;font-weight:500}
+.err-msg.show{display:block}
+
+.confirm-btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--brown);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-top:1rem;margin-bottom:8px;transition:background .2s}
+.confirm-btn:hover{background:#2a1a10}
+.cancel-link{display:block;text-align:center;font-size:13px;color:var(--brown-mid);cursor:pointer;padding:4px}
+.cancel-link:hover{color:var(--brown)}
+
+.pedidos-list{display:flex;flex-direction:column;gap:10px}
+.ped-row{background:#fff;border:1px solid var(--border);border-radius:12px;padding:11px 15px;display:flex;align-items:center;gap:12px}
+.ped-num{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--brown-light);min-width:28px}
+.ped-info{flex:1;min-width:0}
+.ped-name{font-size:14px;font-weight:600}
+.ped-meta{font-size:12px;color:var(--brown-mid);margin-top:3px;line-height:1.6}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:999px;margin-right:3px}
+.tag-iglesia{background:#D6EAF8;color:#1B3A4B}
+.tag-sabrosia{background:#FADBD8;color:#7A2020}
+.del-btn{font-size:12px;color:var(--red);background:transparent;border:1px solid rgba(139,26,26,0.3);padding:5px 10px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.del-btn:hover{background:#FADBD8}
+
+.admin-2col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+@media(max-width:620px){.admin-2col{grid-template-columns:1fr}.stats-row{grid-template-columns:1fr 1fr}}
+.card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1.25rem}
+.card h3{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;margin-bottom:1rem;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.form-row{margin-bottom:11px}
+.form-row label{display:block;font-size:11px;font-weight:600;color:var(--brown-mid);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.form-row input,.form-row textarea{width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--brown);background:var(--cream);outline:none;transition:border-color .2s}
+.form-row input:focus,.form-row textarea:focus{border-color:var(--gold)}
+.img-preview{width:100%;height:85px;object-fit:cover;border-radius:8px;margin-top:7px;display:none}
+.admin-btn{width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--brown);background:var(--brown);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s}
+.admin-btn:hover{background:#2a1a10}
+.cupos-row{display:flex;gap:8px;align-items:center}
+.cupos-row input{flex:1;padding:9px 11px;border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--brown);background:var(--cream);outline:none}
+.cupos-row input:focus{border-color:var(--gold)}
+
+.platos-scroll{max-height:350px;overflow-y:auto;display:flex;flex-direction:column;gap:7px}
+.padmin-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid var(--border);border-radius:9px;background:var(--cream)}
+.padmin-thumb{width:38px;height:38px;border-radius:7px;overflow:hidden;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--brown-light);flex-shrink:0}
+.padmin-thumb img{width:38px;height:38px;object-fit:cover}
+.padmin-name{flex:1;font-size:13px;font-weight:500}
+
+.resumen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:1.25rem}
+.res-card{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
+.res-card .rc-lbl{font-size:11px;color:var(--brown-light);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.res-card .rc-val{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--brown)}
+.res-card .rc-sub{font-size:11px;color:var(--brown-mid);margin-top:1px}
+.rank-row{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.rank-name{font-size:13px;min-width:170px;color:var(--brown)}
+.rank-bar-wrap{flex:1;height:6px;background:var(--warm);border-radius:999px;overflow:hidden}
+.rank-bar{height:100%;background:var(--gold);border-radius:999px}
+.rank-count{font-size:13px;font-weight:600;color:var(--gold);min-width:20px;text-align:right}
+
+.admin-lock{background:#fff;border:1px solid var(--border);border-radius:14px;padding:2rem;text-align:center;margin-bottom:1.25rem}
+.empty{text-align:center;padding:3rem 1rem;color:var(--brown-light);font-size:14px}
+
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--brown);color:var(--cream);padding:10px 22px;border-radius:999px;font-size:13px;font-weight:500;z-index:999;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.2)}
+.toast.show{display:block}
+
+#setup-screen{position:fixed;inset:0;background:var(--brown);z-index:1000;display:none;align-items:center;justify-content:center;padding:1.5rem}
+#setup-screen.show{display:flex}
+.setup-box{background:var(--cream);border-radius:18px;padding:2.5rem;width:100%;max-width:480px}
+.setup-box h2{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px}
+.setup-box p{font-size:14px;color:var(--brown-mid);margin-bottom:1.25rem;line-height:1.6}
+.setup-box .note{font-size:12px;background:var(--warm);border-radius:8px;padding:10px 14px;margin-bottom:1.25rem;line-height:1.7;color:var(--brown)}
+</style>
+</head>
+<body>
+
+<div id="setup-screen">
+  <div class="setup-box">
+    <h2>Conectar Firebase</h2>
+    <p>Para que el menú funcione en línea y cualquier persona pueda pedir desde su casa, conecta tu base de datos de Firebase.</p>
+    <div class="note">
+      1. Ve a <strong>console.firebase.google.com</strong><br>
+      2. Crea un proyecto &rarr; Agrega una app web<br>
+      3. Activa <strong>Realtime Database</strong> en modo de prueba<br>
+      4. Copia tu configuración y pégala aquí
+    </div>
+    <div class="form-row"><label>apiKey</label><input type="text" id="cfg-apiKey" placeholder="AIzaSy..." style="background:#fff"/></div>
+    <div class="form-row"><label>authDomain</label><input type="text" id="cfg-authDomain" placeholder="mi-proyecto.firebaseapp.com" style="background:#fff"/></div>
+    <div class="form-row"><label>projectId</label><input type="text" id="cfg-projectId" placeholder="mi-proyecto" style="background:#fff"/></div>
+    <div class="form-row"><label>databaseURL</label><input type="text" id="cfg-dbURL" placeholder="https://mi-proyecto-default-rtdb.firebaseio.com" style="background:#fff"/></div>
+    <button class="admin-btn" onclick="guardarConfig()">Conectar y continuar</button>
+  </div>
+</div>
+
+<header>
+  <div class="logo">La <span>Mesa</span></div>
+  <div class="badge" id="main-badge"><span class="dot"></span><span id="badge-txt">Cargando...</span></div>
+</header>
+
+<div class="banner cerrado-banner" id="banner"></div>
+
+<div class="tabs">
+  <button class="tab active" onclick="goTab('menu',this)">Carta</button>
+  <button class="tab" onclick="goTab('pedidos',this)">Pedidos</button>
+  <button class="tab" onclick="goTab('admin',this)">Admin</button>
+</div>
+
+<main>
+  <div id="tab-menu" class="panel active">
+    <div class="stats-row">
+      <div class="stat"><div class="lbl">Cupos libres</div><div class="val" id="s-libre">—</div></div>
+      <div class="stat"><div class="lbl">Pedidos</div><div class="val ok" id="s-ped">0</div></div>
+      <div class="stat"><div class="lbl">Máximo</div><div class="val" id="s-max">—</div></div>
+      <div class="stat"><div class="lbl">Platos</div><div class="val" id="s-platos">—</div></div>
+    </div>
+    <div class="menu-grid" id="menu-grid"><div class="empty">Cargando carta...</div></div>
+  </div>
+
+  <div id="tab-pedidos" class="panel">
+    <div class="pedidos-list" id="pedidos-list"><div class="empty">Cargando pedidos...</div></div>
+  </div>
+
+  <div id="tab-admin" class="panel">
+    <div class="admin-lock" id="admin-lock">
+      <p style="font-size:14px;color:var(--brown-mid);margin-bottom:1rem">Ingresa la clave de administrador</p>
+      <input type="password" id="admin-pass" placeholder="Contraseña"
+        style="padding:9px 13px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;width:220px;display:block;margin:0 auto 12px;background:var(--cream);color:var(--brown)">
+      <button class="admin-btn" style="width:auto;padding:9px 28px" onclick="checkPass()">Entrar</button>
+    </div>
+    <div id="admin-content" style="display:none">
+      <div class="admin-2col">
+        <div>
+          <div class="card">
+            <h3>Cupos disponibles</h3>
+            <div class="cupos-row">
+              <input type="number" id="cupos-in" min="0" value="110"/>
+              <button class="admin-btn" style="width:auto;padding:9px 18px" onclick="setCupos()">Guardar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Agregar plato</h3>
+            <div class="form-row"><label>Nombre *</label><input type="text" id="f-nom" placeholder="Nombre del plato"/></div>
+            <div class="form-row">
+              <label>Imagen del plato</label>
+              <input type="file" id="f-img" accept="image/*" onchange="prevImg()"/>
+              <img id="img-prev" class="img-preview"/>
+            </div>
+            <button class="admin-btn" style="margin-top:6px" onclick="addPlato()">Agregar plato</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Platos en el menú</h3>
+          <div class="platos-scroll" id="platos-admin"><div class="empty">Cargando...</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Resumen de pedidos</h3>
+        <div class="resumen-grid" id="resumen-grid"></div>
+        <p style="font-size:11px;font-weight:600;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Platos más pedidos</p>
+        <div id="plato-rank"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-plato" id="m-plato">Nombre del plato</div>
+    <div class="modal-sub">Completa todos los campos para confirmar tu pedido</div>
+    <div class="field-group">
+      <label>¿Dónde vas a comer? *</label>
+      <div class="opts-row">
+        <button class="opt-btn" onclick="selOpt('lugar','La Iglesia',this)">La Iglesia</button>
+        <button class="opt-btn" onclick="selOpt('lugar','Sabrosía',this)">Sabrosía</button>
+      </div>
+      <div class="err-msg" id="err-lugar">Selecciona el lugar</div>
+    </div>
+    <div class="field-group">
+      <label>Tipo de arroz *</label>
+      <div class="opts-row">
+        <button class="opt-btn" onclick="selOpt('arroz','Arroz blanco',this)">Arroz blanco</button>
+        <button class="opt-btn" onclick="selOpt('arroz','Arroz de coco',this)">Arroz de coco</button>
+      </div>
+      <div class="err-msg" id="err-arroz">Selecciona el tipo de arroz</div>
+    </div>
+    <div class="field-group">
+      <label>Ensalada *</label>
+      <div class="opts-row">
+        <button class="opt-btn" onclick="selOpt('ensalada','Con ensalada',this)">Con ensalada</button>
+        <button class="opt-btn" onclick="selOpt('ensalada','Sin ensalada',this)">Sin ensalada</button>
+      </div>
+      <div class="err-msg" id="err-ensalada">Selecciona si deseas ensalada</div>
+    </div>
+    <button class="confirm-btn" onclick="confirmar()">Confirmar pedido</button>
+    <span class="cancel-link" onclick="cerrarModal()">Cancelar</span>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script>
+const ADMIN_PASSWORD="menu2024";
+const PLATOS_DEFAULT=["Pollo a la Piña","Chivo en Coco","Carne Esmechada","Carne Molida","Lengua en Salsa de Canela","Sobrebarriga Guisada","Alitas BBQ","Chicharrones","Gallina en Coco","Sobrebarriga Asada","Carne en Bistec","Lomo Asado","Muslo Frito"];
+let db=null,adminOk=false,pedPendiente=null,sels={lugar:null,arroz:null,ensalada:null};
+
+function getSession(){let s=localStorage.getItem('menuSession');if(!s){s='u'+Date.now()+Math.random().toString(36).slice(2,6);localStorage.setItem('menuSession',s);}return s;}
+function loadConfig(){try{return JSON.parse(localStorage.getItem('fbConfig')||'null');}catch(e){return null;}}
+function guardarConfig(){
+  const cfg={apiKey:document.getElementById('cfg-apiKey').value.trim(),authDomain:document.getElementById('cfg-authDomain').value.trim(),projectId:document.getElementById('cfg-projectId').value.trim(),databaseURL:document.getElementById('cfg-dbURL').value.trim()};
+  if(!cfg.apiKey||!cfg.projectId||!cfg.databaseURL){alert('Completa todos los campos.');return;}
+  localStorage.setItem('fbConfig',JSON.stringify(cfg));location.reload();
+}
+function initFB(cfg){try{const app=firebase.initializeApp(cfg);db=firebase.database(app);return true;}catch(e){console.error(e);return false;}}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const cfg=loadConfig();
+  if(!cfg){document.getElementById('setup-screen').classList.add('show');return;}
+  if(!initFB(cfg)){alert('Error al conectar Firebase.');return;}
+  initPlatos();listenStats();listenMenu();listenPedidos();
+});
+
+function initPlatos(){
+  db.ref('platos').once('value',snap=>{if(!snap.val()){const b={};PLATOS_DEFAULT.forEach((n,i)=>{b['p'+i]={nombre:n,img:''};});db.ref('platos').set(b);}});
+  db.ref('cupos').once('value',snap=>{if(!snap.val())db.ref('cupos').set({total:110});});
+}
+
+function listenStats(){db.ref('cupos').on('value',cs=>{const total=(cs.val()||{}).total||110;db.ref('pedidos').once('value',ps=>{const ped=ps.val()?Object.keys(ps.val()).length:0;updateStats(total,ped);});});}
+function listenMenu(){db.ref('platos').on('value',snap=>{renderMenu(snap.val());});}
+function listenPedidos(){db.ref('pedidos').on('value',snap=>{renderPedidos(snap.val());db.ref('cupos').once('value',cs=>{const total=(cs.val()||{}).total||110;const ped=snap.val()?Object.keys(snap.val()).length:0;updateStats(total,ped);});if(adminOk)renderResumen(snap.val());});}
+
+function updateStats(total,ped){
+  const lib=Math.max(0,total-ped);
+  const sL=document.getElementById('s-libre');sL.textContent=lib;sL.className='val'+(lib===0?' bad':lib<20?' warn':' ok');
+  document.getElementById('s-ped').textContent=ped;document.getElementById('s-max').textContent=total;
+  if(document.getElementById('cupos-in'))document.getElementById('cupos-in').value=total;
+  const badge=document.getElementById('main-badge'),txt=document.getElementById('badge-txt'),banner=document.getElementById('banner');
+  if(lib<=0){badge.className='badge cerrado';txt.textContent='Menú cerrado';banner.textContent='El menú se cerró. Se agotaron los '+total+' cupos. El administrador debe habilitar más.';banner.classList.add('show');}
+  else{badge.className='badge';txt.textContent=lib+' cupo'+(lib!==1?'s':'')+' disponible'+(lib!==1?'s':'');banner.classList.remove('show');}
+}
+
+function yaPidio(pedData){if(!pedData)return false;const sid=getSession();return Object.values(pedData).some(p=>p.session===sid);}
+
+function renderMenu(platosData){
+  const g=document.getElementById('menu-grid');
+  document.getElementById('s-platos').textContent=platosData?Object.keys(platosData).length:0;
+  if(!platosData||!Object.keys(platosData).length){g.innerHTML='<div class="empty">No hay platos en el menú aún.</div>';return;}
+  db.ref('cupos').once('value',cs=>{const total=(cs.val()||{}).total||110;db.ref('pedidos').once('value',ps=>{
+    const pedData=ps.val(),ped=pedData?Object.keys(pedData).length:0,lib=Math.max(0,total-ped),cerrado=lib<=0,yp=yaPidio(pedData);
+    g.innerHTML=Object.entries(platosData).map(([id,p])=>`<div class="plato-card"><div class="plato-img">${p.img?`<img src="${p.img}" alt="${p.nombre}" loading="lazy">`:'Sin imagen'}</div><div class="plato-body"><div class="plato-name">${p.nombre}</div><button class="btn-pedir" ${(cerrado||yp)?'disabled':''} onclick="abrirModal('${id}','${p.nombre.replace(/'/g,"\\'")}')"> ${cerrado?'Sin cupos':yp?'Ya pediste':'Pedir'}</button></div></div>`).join('');
+  });});
+}
+
+function renderPedidos(data){
+  const l=document.getElementById('pedidos-list');
+  if(!data||!Object.keys(data).length){l.innerHTML='<div class="empty">Aún no hay pedidos.</div>';return;}
+  const list=Object.entries(data).reverse();
+  l.innerHTML=list.map(([id,p],i)=>`<div class="ped-row"><span class="ped-num">${list.length-i}</span><div class="ped-info"><div class="ped-name">${p.plato}</div><div class="ped-meta"><span class="tag ${p.lugar==='La Iglesia'?'tag-iglesia':'tag-sabrosia'}">${p.lugar}</span>${p.arroz} &middot; ${p.ensalada}<span style="color:#B89880;margin-left:4px">${p.hora||''}</span></div></div>${adminOk?`<button class="del-btn" onclick="delPedido('${id}')">Eliminar</button>`:''}</div>`).join('');
+}
+
+function renderResumen(data){
+  const ped=data?Object.values(data):[];const total=ped.length;
+  const iglesia=ped.filter(p=>p.lugar==='La Iglesia').length,sabrosia=ped.filter(p=>p.lugar==='Sabrosía').length;
+  const conEns=ped.filter(p=>p.ensalada==='Con ensalada').length,arrozCoco=ped.filter(p=>p.arroz==='Arroz de coco').length;
+  const counts={};ped.forEach(p=>{counts[p.plato]=(counts[p.plato]||0)+1;});
+  const distintos=Object.keys(counts).length,repetidos=Object.values(counts).filter(v=>v>1).length,maxC=Math.max(...Object.values(counts),1);
+  document.getElementById('resumen-grid').innerHTML=`<div class="res-card"><div class="rc-lbl">Total pedidos</div><div class="rc-val">${total}</div></div><div class="res-card"><div class="rc-lbl">La Iglesia</div><div class="rc-val">${iglesia}</div></div><div class="res-card"><div class="rc-lbl">Sabrosía</div><div class="rc-val">${sabrosia}</div></div><div class="res-card"><div class="rc-lbl">Platos distintos</div><div class="rc-val">${distintos}</div></div><div class="res-card"><div class="rc-lbl">Tipos repetidos</div><div class="rc-val">${repetidos}</div><div class="rc-sub">con 2 o más pedidos</div></div><div class="res-card"><div class="rc-lbl">Con ensalada</div><div class="rc-val">${conEns}</div></div><div class="res-card"><div class="rc-lbl">Sin ensalada</div><div class="rc-val">${total-conEns}</div></div><div class="res-card"><div class="rc-lbl">Arroz de coco</div><div class="rc-val">${arrozCoco}</div></div><div class="res-card"><div class="rc-lbl">Arroz blanco</div><div class="rc-val">${total-arrozCoco}</div></div>`;
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  document.getElementById('plato-rank').innerHTML=sorted.length?sorted.map(([n,c])=>`<div class="rank-row"><span class="rank-name">${n}</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(c/maxC*100)}%"></div></div><span class="rank-count">${c}</span></div>`).join(''):'<div class="empty" style="padding:1rem">Sin pedidos aún</div>';
+}
+
+function renderAdminPlatos(data){
+  const l=document.getElementById('platos-admin');
+  if(!data||!Object.keys(data).length){l.innerHTML='<div class="empty">No hay platos.</div>';return;}
+  l.innerHTML=Object.entries(data).map(([id,p])=>`<div class="padmin-row"><div class="padmin-thumb">${p.img?`<img src="${p.img}" alt="${p.nombre}">`:'img'}</div><span class="padmin-name">${p.nombre}</span><button class="del-btn" onclick="delPlato('${id}')">Quitar</button></div>`).join('');
+}
+
+function abrirModal(id,nombre){
+  db.ref('pedidos').once('value',ps=>{db.ref('cupos').once('value',cs=>{
+    const total=(cs.val()||{}).total||110,ped=ps.val()?Object.keys(ps.val()).length:0;
+    if(ped>=total){toast('No hay cupos disponibles');return;}
+    if(yaPidio(ps.val())){toast('Ya realizaste tu pedido');return;}
+    pedPendiente=id;sels={lugar:null,arroz:null,ensalada:null};
+    document.getElementById('m-plato').textContent=nombre;
+    document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('sel'));
+    document.querySelectorAll('.err-msg').forEach(e=>e.classList.remove('show'));
+    document.getElementById('overlay').classList.add('show');
+  });});
+}
+
+function selOpt(campo,valor,btn){sels[campo]=valor;btn.closest('.opts-row').querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');document.getElementById('err-'+campo).classList.remove('show');}
+function cerrarModal(){document.getElementById('overlay').classList.remove('show');pedPendiente=null;}
+
+function confirmar(){
+  let ok=true;['lugar','arroz','ensalada'].forEach(c=>{if(!sels[c]){document.getElementById('err-'+c).classList.add('show');ok=false;}});
+  if(!ok)return;
+  db.ref('pedidos').once('value',ps=>{db.ref('cupos').once('value',cs=>{
+    const total=(cs.val()||{}).total||110,pedData=ps.val(),ped=pedData?Object.keys(pedData).length:0;
+    if(ped>=total){cerrarModal();toast('Sin cupos disponibles');return;}
+    if(yaPidio(pedData)){cerrarModal();toast('Ya realizaste tu pedido');return;}
+    db.ref('platos/'+pedPendiente).once('value',pSnap=>{
+      const plato=pSnap.val(),ahora=new Date(),hora=ahora.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+      db.ref('pedidos').push({plato:plato.nombre,lugar:sels.lugar,arroz:sels.arroz,ensalada:sels.ensalada,hora,session:getSession()});
+      cerrarModal();toast('Pedido confirmado — '+plato.nombre);
+    });
+  });});
+}
+
+function delPedido(id){if(!confirm('¿Eliminar este pedido?'))return;db.ref('pedidos/'+id).remove();toast('Pedido eliminado');}
+
+function setCupos(){const v=parseInt(document.getElementById('cupos-in').value);if(isNaN(v)||v<0){alert('Número inválido');return;}db.ref('cupos').set({total:v});toast('Cupos actualizados: '+v);}
+
+function prevImg(){const f=document.getElementById('f-img').files[0];if(!f)return;const r=new FileReader();r.onload=e=>{const p=document.getElementById('img-prev');p.src=e.target.result;p.style.display='block';};r.readAsDataURL(f);}
+
+function addPlato(){
+  const nom=document.getElementById('f-nom').value.trim();if(!nom){alert('El nombre es obligatorio');return;}
+  const f=document.getElementById('f-img').files[0];
+  const fin=img=>{db.ref('platos').push({nombre:nom,img:img||''});document.getElementById('f-nom').value='';document.getElementById('f-img').value='';document.getElementById('img-prev').style.display='none';toast('Plato agregado: '+nom);};
+  if(f){const r=new FileReader();r.onload=e=>fin(e.target.result);r.readAsDataURL(f);}else fin('');
+}
+
+function delPlato(id){if(!confirm('¿Quitar este plato del menú?'))return;db.ref('platos/'+id).remove();toast('Plato eliminado');}
+
+function checkPass(){
+  if(document.getElementById('admin-pass').value===ADMIN_PASSWORD){
+    adminOk=true;document.getElementById('admin-lock').style.display='none';document.getElementById('admin-content').style.display='block';
+    db.ref('platos').on('value',snap=>renderAdminPlatos(snap.val()));
+    db.ref('pedidos').on('value',snap=>renderResumen(snap.val()));
+    toast('Bienvenido, administrador');
+  }else{alert('Contraseña incorrecta');}
+}
+
+function goTab(name,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');document.getElementById('tab-'+name).classList.add('active');
+  if(name==='admin'&&!adminOk){document.getElementById('admin-lock').style.display='block';document.getElementById('admin-content').style.display='none';}
+}
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>
