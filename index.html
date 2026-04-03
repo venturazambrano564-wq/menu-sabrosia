@@ -225,6 +225,7 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem}
       <button class="filter-btn" onclick="filtrar('La Iglesia',this)">La Iglesia</button>
       <button class="filter-btn" onclick="filtrar('Sabrosía',this)">Sabrosía</button>
       <button class="filter-btn" onclick="filtrar('Arroz de coco',this)">Arroz coco</button>
+      <button class="filter-btn" onclick="filtrar('Arroz blanco',this)">Arroz blanco</button>
       <button class="export-btn" onclick="exportarCSV()">Exportar CSV</button>
     </div>
     <div id="search-wrap" style="margin-bottom:1rem">
@@ -468,14 +469,29 @@ window.addEventListener('DOMContentLoaded',()=>{
 
 function listenAll(){
   db.ref('platos').on('value',snap=>{ allPlatos=snap.val()||{}; renderMenu(); document.getElementById('s-platos').textContent=Object.keys(allPlatos).length; if(adminOk) renderAdminPlatos(); });
-  db.ref('pedidos').on('value',snap=>{ allPedidos=snap.val()||{}; renderPedidosFiltrados(); if(adminOk){renderAdminPedidos();renderResumen();} updateTabBadge(); });
+  db.ref('pedidos').on('value',snap=>{
+    allPedidos=snap.val()||{};
+    renderPedidosFiltrados();
+    if(adminOk){renderAdminPedidos();renderResumen();}
+    updateTabBadge();
+    db.ref('cupos').once('value',cs=>{
+      const d=cs.val()||{total:110,cerrado:false};
+      const ped=Object.keys(allPedidos).length;
+      const lib=libre(d.total,ped);
+      if(!d.cerrado && lib<=0){ db.ref('cupos').update({cerrado:true}); }
+      menuCerrado=!!d.cerrado||(lib<=0);
+      updateStats(d.total);
+    });
+  });
   db.ref('cupos').on('value',snap=>{ const d=snap.val()||{total:110,cerrado:false}; menuCerrado=!!d.cerrado; updateStats(d.total); });
 }
 
 function updateStats(total){
   const ped=Object.keys(allPedidos).length;
   const lib=libre(total,ped);
-  const sL=document.getElementById('s-libre'); sL.textContent=lib; sL.className='val'+(lib===0?' bad':lib<20?' warn':' ok');
+  const sL=document.getElementById('s-libre');
+  sL.textContent=lib;
+  sL.className='val'+(lib===0?' bad':lib<10?' warn':' ok');
   document.getElementById('s-ped').textContent=ped;
   document.getElementById('s-max').textContent=total;
   if(document.getElementById('cupos-in')) document.getElementById('cupos-in').value=total;
