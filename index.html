@@ -209,10 +209,10 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem}
 <main>
   <!-- CARTA -->
   <div id="tab-menu" class="panel active">
-    <div class="stats-row">
-      <div class="stat"><div class="lbl">Cupos libres</div><div class="val" id="s-libre">—</div></div>
+    <div class="stats-row" style="grid-template-columns:repeat(4,1fr)">
+      <div class="stat"><div class="lbl">Libres Iglesia</div><div class="val" id="s-libre">—</div></div>
+      <div class="stat"><div class="lbl">Libres Sabrosía</div><div class="val" id="s-libre-sab">—</div></div>
       <div class="stat"><div class="lbl">Pedidos</div><div class="val ok" id="s-ped">0</div></div>
-      <div class="stat"><div class="lbl">Máximo</div><div class="val" id="s-max">—</div></div>
       <div class="stat"><div class="lbl">Platos</div><div class="val" id="s-platos">—</div></div>
     </div>
     <div class="menu-grid" id="menu-grid"><div class="empty">Cargando carta...</div></div>
@@ -251,11 +251,23 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem}
         <div>
           <div class="card">
             <div class="card-title">Cupos disponibles</div>
-            <div class="cupos-row">
-              <input type="number" id="cupos-in" min="0" value="110"/>
-              <button class="admin-btn" style="width:auto;padding:8px 16px" onclick="setCupos()">Guardar</button>
+            <div style="margin-bottom:10px">
+              <div style="font-size:10px;font-weight:700;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">La Iglesia</div>
+              <div class="cupos-row">
+                <input type="number" id="cupos-iglesia-in" min="0" value="0"/>
+                <button class="admin-btn" style="width:auto;padding:8px 16px" onclick="setCuposIglesia()">Guardar</button>
+              </div>
+              <p style="font-size:11px;color:var(--brown-light);margin-top:5px">Libres: <b id="libres-iglesia">—</b></p>
             </div>
-            <p style="font-size:11px;color:var(--brown-light);margin-top:8px">Pedidos actuales: <b id="ped-actual">0</b> &nbsp;|&nbsp; Libres: <b id="libres-admin">110</b></p>
+            <div>
+              <div style="font-size:10px;font-weight:700;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Sabrosía</div>
+              <div class="cupos-row">
+                <input type="number" id="cupos-sabrosia-in" min="0" value="120"/>
+                <button class="admin-btn" style="width:auto;padding:8px 16px" onclick="setCuposSabrosia()">Guardar</button>
+              </div>
+              <p style="font-size:11px;color:var(--brown-light);margin-top:5px">Libres: <b id="libres-sabrosia">—</b></p>
+            </div>
+            <p style="font-size:11px;color:var(--brown-light);margin-top:10px;padding-top:8px;border-top:1px solid var(--border)">Total pedidos: <b id="ped-actual">0</b> &nbsp;|&nbsp; Total libres: <b id="libres-admin">—</b></p>
           </div>
 
           <div class="card">
@@ -331,8 +343,8 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem}
     <div class="field-group">
       <label>¿Dónde vas a comer? *</label>
       <div class="opts-row">
-        <button class="opt-btn" onclick="selOpt('lugar','La Iglesia',this)">La Iglesia</button>
-        <button class="opt-btn" onclick="selOpt('lugar','Sabrosía',this)">Sabrosía</button>
+        <button class="opt-btn" id="opt-iglesia" onclick="selOpt('lugar','La Iglesia',this)">La Iglesia</button>
+        <button class="opt-btn" id="opt-sabrosia" onclick="selOpt('lugar','Sabrosía',this)">Sabrosía</button>
       </div>
       <div class="err-msg" id="err-lugar">Selecciona el lugar</div>
     </div>
@@ -457,13 +469,15 @@ function getSession(){
 }
 function yaPidio(pedData){ if(!pedData) return false; const sid=getSession(); return Object.values(pedData).some(p=>p.session===sid); }
 function libre(total,ped){ return Math.max(0,total-ped); }
+function libreIglesia(d,pedidos){ const maxIgl=d.iglesia!=null?d.iglesia:(d.total-120); const pedIgl=Object.values(pedidos).filter(p=>p.lugar==='La Iglesia').length; return Math.max(0,maxIgl-pedIgl); }
+function libreSabrosia(d,pedidos){ const maxSab=d.sabrosia!=null?d.sabrosia:120; const pedSab=Object.values(pedidos).filter(p=>p.lugar==='Sabrosía').length; return Math.max(0,maxSab-pedSab); }
 
 /* ── INIT ── */
 window.addEventListener('DOMContentLoaded',()=>{
   db.ref('platos').once('value',snap=>{
     if(!snap.val()){ const b={}; PLATOS_DEFAULT.forEach((n,i)=>{b['p'+i]={nombre:n,img:''};}); db.ref('platos').set(b); }
   });
-  db.ref('cupos').once('value',snap=>{ if(!snap.val()) db.ref('cupos').set({total:110,cerrado:false}); });
+  db.ref('cupos').once('value',snap=>{ if(!snap.val()) db.ref('cupos').set({total:110,sabrosia:120,cerrado:false}); });
   listenAll();
 });
 
@@ -475,7 +489,7 @@ function listenAll(){
     if(adminOk){renderAdminPedidos();renderResumen();}
     updateTabBadge();
     db.ref('cupos').once('value',cs=>{
-      const d=cs.val()||{total:110,cerrado:false};
+      const d=cs.val()||{total:110,sabrosia:120,cerrado:false};
       const ped=Object.keys(allPedidos).length;
       const lib=libre(d.total,ped);
       if(!d.cerrado && lib<=0){ db.ref('cupos').update({cerrado:true}); }
@@ -493,10 +507,22 @@ function updateStats(total){
   sL.textContent=lib;
   sL.className='val'+(lib===0?' bad':lib<10?' warn':' ok');
   document.getElementById('s-ped').textContent=ped;
-  document.getElementById('s-max').textContent=total;
   if(document.getElementById('cupos-in')) document.getElementById('cupos-in').value=total;
   if(document.getElementById('ped-actual')) document.getElementById('ped-actual').textContent=ped;
   if(document.getElementById('libres-admin')) document.getElementById('libres-admin').textContent=lib;
+
+  // Cupos por lugar
+  db.ref('cupos').once('value',cs=>{
+    const d=cs.val()||{total:110,sabrosia:120,cerrado:false};
+    const libSab=libreSabrosia(d,allPedidos);
+    const libIgl=libreIglesia(d,allPedidos);
+    if(document.getElementById('libres-sabrosia')) document.getElementById('libres-sabrosia').textContent=libSab;
+    if(document.getElementById('libres-iglesia')) document.getElementById('libres-iglesia').textContent=libIgl;
+    if(document.getElementById('s-libre-sab')){ const el=document.getElementById('s-libre-sab'); el.textContent=libSab; el.className='val'+(libSab===0?' bad':libSab<10?' warn':' ok'); }
+    if(document.getElementById('s-libre')){ const el=document.getElementById('s-libre'); el.textContent=libIgl; el.className='val'+(libIgl===0?' bad':libIgl<10?' warn':' ok'); }
+    if(document.getElementById('cupos-sabrosia-in')) document.getElementById('cupos-sabrosia-in').value=d.sabrosia!=null?d.sabrosia:120;
+    if(document.getElementById('cupos-iglesia-in')) document.getElementById('cupos-iglesia-in').value=d.iglesia!=null?d.iglesia:(d.total-120);
+  });
 
   const badge=document.getElementById('main-badge'), txt=document.getElementById('badge-txt'), banner=document.getElementById('banner');
   const cerrado = menuCerrado || lib<=0;
@@ -605,16 +631,24 @@ function renderAdminPedidos(){
 /* ── MODAL PEDIDO ── */
 function abrirModal(id,nombre){
   db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{total:110,cerrado:false};
+    const d=cs.val()||{total:110,sabrosia:120,cerrado:false};
     const ped=Object.keys(allPedidos).length, lib=libre(d.total,ped);
     if(!!d.cerrado||lib<=0){ toast('El menú está cerrado','error'); return; }
     if(yaPidio(allPedidos)){ toast('Ya realizaste tu pedido','error'); return; }
+    // Verificar si ambos lugares tienen cupos (se validará al confirmar según lugar elegido)
+    const libSab=libreSabrosia(d,allPedidos);
+    const libIgl=libreIglesia(d,allPedidos);
+    if(libSab<=0 && libIgl<=0){ toast('No hay cupos disponibles en ningún lugar','error'); return; }
     pedPendiente=id; sels={lugar:null,arroz:null,ensalada:null};
     document.getElementById('m-plato').textContent=nombre;
     document.getElementById('f-nombre').value=''; document.getElementById('f-apellido').value='';
     document.querySelectorAll('#overlay .opt-btn').forEach(b=>b.classList.remove('sel'));
     document.querySelectorAll('.err-msg').forEach(e=>e.classList.remove('show'));
     document.querySelectorAll('.field-input').forEach(i=>i.classList.remove('error'));
+    // Deshabilitar botones de lugar sin cupos
+    const btnIgl=document.getElementById('opt-iglesia'), btnSab=document.getElementById('opt-sabrosia');
+    if(btnIgl){ btnIgl.disabled=libIgl<=0; btnIgl.title=libIgl<=0?'Sin cupos disponibles':''; btnIgl.style.opacity=libIgl<=0?'0.4':''; }
+    if(btnSab){ btnSab.disabled=libSab<=0; btnSab.title=libSab<=0?'Sin cupos disponibles':''; btnSab.style.opacity=libSab<=0?'0.4':''; }
     document.getElementById('overlay').classList.add('show');
   });
 }
@@ -632,10 +666,13 @@ function confirmar(){
   if(!ok) return;
 
   db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{total:110,cerrado:false};
+    const d=cs.val()||{total:110,sabrosia:120,cerrado:false};
     const ped=Object.keys(allPedidos).length, lib=libre(d.total,ped);
     if(!!d.cerrado||lib<=0){ cerrarModal(); toast('Sin cupos disponibles','error'); return; }
     if(yaPidio(allPedidos)){ cerrarModal(); toast('Ya realizaste tu pedido','error'); return; }
+    // Validar cupos del lugar elegido
+    if(sels.lugar==='Sabrosía' && libreSabrosia(d,allPedidos)<=0){ cerrarModal(); toast('Sin cupos disponibles para Sabrosía','error'); return; }
+    if(sels.lugar==='La Iglesia' && libreIglesia(d,allPedidos)<=0){ cerrarModal(); toast('Sin cupos disponibles para La Iglesia','error'); return; }
     const plato=allPlatos[pedPendiente];
     const hora=new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
     db.ref('pedidos').push({
@@ -734,24 +771,47 @@ function renderResumen(){
   const repetidos=Object.values(counts).filter(v=>v>1).length;
   const maxC=Math.max(...Object.values(counts),1);
 
-  document.getElementById('resumen-grid').innerHTML=[
-    ['Total pedidos',total,''],['La Iglesia',iglesia,''],['Sabrosía',sabrosia,''],
-    ['Platos distintos',distintos,''],['Tipos repetidos',repetidos,'con 2+ pedidos'],
-    ['Con ensalada',conEns,''],['Sin ensalada',total-conEns,''],
-    ['Arroz de coco',arrozCoco,''],['Arroz blanco',total-arrozCoco,'']
-  ].map(([l,v,s])=>`<div class="res-card"><div class="rc-lbl">${l}</div><div class="rc-val">${v}</div>${s?`<div class="rc-sub">${s}</div>`:''}</div>`).join('');
+  db.ref('cupos').once('value',cs=>{
+    const d=cs.val()||{total:110,sabrosia:120,cerrado:false};
+    const libSab=libreSabrosia(d,allPedidos);
+    const libIgl=libreIglesia(d,allPedidos);
+    const maxSab=d.sabrosia!=null?d.sabrosia:120;
+    const maxIgl=d.iglesia!=null?d.iglesia:(d.total-maxSab);
 
-  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  document.getElementById('plato-rank').innerHTML=sorted.length
-    ? sorted.map(([n,c])=>`<div class="rank-row"><span class="rank-name">${n}</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(c/maxC*100)}%"></div></div><span class="rank-count">${c}</span></div>`).join('')
-    : '<div class="empty" style="padding:1rem">Sin pedidos aún</div>';
+    document.getElementById('resumen-grid').innerHTML=[
+      ['Total pedidos',total,''],['La Iglesia',iglesia,'de '+maxIgl+' cupos'],['Sabrosía',sabrosia,'de '+maxSab+' cupos'],
+      ['Libres La Iglesia',libIgl,''],['Libres Sabrosía',libSab,''],
+      ['Platos distintos',distintos,''],['Tipos repetidos',repetidos,'con 2+ pedidos'],
+      ['Con ensalada',conEns,''],['Arroz de coco',arrozCoco,'']
+    ].map(([l,v,s])=>`<div class="res-card"><div class="rc-lbl">${l}</div><div class="rc-val">${v}</div>${s?`<div class="rc-sub">${s}</div>`:''}</div>`).join('');
+
+    const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10);
+    document.getElementById('plato-rank').innerHTML=sorted.length
+      ? sorted.map(([n,c])=>`<div class="rank-row"><span class="rank-name">${n}</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(c/maxC*100)}%"></div></div><span class="rank-count">${c}</span></div>`).join('')
+      : '<div class="empty" style="padding:1rem">Sin pedidos aún</div>';
+  });
 }
 
 /* ── CUPOS / MENU CONTROL ── */
-function setCupos(){
-  const v=parseInt(document.getElementById('cupos-in').value);
+function setCuposIglesia(){
+  const v=parseInt(document.getElementById('cupos-iglesia-in').value);
   if(isNaN(v)||v<0){toast('Número inválido','error');return;}
-  db.ref('cupos').update({total:v}); toast('Cupos actualizados: '+v,'success');
+  db.ref('cupos').once('value',cs=>{
+    const d=cs.val()||{total:110,sabrosia:120};
+    const sabrosia=d.sabrosia!=null?d.sabrosia:120;
+    db.ref('cupos').update({iglesia:v,total:v+sabrosia});
+    toast('Cupos La Iglesia: '+v,'success');
+  });
+}
+function setCuposSabrosia(){
+  const v=parseInt(document.getElementById('cupos-sabrosia-in').value);
+  if(isNaN(v)||v<0){toast('Número inválido','error');return;}
+  db.ref('cupos').once('value',cs=>{
+    const d=cs.val()||{total:110,iglesia:0};
+    const iglesia=d.iglesia!=null?d.iglesia:(d.total-120);
+    db.ref('cupos').update({sabrosia:v,total:iglesia+v});
+    toast('Cupos Sabrosía: '+v,'success');
+  });
 }
 
 function cerrarMenu(){
