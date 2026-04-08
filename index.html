@@ -469,15 +469,23 @@ function getSession(){
 }
 function yaPidio(pedData){ if(!pedData) return false; const sid=getSession(); return Object.values(pedData).some(p=>p.session===sid); }
 function libre(total,ped){ return Math.max(0,total-ped); }
-function libreIglesia(d,pedidos){ const maxIgl=d.iglesia!=null?d.iglesia:(d.total-120); const pedIgl=Object.values(pedidos).filter(p=>p.lugar==='La Iglesia').length; return Math.max(0,maxIgl-pedIgl); }
-function libreSabrosia(d,pedidos){ const maxSab=d.sabrosia!=null?d.sabrosia:120; const pedSab=Object.values(pedidos).filter(p=>p.lugar==='Sabrosía').length; return Math.max(0,maxSab-pedSab); }
+function libreIglesia(d,pedidos){
+  const max = (d.iglesia != null) ? d.iglesia : 110;
+  const ocupados = Object.values(pedidos).filter(p=>p.lugar==='La Iglesia').length;
+  return Math.max(0, max - ocupados);
+}
+function libreSabrosia(d,pedidos){
+  const max = (d.sabrosia != null) ? d.sabrosia : 120;
+  const ocupados = Object.values(pedidos).filter(p=>p.lugar==='Sabrosía').length;
+  return Math.max(0, max - ocupados);
+}
 
 /* ── INIT ── */
 window.addEventListener('DOMContentLoaded',()=>{
   db.ref('platos').once('value',snap=>{
     if(!snap.val()){ const b={}; PLATOS_DEFAULT.forEach((n,i)=>{b['p'+i]={nombre:n,img:''};}); db.ref('platos').set(b); }
   });
-  db.ref('cupos').once('value',snap=>{ if(!snap.val()) db.ref('cupos').set({total:110,sabrosia:120,cerrado:false}); });
+  db.ref('cupos').once('value',snap=>{ if(!snap.val()) db.ref('cupos').set({sabrosia:120,iglesia:110,cerrado:false}); });
   listenAll();
 });
 
@@ -489,49 +497,46 @@ function listenAll(){
     if(adminOk){renderAdminPedidos();renderResumen();}
     updateTabBadge();
     db.ref('cupos').once('value',cs=>{
-      const d=cs.val()||{total:110,sabrosia:120,cerrado:false};
-      const ped=Object.keys(allPedidos).length;
-      const lib=libre(d.total,ped);
-      if(!d.cerrado && lib<=0){ db.ref('cupos').update({cerrado:true}); }
-      menuCerrado=!!d.cerrado||(lib<=0);
-      updateStats(d.total);
+      const d=cs.val()||{sabrosia:120,iglesia:110,cerrado:false};
+      const ambosLlenos = libreIglesia(d,allPedidos)<=0 && libreSabrosia(d,allPedidos)<=0;
+      if(!d.cerrado && ambosLlenos){ db.ref('cupos').update({cerrado:true}); }
+      menuCerrado=!!d.cerrado || ambosLlenos;
+      updateStats(d);
     });
   });
-  db.ref('cupos').on('value',snap=>{ const d=snap.val()||{total:110,cerrado:false}; menuCerrado=!!d.cerrado; updateStats(d.total); });
+  db.ref('cupos').on('value',snap=>{ const d=snap.val()||{sabrosia:120,iglesia:110,cerrado:false}; menuCerrado=!!d.cerrado; updateStats(d); });
 }
 
-function updateStats(total){
-  const ped=Object.keys(allPedidos).length;
-  const lib=libre(total,ped);
-  const sL=document.getElementById('s-libre');
-  sL.textContent=lib;
-  sL.className='val'+(lib===0?' bad':lib<10?' warn':' ok');
-  document.getElementById('s-ped').textContent=ped;
-  if(document.getElementById('cupos-in')) document.getElementById('cupos-in').value=total;
-  if(document.getElementById('ped-actual')) document.getElementById('ped-actual').textContent=ped;
-  if(document.getElementById('libres-admin')) document.getElementById('libres-admin').textContent=lib;
+function updateStats(d){
+  if(typeof d === 'number') d={sabrosia:120,iglesia:110,cerrado:false};
+  const libSab = libreSabrosia(d, allPedidos);
+  const libIgl = libreIglesia(d, allPedidos);
+  const libTotal = libSab + libIgl;
+  const ped = Object.keys(allPedidos).length;
 
-  // Cupos por lugar
-  db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{total:110,sabrosia:120,cerrado:false};
-    const libSab=libreSabrosia(d,allPedidos);
-    const libIgl=libreIglesia(d,allPedidos);
-    if(document.getElementById('libres-sabrosia')) document.getElementById('libres-sabrosia').textContent=libSab;
-    if(document.getElementById('libres-iglesia')) document.getElementById('libres-iglesia').textContent=libIgl;
-    if(document.getElementById('s-libre-sab')){ const el=document.getElementById('s-libre-sab'); el.textContent=libSab; el.className='val'+(libSab===0?' bad':libSab<10?' warn':' ok'); }
-    if(document.getElementById('s-libre')){ const el=document.getElementById('s-libre'); el.textContent=libIgl; el.className='val'+(libIgl===0?' bad':libIgl<10?' warn':' ok'); }
-    if(document.getElementById('cupos-sabrosia-in')) document.getElementById('cupos-sabrosia-in').value=d.sabrosia!=null?d.sabrosia:120;
-    if(document.getElementById('cupos-iglesia-in')) document.getElementById('cupos-iglesia-in').value=d.iglesia!=null?d.iglesia:(d.total-120);
-  });
+  document.getElementById('s-ped').textContent=ped;
+  if(document.getElementById('ped-actual')) document.getElementById('ped-actual').textContent=ped;
+  if(document.getElementById('libres-admin')) document.getElementById('libres-admin').textContent=libTotal;
+
+  // Stats carta pública
+  if(document.getElementById('s-libre')){ const el=document.getElementById('s-libre'); el.textContent=libIgl; el.className='val'+(libIgl===0?' bad':libIgl<20?' warn':' ok'); }
+  if(document.getElementById('s-libre-sab')){ const el=document.getElementById('s-libre-sab'); el.textContent=libSab; el.className='val'+(libSab===0?' bad':libSab<20?' warn':' ok'); }
+
+  // Stats admin
+  if(document.getElementById('libres-sabrosia')) document.getElementById('libres-sabrosia').textContent=libSab;
+  if(document.getElementById('libres-iglesia')) document.getElementById('libres-iglesia').textContent=libIgl;
+  if(document.getElementById('cupos-sabrosia-in')) document.getElementById('cupos-sabrosia-in').value=d.sabrosia!=null?d.sabrosia:120;
+  if(document.getElementById('cupos-iglesia-in')) document.getElementById('cupos-iglesia-in').value=d.iglesia!=null?d.iglesia:110;
 
   const badge=document.getElementById('main-badge'), txt=document.getElementById('badge-txt'), banner=document.getElementById('banner');
-  const cerrado = menuCerrado || lib<=0;
+  const ambosLlenos = libSab<=0 && libIgl<=0;
+  const cerrado = !!d.cerrado || ambosLlenos;
   if(cerrado){
     badge.className='badge cerrado'; txt.textContent='Menú cerrado';
     banner.className='banner red show'; banner.textContent='El menú está cerrado. No se aceptan más pedidos.';
     if(document.getElementById('btn-abrir')) document.getElementById('btn-abrir').style.display='block';
   } else {
-    badge.className='badge'; txt.textContent=lib+' cupo'+(lib!==1?'s':'')+' disponible'+(lib!==1?'s':'');
+    badge.className='badge'; txt.textContent=libTotal+' cupo'+(libTotal!==1?'s':'')+' disponible'+(libTotal!==1?'s':'');
     banner.className='banner'; banner.textContent='';
     if(document.getElementById('btn-abrir')) document.getElementById('btn-abrir').style.display='none';
   }
@@ -551,9 +556,9 @@ function renderMenu(){
   const g=document.getElementById('menu-grid');
   if(!Object.keys(allPlatos).length){ g.innerHTML='<div class="empty">No hay platos en el menú aún.</div>'; return; }
   db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{total:110,cerrado:false};
-    const total=d.total, ped=Object.keys(allPedidos).length, lib=libre(total,ped);
-    const cerrado=!!d.cerrado||lib<=0, yp=yaPidio(allPedidos);
+    const d=cs.val()||{sabrosia:120,iglesia:110,cerrado:false};
+    const libSab=libreSabrosia(d,allPedidos), libIgl=libreIglesia(d,allPedidos);
+    const cerrado=!!d.cerrado||(libSab<=0&&libIgl<=0), yp=yaPidio(allPedidos);
     g.innerHTML=Object.entries(allPlatos).map(([id,p])=>`
       <div class="plato-card">
         <div class="plato-img">${p.img?`<img src="${p.img}" alt="${p.nombre}" loading="lazy">`:'Sin imagen'}</div>
@@ -631,11 +636,11 @@ function renderAdminPedidos(){
 /* ── MODAL PEDIDO ── */
 function abrirModal(id,nombre){
   db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{total:110,sabrosia:120,cerrado:false};
-    const ped=Object.keys(allPedidos).length, lib=libre(d.total,ped);
+    const d=cs.val()||{sabrosia:120,iglesia:110,cerrado:false};
+    const lib=libreIglesia(d,allPedidos)+libreSabrosia(d,allPedidos);
     if(!!d.cerrado||lib<=0){ toast('El menú está cerrado','error'); return; }
     if(yaPidio(allPedidos)){ toast('Ya realizaste tu pedido','error'); return; }
-    // Verificar si ambos lugares tienen cupos (se validará al confirmar según lugar elegido)
+    // Verificar si ambos lugares tienen cupos
     const libSab=libreSabrosia(d,allPedidos);
     const libIgl=libreIglesia(d,allPedidos);
     if(libSab<=0 && libIgl<=0){ toast('No hay cupos disponibles en ningún lugar','error'); return; }
@@ -666,8 +671,8 @@ function confirmar(){
   if(!ok) return;
 
   db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{total:110,sabrosia:120,cerrado:false};
-    const ped=Object.keys(allPedidos).length, lib=libre(d.total,ped);
+    const d=cs.val()||{sabrosia:120,iglesia:110,cerrado:false};
+    const lib=libreIglesia(d,allPedidos)+libreSabrosia(d,allPedidos);
     if(!!d.cerrado||lib<=0){ cerrarModal(); toast('Sin cupos disponibles','error'); return; }
     if(yaPidio(allPedidos)){ cerrarModal(); toast('Ya realizaste tu pedido','error'); return; }
     // Validar cupos del lugar elegido
@@ -772,11 +777,11 @@ function renderResumen(){
   const maxC=Math.max(...Object.values(counts),1);
 
   db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{total:110,sabrosia:120,cerrado:false};
+    const d=cs.val()||{sabrosia:120,iglesia:110,cerrado:false};
     const libSab=libreSabrosia(d,allPedidos);
     const libIgl=libreIglesia(d,allPedidos);
     const maxSab=d.sabrosia!=null?d.sabrosia:120;
-    const maxIgl=d.iglesia!=null?d.iglesia:(d.total-maxSab);
+    const maxIgl=d.iglesia!=null?d.iglesia:110;
 
     document.getElementById('resumen-grid').innerHTML=[
       ['Total pedidos',total,''],['La Iglesia',iglesia,'de '+maxIgl+' cupos'],['Sabrosía',sabrosia,'de '+maxSab+' cupos'],
@@ -796,22 +801,14 @@ function renderResumen(){
 function setCuposIglesia(){
   const v=parseInt(document.getElementById('cupos-iglesia-in').value);
   if(isNaN(v)||v<0){toast('Número inválido','error');return;}
-  db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{total:110,sabrosia:120};
-    const sabrosia=d.sabrosia!=null?d.sabrosia:120;
-    db.ref('cupos').update({iglesia:v,total:v+sabrosia});
-    toast('Cupos La Iglesia: '+v,'success');
-  });
+  db.ref('cupos').update({iglesia:v});
+  toast('Cupos La Iglesia actualizados: '+v,'success');
 }
 function setCuposSabrosia(){
   const v=parseInt(document.getElementById('cupos-sabrosia-in').value);
   if(isNaN(v)||v<0){toast('Número inválido','error');return;}
-  db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{total:110,iglesia:0};
-    const iglesia=d.iglesia!=null?d.iglesia:(d.total-120);
-    db.ref('cupos').update({sabrosia:v,total:iglesia+v});
-    toast('Cupos Sabrosía: '+v,'success');
-  });
+  db.ref('cupos').update({sabrosia:v});
+  toast('Cupos Sabrosía actualizados: '+v,'success');
 }
 
 function cerrarMenu(){
