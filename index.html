@@ -186,6 +186,33 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem}
 }
 .logout-btn{padding:7px 18px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.25);background:transparent;color:rgba(255,255,255,0.75);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s}
 .logout-btn:hover{background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.5)}
+
+/* PLATO INACTIVO en carta */
+.plato-card.inactivo{opacity:0.38;pointer-events:none;filter:grayscale(60%)}
+
+/* TOGGLE SWITCH */
+.toggle-wrap{display:flex;align-items:center;gap:7px}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#ccc;border-radius:20px;cursor:pointer;transition:.25s}
+.toggle-slider:before{content:'';position:absolute;width:14px;height:14px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s}
+.toggle input:checked+.toggle-slider{background:var(--green)}
+.toggle input:checked+.toggle-slider:before{transform:translateX(16px)}
+.toggle-label{font-size:12px;font-weight:600;color:var(--brown-mid);min-width:60px}
+
+/* TABLA ESTADÍSTICAS */
+.stats-table{width:100%;border-collapse:collapse;font-size:13px}
+.stats-table th{font-size:10px;font-weight:700;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.5px;padding:6px 8px;border-bottom:2px solid var(--border);text-align:left;background:var(--cream)}
+.stats-table td{padding:8px 8px;border-bottom:1px solid var(--border);vertical-align:middle;color:var(--brown)}
+.stats-table tr:last-child td{border-bottom:none}
+.stats-table tr:hover td{background:rgba(200,150,12,0.04)}
+.mini-bar-wrap{width:80px;height:6px;background:var(--warm);border-radius:999px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:6px}
+.mini-bar{height:100%;background:var(--gold);border-radius:999px}
+.badge-min{font-size:10px;padding:2px 7px;border-radius:999px;background:#FFF0D6;color:#7A4500;font-weight:700}
+.badge-max{font-size:10px;padding:2px 7px;border-radius:999px;background:#D6EAD8;color:#1B5E20;font-weight:700}
+.badge-inact{font-size:10px;padding:2px 7px;border-radius:999px;background:#f2f2f2;color:#999;font-weight:700}
+.plato-inact-row td{color:var(--brown-light)!important;font-style:italic}
+
 </style>
 </head>
 <body>
@@ -303,7 +330,7 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem}
       <div class="card">
         <div class="card-title">Resumen en tiempo real</div>
         <div class="resumen-grid" id="resumen-grid"></div>
-        <p style="font-size:10px;font-weight:700;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Platos más pedidos</p>
+        <p style="font-size:10px;font-weight:700;color:var(--brown-mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Estadísticas de todos los platos</p>
         <div id="plato-rank"></div>
       </div>
 
@@ -438,6 +465,10 @@ const PLATOS_DEFAULT = [
   "Chicharrones","Gallina en Coco","Sobrebarriga Asada",
   "Carne en Bistec","Lomo Asado","Muslo Frito"
 ];
+// Platos que inician inactivos
+const PLATOS_INICIALMENTE_INACTIVOS = [
+  "Gallina en Coco","Sobrebarriga Asada","Carne en Bistec","Lomo Asado","Muslo Frito"
+];
 
 const firebaseConfig = {
   apiKey: "AIzaSyD5WdfLeEQTUTqoSICqsg8eC0XqMIfSAqY",
@@ -483,7 +514,22 @@ function libreSabrosia(d,pedidos){
 /* ── INIT ── */
 window.addEventListener('DOMContentLoaded',()=>{
   db.ref('platos').once('value',snap=>{
-    if(!snap.val()){ const b={}; PLATOS_DEFAULT.forEach((n,i)=>{b['p'+i]={nombre:n,img:''};}); db.ref('platos').set(b); }
+    if(!snap.val()){
+      const b={};
+      PLATOS_DEFAULT.forEach((n,i)=>{
+        b['p'+i]={nombre:n, img:'', activo: PLATOS_INICIALMENTE_INACTIVOS.includes(n) ? false : true};
+      });
+      db.ref('platos').set(b);
+    } else {
+      // Migrar platos existentes sin campo 'activo'
+      const existing = snap.val();
+      Object.entries(existing).forEach(([key,p])=>{
+        if(p.activo === undefined){
+          const inactivo = PLATOS_INICIALMENTE_INACTIVOS.includes(p.nombre);
+          db.ref('platos/'+key+'/activo').set(!inactivo);
+        }
+      });
+    }
   });
   db.ref('cupos').once('value',snap=>{ if(!snap.val()) db.ref('cupos').set({sabrosia:120,iglesia:110,cerrado:false}); });
   listenAll();
@@ -554,12 +600,13 @@ function updateTabBadge(){
 /* ── MENÚ ── */
 function renderMenu(){
   const g=document.getElementById('menu-grid');
-  if(!Object.keys(allPlatos).length){ g.innerHTML='<div class="empty">No hay platos en el menú aún.</div>'; return; }
+  const platosActivos = Object.entries(allPlatos).filter(([,p])=> p.activo !== false);
+  if(!platosActivos.length){ g.innerHTML='<div class="empty">No hay platos disponibles en el menú.</div>'; return; }
   db.ref('cupos').once('value',cs=>{
     const d=cs.val()||{sabrosia:120,iglesia:110,cerrado:false};
     const libSab=libreSabrosia(d,allPedidos), libIgl=libreIglesia(d,allPedidos);
     const cerrado=!!d.cerrado||(libSab<=0&&libIgl<=0), yp=yaPidio(allPedidos);
-    g.innerHTML=Object.entries(allPlatos).map(([id,p])=>`
+    g.innerHTML=platosActivos.map(([id,p])=>`
       <div class="plato-card">
         <div class="plato-img">${p.img?`<img src="${p.img}" alt="${p.nombre}" loading="lazy">`:'Sin imagen'}</div>
         <div class="plato-body">
@@ -735,16 +782,36 @@ function cerrarConfirm(){ document.getElementById('confirm-overlay').classList.r
 function renderAdminPlatos(){
   const l=document.getElementById('platos-admin');
   const total=Object.keys(allPlatos).length;
-  if(document.getElementById('total-platos-admin')) document.getElementById('total-platos-admin').textContent='('+total+' platos)';
+  const activos=Object.values(allPlatos).filter(p=>p.activo!==false).length;
+  if(document.getElementById('total-platos-admin')) document.getElementById('total-platos-admin').textContent='('+activos+' activos / '+total+' total)';
   if(!total){ l.innerHTML='<div class="empty">No hay platos.</div>'; return; }
-  l.innerHTML=Object.entries(allPlatos).map(([id,p])=>`
-    <div class="padmin-row">
+  l.innerHTML=Object.entries(allPlatos).map(([id,p])=>{
+    const activo = p.activo !== false;
+    return `
+    <div class="padmin-row" id="padmin-${id}" style="${!activo?'opacity:0.55':''}">
       <div class="padmin-thumb">${p.img?`<img src="${p.img}" alt="${p.nombre}">`:'img'}</div>
       <span class="padmin-name">${p.nombre}</span>
-      <div class="padmin-actions">
+      <div class="padmin-actions" style="gap:8px;align-items:center">
+        <div class="toggle-wrap">
+          <label class="toggle">
+            <input type="checkbox" ${activo?'checked':''} onchange="togglePlato('${id}',this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label" id="tl-${id}">${activo?'Activo':'Inactivo'}</span>
+        </div>
         <button class="icon-btn danger" onclick="confirmarEliminarPlato('${id}','${p.nombre.replace(/'/g,"\\'")}')">Quitar</button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+}
+
+function togglePlato(id, activo){
+  db.ref('platos/'+id+'/activo').set(activo);
+  const lbl=document.getElementById('tl-'+id);
+  const row=document.getElementById('padmin-'+id);
+  if(lbl) lbl.textContent = activo ? 'Activo' : 'Inactivo';
+  if(row) row.style.opacity = activo ? '1' : '0.55';
+  toast(activo ? 'Plato activado ✓' : 'Plato inhabilitado', activo?'success':'');
 }
 
 function confirmarEliminarPlato(id,nombre){
@@ -790,10 +857,59 @@ function renderResumen(){
       ['Con ensalada',conEns,''],['Arroz de coco',arrozCoco,'']
     ].map(([l,v,s])=>`<div class="res-card"><div class="rc-lbl">${l}</div><div class="rc-val">${v}</div>${s?`<div class="rc-sub">${s}</div>`:''}</div>`).join('');
 
-    const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10);
-    document.getElementById('plato-rank').innerHTML=sorted.length
-      ? sorted.map(([n,c])=>`<div class="rank-row"><span class="rank-name">${n}</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(c/maxC*100)}%"></div></div><span class="rank-count">${c}</span></div>`).join('')
-      : '<div class="empty" style="padding:1rem">Sin pedidos aún</div>';
+    // Tabla completa de todos los platos
+    const todosPlatos = Object.values(allPlatos);
+    if(!todosPlatos.length){ document.getElementById('plato-rank').innerHTML='<div class="empty" style="padding:1rem">Sin platos</div>'; return; }
+
+    // Calcular pedidos por plato
+    const platoStats = todosPlatos.map(p=>({
+      nombre: p.nombre,
+      activo: p.activo !== false,
+      count: counts[p.nombre] || 0
+    })).sort((a,b)=>b.count-a.count);
+
+    const maxCount = Math.max(...platoStats.map(p=>p.count), 1);
+    const minActivo = platoStats.filter(p=>p.activo);
+    const minCount = minActivo.length ? Math.min(...minActivo.map(p=>p.count)) : 0;
+    const maxPed = platoStats[0] ? platoStats[0].count : 0;
+
+    const totalPedidos = platoStats.reduce((a,p)=>a+p.count,0);
+    const pct = c => totalPedidos > 0 ? Math.round(c/totalPedidos*100) : 0;
+
+    document.getElementById('plato-rank').innerHTML = `
+      <div style="overflow-x:auto">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Plato</th>
+              <th>Pedidos</th>
+              <th>Tendencia</th>
+              <th>%</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${platoStats.map((p,i)=>{
+              const esMasVendido = p.activo && p.count === maxPed && maxPed > 0;
+              const esMenosVendido = p.activo && p.count === minCount;
+              let badge = '';
+              if(!p.activo) badge = '<span class="badge-inact">Inactivo</span>';
+              else if(esMasVendido) badge = '<span class="badge-max">⭐ Más pedido</span>';
+              else if(esMenosVendido) badge = '<span class="badge-min">↓ Menos pedido</span>';
+              const barW = maxCount > 0 ? Math.round(p.count/maxCount*100) : 0;
+              return `<tr class="${!p.activo?'plato-inact-row':''}">
+                <td style="color:var(--brown-light);font-weight:700">${i+1}</td>
+                <td style="font-weight:600">${p.nombre}</td>
+                <td style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:${p.count>0?'var(--brown)':'var(--brown-light)'}">${p.count}</td>
+                <td><div class="mini-bar-wrap"><div class="mini-bar" style="width:${barW}%"></div></div></td>
+                <td style="color:var(--brown-mid);font-weight:600">${pct(p.count)}%</td>
+                <td>${badge}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`;
   });
 }
 
