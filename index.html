@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dama Torca — Menú del Encuentro</title>
+<title>Dama Dorca — Menú del Encuentro</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -72,6 +72,14 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 .opcion-btn.sel .check-mark{display:flex}
 .acompan{font-size:11px;color:var(--taupe);font-style:italic;margin-top:9px;padding:7px 13px;background:var(--rose-l);border-radius:8px;border-left:2px solid var(--rose)}
 .pedir-wrap{padding:1.75rem 1.5rem;border-top:1px solid var(--border);background:var(--blush);text-align:center}
+{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);font-weight:500;margin-bottom:6px}
+.pedir-wrap .field-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Jost',sans-serif;font-size:14px;color:var(--dark);background:#fff;outline:none;transition:border-color .2s}
+.pedir-wrap .field-input:focus{border-color:var(--rose)}
+.pedir-wrap .field-input.error{border-color:var(--rose-d)}
+.pedir-wrap .err-msg{font-size:11px;color:var(--rose-d);margin-top:4px;display:none;font-weight:500}
+.pedir-wrap .err-msg.show{display:block}
+.pedir-wrap-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--dark);margin-bottom:1rem;opacity:.75}
+
 .btn-pedir-main{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rose-d),var(--dark));color:#fff;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;font-weight:300;letter-spacing:.06em;padding:13px 38px;border-radius:999px;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(158,95,108,.3);transition:all .22s}
 .btn-pedir-main:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(158,95,108,.45)}
 .btn-pedir-main:disabled{opacity:.38;cursor:not-allowed;transform:none}
@@ -277,6 +285,17 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
   </div>
 
   <div class="pedir-wrap">
+    <p class="pedir-wrap-title">Tus datos para la inscripción</p>
+    <div class="field-group" style="text-align:left;max-width:420px;margin:0 auto 1rem">
+      <label>Nombre completo *</label>
+      <input type="text" class="field-input" id="f-nombre" placeholder="Tu nombre y apellido"/>
+      <div class="err-msg" id="err-nombre">Ingresa tu nombre completo</div>
+    </div>
+    <div class="field-group" style="text-align:left;max-width:420px;margin:0 auto 1rem">
+      <label>Iglesia a la que perteneces *</label>
+      <input type="text" class="field-input" id="f-iglesia-input" placeholder="Nombre de tu iglesia"/>
+      <div class="err-msg" id="err-iglesia">Indica tu iglesia</div>
+    </div>
     <button class="btn-pedir-main" id="btn-pedir-main" onclick="abrirModal()" disabled>✦ Confirmar mis elecciones</button>
     <p class="progreso-txt" id="progreso-txt">Selecciona una opción en cada comida para continuar</p>
   </div>
@@ -297,7 +316,7 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
   <div class="admin-lock" id="admin-lock">
     <div class="al-deco">✦</div>
     <div class="al-title">Panel de Administración</div>
-    <div class="al-sub">Dama Torca · Menú del Encuentro</div>
+    <div class="al-sub">Dama Dorca · Menú del Encuentro</div>
     <input type="password" id="admin-pass" class="admin-pass-input" placeholder="••••••••••••"
       onkeydown="if(event.key==='Enter')checkPass()">
     <button class="admin-btn" style="width:auto;padding:10px 36px;margin:0 auto;display:block" onclick="checkPass()">Ingresar</button>
@@ -359,16 +378,6 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
     <div class="modal-title">Tu menú elegido</div>
     <div class="modal-sub">Revisa y completa tus datos</div>
     <div class="resumen-pedido" id="modal-resumen"></div>
-    <div class="field-group">
-      <label>Nombre completo *</label>
-      <input type="text" class="field-input" id="f-nombre" placeholder="Tu nombre y apellido"/>
-      <div class="err-msg" id="err-nombre">Ingresa tu nombre completo</div>
-    </div>
-    <div class="field-group">
-      <label>Iglesia a la que perteneces *</label>
-      <input type="text" class="field-input" id="f-iglesia-input" placeholder="Nombre de tu iglesia"/>
-      <div class="err-msg" id="err-iglesia">Indica tu iglesia</div>
-    </div>
     <button class="btn-confirmar" onclick="confirmar()">✦ Confirmar inscripción</button>
     <span class="cancel-link" onclick="cerrarModal()">Cancelar</span>
   </div>
@@ -391,7 +400,7 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script>
 // ── CONTRASEÑA ADMIN ──
-const ADMIN_PASSWORD = "DamaTorca2024";
+const ADMIN_PASSWORD = "DamaDorca2024";
 
 // ── MENÚ ──
 const MENU = {
@@ -439,25 +448,25 @@ function calcLibres(d,peds){ return Math.max(0,(d.total||100)-Object.keys(peds).
 
 // ── INIT ──
 window.addEventListener('DOMContentLoaded',()=>{
-  db.ref('cupos_dt').once('value',snap=>{ if(!snap.val()) db.ref('cupos_dt').set({total:100,cerrado:false}); });
+  db.ref('cupos_dd').once('value',snap=>{ if(!snap.val()) db.ref('cupos_dd').set({total:100,cerrado:false}); });
   listenAll();
 });
 
 function listenAll(){
-  db.ref('pedidos_dt').on('value',snap=>{
+  db.ref('pedidos_dd').on('value',snap=>{
     allPedidos=snap.val()||{};
     renderPedidosFiltrados();
     if(adminOk){ renderAdminPedidos(); renderResumen(); renderStatsPlatos(); }
     updateTabBadge();
-    db.ref('cupos_dt').once('value',cs=>{
+    db.ref('cupos_dd').once('value',cs=>{
       const d=cs.val()||{total:100,cerrado:false};
       const lib=calcLibres(d,allPedidos);
-      if(!d.cerrado && lib<=0){ db.ref('cupos_dt').update({cerrado:true}); }
+      if(!d.cerrado && lib<=0){ db.ref('cupos_dd').update({cerrado:true}); }
       menuCerrado=!!d.cerrado||(lib<=0);
       updateStats(d);
     });
   });
-  db.ref('cupos_dt').on('value',snap=>{
+  db.ref('cupos_dd').on('value',snap=>{
     const d=snap.val()||{total:100,cerrado:false};
     const lib=calcLibres(d,allPedidos);
     menuCerrado=!!d.cerrado||(lib<=0);
@@ -530,24 +539,33 @@ function actualizarBtnPedir(){
   if(yp) txt.textContent='✦ Ya estás inscrita — ¡gracias!';
   else if(menuCerrado) txt.textContent='Las inscripciones están cerradas';
   else if(!completas){ const f=COMIDAS_REQ.filter(k=>selecciones[k]===undefined).length; txt.textContent='Faltan '+f+' elección'+(f!==1?'es':'')+' por hacer'; }
-  else txt.textContent='¡Todo listo! Confirma tu inscripción';
+  else txt.textContent='¡Todo listo! Ingresa tu nombre e iglesia y confirma tu inscripción';
 }
 
 // ── MODAL ──
 function abrirModal(){
   if(!seleccionesCompletas()){ toast('Selecciona una opción en cada comida','error'); return; }
   if(yaPidio(allPedidos)){ toast('Ya estás inscrita','error'); return; }
+  // Validar nombre e iglesia antes de abrir el modal
+  const nom=document.getElementById('f-nombre').value.trim();
+  const igl=document.getElementById('f-iglesia-input').value.trim();
+  let ok=true;
+  document.querySelectorAll('.err-msg').forEach(e=>e.classList.remove('show'));
+  document.getElementById('f-nombre').classList.remove('error');
+  document.getElementById('f-iglesia-input').classList.remove('error');
+  if(!nom){document.getElementById('err-nombre').classList.add('show');document.getElementById('f-nombre').classList.add('error');ok=false;}
+  if(!igl){document.getElementById('err-iglesia').classList.add('show');document.getElementById('f-iglesia-input').classList.add('error');ok=false;}
+  if(!ok){ document.getElementById('f-nombre').scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  // Mostrar resumen en modal
   let html='<h4>Tu menú ✦</h4>';
   Object.entries(MENU).forEach(([dia,info])=>{
     Object.entries(info.comidas).forEach(([comida,data])=>{
       html+=`<div class="res-item"><strong>${info.label} · ${data.label}</strong><span>${data.opciones[selecciones[dia+'|'+comida]]}</span></div>`;
     });
   });
+  html+=`<div class="res-item" style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px"><strong>Nombre</strong><span>${nom}</span></div>`;
+  html+=`<div class="res-item"><strong>Iglesia</strong><span>${igl}</span></div>`;
   document.getElementById('modal-resumen').innerHTML=html;
-  document.getElementById('f-nombre').value='';
-  document.getElementById('f-iglesia-input').value='';
-  document.querySelectorAll('.err-msg').forEach(e=>e.classList.remove('show'));
-  document.querySelectorAll('#overlay .field-input').forEach(i=>i.classList.remove('error'));
   document.getElementById('overlay').classList.add('show');
 }
 function cerrarModal(){ document.getElementById('overlay').classList.remove('show'); }
@@ -559,7 +577,7 @@ function confirmar(){
   if(!nom){document.getElementById('err-nombre').classList.add('show');document.getElementById('f-nombre').classList.add('error');ok=false;}
   if(!igl){document.getElementById('err-iglesia').classList.add('show');document.getElementById('f-iglesia-input').classList.add('error');ok=false;}
   if(!ok) return;
-  db.ref('cupos_dt').once('value',cs=>{
+  db.ref('cupos_dd').once('value',cs=>{
     const d=cs.val()||{total:100,cerrado:false};
     if(!!d.cerrado||calcLibres(d,allPedidos)<=0){cerrarModal();toast('Las inscripciones están cerradas','error');return;}
     if(yaPidio(allPedidos)){cerrarModal();toast('Ya estás inscrita','error');return;}
@@ -569,10 +587,12 @@ function confirmar(){
       elecciones[dia]={};
       Object.entries(info.comidas).forEach(([comida,data])=>{ elecciones[dia][comida]=data.opciones[selecciones[dia+'|'+comida]]; });
     });
-    db.ref('pedidos_dt').push({nombre:nom,iglesia:igl,elecciones,hora,session:getSession(),ts:Date.now()});
+    db.ref('pedidos_dd').push({nombre:nom,iglesia:igl,elecciones,hora,session:getSession(),ts:Date.now()});
     cerrarModal();
     toast('✦ ¡Inscripción confirmada!','success');
     selecciones={};
+    document.getElementById('f-nombre').value='';
+    document.getElementById('f-iglesia-input').value='';
     document.querySelectorAll('.dias-grid .opcion-btn').forEach(b=>b.classList.remove('sel'));
     Object.keys(DIA_TOTAL).forEach(d=>actualizarStatusDia(d));
     actualizarBtnPedir();
@@ -654,7 +674,7 @@ function renderEleccionesAdmin(el){
 // ── RESUMEN ──
 function renderResumen(){
   const ped=Object.values(allPedidos);
-  db.ref('cupos_dt').once('value',cs=>{
+  db.ref('cupos_dd').once('value',cs=>{
     const d=cs.val()||{total:100};
     const lib=calcLibres(d,allPedidos);
     document.getElementById('resumen-grid').innerHTML=[
@@ -691,30 +711,30 @@ function renderStatsPlatos(){
 function setCupos(){
   const v=parseInt(document.getElementById('cupos-in').value);
   if(isNaN(v)||v<1){toast('Ingresa un número válido','error');return;}
-  db.ref('cupos_dt').update({total:v});
+  db.ref('cupos_dd').update({total:v});
   toast('Cupos actualizados: '+v,'success');
 }
 function cerrarMenu(){
   document.getElementById('confirm-title').textContent='Cerrar inscripciones';
   document.getElementById('confirm-msg').textContent='¿Cerrar el menú ahora? Nadie más podrá inscribirse hasta que lo vuelvas a abrir.';
   document.getElementById('confirm-ok').textContent='Cerrar';
-  document.getElementById('confirm-ok').onclick=()=>{db.ref('cupos_dt').update({cerrado:true});cerrarConfirm();toast('Menú cerrado');};
+  document.getElementById('confirm-ok').onclick=()=>{db.ref('cupos_dd').update({cerrado:true});cerrarConfirm();toast('Menú cerrado');};
   document.getElementById('confirm-overlay').classList.add('show');
 }
-function abrirMenu(){db.ref('cupos_dt').update({cerrado:false});toast('Menú abierto ✦','success');}
+function abrirMenu(){db.ref('cupos_dd').update({cerrado:false});toast('Menú abierto ✦','success');}
 
 function resetPedidos(){
   document.getElementById('confirm-title').textContent='Limpiar inscripciones';
   document.getElementById('confirm-msg').textContent='¿Eliminar TODAS las inscripciones? Esta acción no se puede deshacer.';
   document.getElementById('confirm-ok').textContent='Eliminar todo';
-  document.getElementById('confirm-ok').onclick=()=>{db.ref('pedidos_dt').remove();cerrarConfirm();toast('Inscripciones eliminadas');};
+  document.getElementById('confirm-ok').onclick=()=>{db.ref('pedidos_dd').remove();cerrarConfirm();toast('Inscripciones eliminadas');};
   document.getElementById('confirm-overlay').classList.add('show');
 }
 function confirmarEliminar(id,nombre){
   document.getElementById('confirm-title').textContent='Eliminar inscripción';
   document.getElementById('confirm-msg').textContent='¿Eliminar la inscripción de '+nombre+'?';
   document.getElementById('confirm-ok').textContent='Eliminar';
-  document.getElementById('confirm-ok').onclick=()=>{db.ref('pedidos_dt/'+id).remove();cerrarConfirm();toast('Inscripción eliminada');};
+  document.getElementById('confirm-ok').onclick=()=>{db.ref('pedidos_dd/'+id).remove();cerrarConfirm();toast('Inscripción eliminada');};
   document.getElementById('confirm-overlay').classList.add('show');
 }
 function cerrarConfirm(){document.getElementById('confirm-overlay').classList.remove('show');}
@@ -731,7 +751,7 @@ function exportarCSV(){
   const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
   const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='dama-torca-inscritas.csv';a.click();
+  const a=document.createElement('a');a.href=url;a.download='dama-dorca-inscritas.csv';a.click();
   URL.revokeObjectURL(url);toast('CSV descargado','success');
 }
 
