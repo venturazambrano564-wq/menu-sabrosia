@@ -6,325 +6,157 @@
 <title>Dama Torca — Menú del Encuentro</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --rose:    #C97D8A;
-  --rose-d:  #9E5F6C;
-  --rose-l:  #F2D9DF;
-  --blush:   #FAF0F2;
-  --gold:    #C4A35A;
-  --gold-l:  #F0DFB5;
-  --ivory:   #FDFAF5;
-  --taupe:   #7A6B65;
-  --dark:    #2E1F23;
-  --border:  rgba(201,125,138,.18);
-  --shadow:  0 8px 32px rgba(46,31,35,.10);
+:root{
+  --rose:#C97D8A; --rose-d:#9E5F6C; --rose-l:#F2D9DF;
+  --blush:#FAF0F2; --gold:#C4A35A; --gold-l:#F0DFB5;
+  --ivory:#FDFAF5; --taupe:#7A6B65; --dark:#2E1F23;
+  --green:#3A6B44; --border:rgba(201,125,138,.18);
+  --shadow:0 8px 32px rgba(46,31,35,.10);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Jost',sans-serif;background:var(--ivory);color:var(--dark);min-height:100vh;overflow-x:hidden}
-
-/* ── FONDO DECORATIVO ── */
-body::before{
-  content:'';position:fixed;inset:0;
-  background:
-    radial-gradient(ellipse 60% 40% at 10% 0%,rgba(201,125,138,.13) 0%,transparent 60%),
-    radial-gradient(ellipse 50% 50% at 90% 100%,rgba(196,163,90,.10) 0%,transparent 60%);
-  pointer-events:none;z-index:0;
-}
-
-/* ── HEADER ── */
-header{
-  background:var(--dark);
-  position:sticky;top:0;z-index:100;
-  padding:0 1.5rem;
-  display:flex;align-items:center;justify-content:space-between;
-  height:62px;
-  box-shadow:0 2px 24px rgba(46,31,35,.35);
-}
-.logo-wrap{display:flex;flex-direction:column;line-height:1}
-.logo-main{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.55rem;font-weight:300;font-style:italic;
-  color:#fff;letter-spacing:.04em;
-}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 10% 0%,rgba(201,125,138,.11) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 90% 100%,rgba(196,163,90,.08) 0%,transparent 60%);pointer-events:none;z-index:0}
+header{background:var(--dark);position:sticky;top:0;z-index:100;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:62px;box-shadow:0 2px 24px rgba(46,31,35,.35)}
+.logo-main{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;font-style:italic;color:#fff;letter-spacing:.04em;line-height:1}
 .logo-main em{color:var(--rose);font-style:normal;font-weight:600}
-.logo-sub{font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,.42);text-transform:uppercase;margin-top:1px}
-
+.logo-sub{font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,.38);text-transform:uppercase;margin-top:2px}
 .hdr-right{display:flex;align-items:center;gap:10px}
-.badge-estado{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:11px;letter-spacing:.06em;
-  padding:5px 13px;border-radius:999px;
-  border:1px solid rgba(255,255,255,.18);
-  color:rgba(255,255,255,.75);
-}
+.badge-estado{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.06em;padding:5px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.75)}
 .badge-estado.cerrado{border-color:rgba(201,125,138,.5);color:#F2A0AD}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .badge-estado.cerrado .dot{background:#F2A0AD;animation:none}
-
-.btn-logout{
-  background:transparent;border:1px solid rgba(255,255,255,.2);
-  color:rgba(255,255,255,.65);font-family:'Jost',sans-serif;font-size:11px;
-  padding:5px 14px;border-radius:999px;cursor:pointer;letter-spacing:.05em;
-  transition:all .2s;display:none;
-}
+.btn-logout{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);font-family:'Jost',sans-serif;font-size:11px;padding:5px 14px;border-radius:999px;cursor:pointer;transition:all .2s;display:none}
 .btn-logout:hover{background:rgba(255,255,255,.08);color:#fff}
-
-/* ── BANNER ── */
-.banner{padding:10px 1.5rem;font-size:12px;font-weight:500;text-align:center;letter-spacing:.04em;display:none}
+.banner{padding:10px 1.5rem;font-size:12px;font-weight:500;text-align:center;letter-spacing:.05em;display:none}
 .banner.show{display:block}
 .banner.cerrado{background:var(--rose-d);color:#fff}
-.banner.ok{background:#3A6B44;color:#fff}
-
-/* ── TABS ── */
-.tabs{
-  background:var(--dark);
-  display:flex;border-top:1px solid rgba(255,255,255,.07);
-  overflow-x:auto;
-}
-.tab{
-  flex:1;padding:11px 10px;border:none;background:transparent;
-  font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
-  color:rgba(255,255,255,.45);cursor:pointer;
-  border-bottom:2px solid transparent;white-space:nowrap;min-width:80px;
-  transition:all .2s;
-}
+.tabs{background:var(--dark);display:flex;border-top:1px solid rgba(255,255,255,.07);overflow-x:auto}
+.tab{flex:1;padding:11px 10px;border:none;background:transparent;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.42);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;min-width:80px;transition:all .2s}
 .tab:hover{color:rgba(255,255,255,.75)}
 .tab.active{color:var(--rose-l);border-bottom-color:var(--rose)}
 .panel{display:none}.panel.active{display:block}
-
-/* ── MAIN ── */
-main{max-width:1000px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-index:1}
-
-/* ── SECCIÓN HERO ── */
+.tab-badge{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:var(--rose);color:#fff;font-size:9px;font-weight:700;margin-left:4px}
+main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-index:1}
 .hero{text-align:center;margin-bottom:2.5rem;padding:1.5rem 1rem}
-.hero-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(2rem,6vw,3.2rem);font-weight:300;font-style:italic;
-  color:var(--dark);line-height:1.1;margin-bottom:.5rem;
-}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,3rem);font-weight:300;font-style:italic;color:var(--dark);line-height:1.1;margin-bottom:.4rem}
 .hero-title span{color:var(--rose-d)}
-.hero-sub{font-size:13px;color:var(--taupe);letter-spacing:.1em;text-transform:uppercase}
-.divider{display:flex;align-items:center;gap:12px;margin:1.25rem auto;max-width:300px}
+.hero-sub{font-size:12px;color:var(--taupe);letter-spacing:.12em;text-transform:uppercase}
+.divider{display:flex;align-items:center;gap:12px;margin:1.25rem auto;max-width:280px}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--rose),transparent)}
-.divider-gem{color:var(--rose);font-size:14px}
-
-/* ── STATS ── */
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:2rem}
-.stat{
-  background:#fff;border:1px solid var(--border);border-radius:14px;
-  padding:14px 12px;text-align:center;
-  box-shadow:0 2px 12px rgba(201,125,138,.07);
-}
+.divider span{color:var(--rose);font-size:13px}
+.stat-bar{display:flex;gap:10px;margin-bottom:2rem;flex-wrap:wrap}
+.stat{background:#fff;border:1px solid var(--border);border-radius:14px;padding:13px 16px;flex:1;min-width:110px;box-shadow:0 2px 10px rgba(201,125,138,.06)}
 .stat .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-bottom:4px}
 .stat .val{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--dark)}
-.val.ok{color:#3A6B44}.val.warn{color:var(--gold)}.val.bad{color:var(--rose-d)}
-
-/* ── DÍAS ── */
+.val.ok{color:var(--green)}.val.warn{color:var(--gold)}.val.bad{color:var(--rose-d)}
 .dias-grid{display:flex;flex-direction:column;gap:1.5rem}
-
-.dia-block{
-  background:#fff;border:1px solid var(--border);border-radius:20px;
-  overflow:hidden;box-shadow:var(--shadow);
-}
-.dia-header{
-  background:linear-gradient(135deg,var(--dark) 0%,#4A2D34 100%);
-  padding:14px 20px;display:flex;align-items:center;gap:12px;
-}
-.dia-num{
-  font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;
-  color:var(--rose-l);font-style:italic;line-height:1;
-}
-.dia-info .dia-nombre{
-  font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;
-  color:#fff;font-weight:300;
-}
-.dia-info .dia-comidas{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:1px}
-
+.dia-block{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+.dia-header{background:linear-gradient(135deg,var(--dark) 0%,#4A2D34 100%);padding:14px 20px;display:flex;align-items:center;gap:14px}
+.dia-num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:rgba(242,217,223,.5);font-style:italic;line-height:1}
+.dia-nombre{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:#fff;font-weight:300}
+.dia-comidas-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:1px}
+.dia-status{display:inline-flex;align-items:center;gap:5px;font-size:10px;letter-spacing:.06em;margin-left:auto;padding:3px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.45);flex-shrink:0}
+.dia-status.completo{color:#a8e6b0;border-color:rgba(168,230,176,.35)}
 .comida-section{padding:16px 20px;border-bottom:1px solid var(--border)}
 .comida-section:last-child{border-bottom:none}
-.comida-label{
-  display:flex;align-items:center;gap:8px;
-  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--rose-d);font-weight:500;margin-bottom:12px;
-}
+.comida-label{display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--rose-d);font-weight:500;margin-bottom:12px}
 .comida-label::after{content:'';flex:1;height:1px;background:var(--rose-l)}
-
 .opciones-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.opcion-btn{
-  padding:12px 14px;border-radius:11px;
-  border:1.5px solid var(--border);background:var(--blush);
-  cursor:pointer;font-family:'Jost',sans-serif;font-size:13px;
-  color:var(--dark);text-align:left;line-height:1.3;
-  transition:all .18s;position:relative;overflow:hidden;
-}
-.opcion-btn::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,var(--rose-l),var(--gold-l));
-  opacity:0;transition:opacity .18s;
-}
-.opcion-btn:hover{border-color:var(--rose);transform:translateY(-1px)}
-.opcion-btn:hover::before{opacity:.5}
-.opcion-btn.sel{
-  border-color:var(--rose-d);background:var(--rose-l);
-  color:var(--rose-d);font-weight:500;
-}
-.opcion-btn.sel::before{opacity:1}
-.opcion-btn span{position:relative;z-index:1}
-.opcion-btn.sel .check{
-  position:absolute;top:7px;right:9px;
-  width:16px;height:16px;border-radius:50%;
-  background:var(--rose-d);color:#fff;font-size:9px;
-  display:flex;align-items:center;justify-content:center;
-}
-.acompan{
-  font-size:11px;color:var(--taupe);font-style:italic;
-  margin-top:8px;padding:7px 12px;
-  background:var(--rose-l);border-radius:8px;
-  border-left:2px solid var(--rose);
-}
-
-/* ── BTN PEDIR ── */
-.pedir-wrap{padding:1.5rem;border-top:1px solid var(--border);background:var(--blush);text-align:center}
-.btn-pedir-main{
-  display:inline-flex;align-items:center;gap:10px;
-  background:linear-gradient(135deg,var(--rose-d),var(--dark));
-  color:#fff;font-family:'Cormorant Garamond',serif;
-  font-size:1.05rem;font-style:italic;font-weight:300;letter-spacing:.06em;
-  padding:13px 36px;border-radius:999px;border:none;cursor:pointer;
-  box-shadow:0 4px 20px rgba(158,95,108,.35);
-  transition:all .22s;
-}
+.opcion-btn{padding:13px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--blush);cursor:pointer;font-family:'Jost',sans-serif;font-size:13px;color:var(--dark);text-align:left;line-height:1.35;transition:all .18s;position:relative}
+.opcion-btn:hover:not(:disabled){border-color:var(--rose);background:#fff;transform:translateY(-1px)}
+.opcion-btn.sel{border-color:var(--rose-d);background:var(--rose-l);color:var(--rose-d)}
+.opcion-btn .sub{display:block;font-size:10px;opacity:.65;margin-top:2px}
+.check-mark{position:absolute;top:7px;right:9px;width:17px;height:17px;border-radius:50%;background:var(--rose-d);color:#fff;font-size:9px;display:none;align-items:center;justify-content:center}
+.opcion-btn.sel .check-mark{display:flex}
+.acompan{font-size:11px;color:var(--taupe);font-style:italic;margin-top:9px;padding:7px 13px;background:var(--rose-l);border-radius:8px;border-left:2px solid var(--rose)}
+.pedir-wrap{padding:1.75rem 1.5rem;border-top:1px solid var(--border);background:var(--blush);text-align:center}
+.btn-pedir-main{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rose-d),var(--dark));color:#fff;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;font-weight:300;letter-spacing:.06em;padding:13px 38px;border-radius:999px;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(158,95,108,.3);transition:all .22s}
 .btn-pedir-main:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(158,95,108,.45)}
-.btn-pedir-main:disabled{opacity:.45;cursor:not-allowed;transform:none}
-.btn-pedir-main .petal{font-size:1.1rem}
-
-/* ── OVERLAY / MODAL ── */
+.btn-pedir-main:disabled{opacity:.38;cursor:not-allowed;transform:none}
+.progreso-txt{font-size:11px;color:var(--taupe);margin-top:8px;letter-spacing:.05em}
 .overlay{position:fixed;inset:0;background:rgba(30,15,20,.65);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
 .overlay.show{display:flex}
-.modal{
-  background:var(--ivory);border-radius:22px;padding:2rem;
-  width:100%;max-width:420px;
-  box-shadow:0 32px 80px rgba(46,31,35,.35);
-  max-height:92vh;overflow-y:auto;
-  border:1px solid var(--border);
-}
-.modal-rose{width:40px;height:3px;background:linear-gradient(90deg,var(--rose),var(--gold));border-radius:999px;margin-bottom:1rem}
+.modal{background:var(--ivory);border-radius:22px;padding:2rem;width:100%;max-width:420px;box-shadow:0 32px 80px rgba(46,31,35,.35);max-height:92vh;overflow-y:auto;border:1px solid var(--border)}
+.modal-rose{width:36px;height:3px;background:linear-gradient(90deg,var(--rose),var(--gold));border-radius:999px;margin-bottom:1rem}
 .modal-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;font-style:italic;margin-bottom:.25rem}
 .modal-sub{font-size:11px;color:var(--taupe);letter-spacing:.07em;margin-bottom:1.5rem}
-
-.resumen-pedido{background:var(--blush);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:1.25rem}
-.resumen-pedido h4{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:600;color:var(--rose-d);margin-bottom:8px;letter-spacing:.03em}
-.res-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:4px;font-size:12px;color:var(--taupe)}
-.res-item strong{color:var(--dark);min-width:70px}
-
+.resumen-pedido{background:var(--blush);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:1.25rem}
+.resumen-pedido h4{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:600;color:var(--rose-d);margin-bottom:8px}
+.res-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:5px;font-size:12px}
+.res-item strong{color:var(--dark);min-width:90px;flex-shrink:0;font-weight:500}
+.res-item span{color:var(--taupe)}
 .field-group{margin-bottom:1rem}
 .field-group label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--taupe);font-weight:500;margin-bottom:6px}
-.field-input{
-  width:100%;padding:10px 14px;
-  border:1.5px solid var(--border);border-radius:10px;
-  font-family:'Jost',sans-serif;font-size:14px;color:var(--dark);
-  background:#fff;outline:none;transition:border-color .2s;
-}
+.field-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Jost',sans-serif;font-size:14px;color:var(--dark);background:#fff;outline:none;transition:border-color .2s}
 .field-input:focus{border-color:var(--rose)}
 .field-input.error{border-color:var(--rose-d)}
 .err-msg{font-size:11px;color:var(--rose-d);margin-top:4px;display:none;font-weight:500}
 .err-msg.show{display:block}
-
-.btn-confirmar{
-  width:100%;padding:13px;border-radius:12px;border:none;
-  background:linear-gradient(135deg,var(--rose-d),var(--dark));
-  color:#fff;font-family:'Cormorant Garamond',serif;
-  font-size:1.05rem;font-style:italic;letter-spacing:.05em;
-  cursor:pointer;margin-top:1rem;margin-bottom:8px;
-  transition:all .2s;
-}
-.btn-confirmar:hover{opacity:.92;transform:translateY(-1px)}
+.btn-confirmar{width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--rose-d),var(--dark));color:#fff;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;letter-spacing:.05em;cursor:pointer;margin-top:1rem;margin-bottom:8px;transition:all .2s}
+.btn-confirmar:hover{opacity:.9;transform:translateY(-1px)}
 .cancel-link{display:block;text-align:center;font-size:12px;color:var(--taupe);cursor:pointer;letter-spacing:.05em}
 .cancel-link:hover{color:var(--rose-d)}
-
-/* ── MIS PEDIDOS (vista pública) ── */
-.ped-row{
-  background:#fff;border:1px solid var(--border);border-radius:14px;
-  padding:12px 16px;display:flex;align-items:flex-start;gap:12px;
-  box-shadow:0 2px 8px rgba(201,125,138,.06);margin-bottom:8px;
-}
-.ped-num{
-  font-family:'Cormorant Garamond',serif;font-size:1.3rem;
-  color:var(--rose);font-style:italic;min-width:24px;padding-top:1px;
-}
+.ped-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.filter-btn{padding:6px 15px;border-radius:999px;border:1px solid var(--border);background:transparent;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--taupe);cursor:pointer;transition:all .15s}
+.filter-btn:hover{background:var(--blush)}
+.filter-btn.active{background:var(--dark);color:#fff;border-color:var(--dark)}
+.export-btn{margin-left:auto;padding:6px 15px;border-radius:999px;border:1px solid var(--border);background:#fff;font-family:'Jost',sans-serif;font-size:11px;color:var(--taupe);cursor:pointer;transition:all .15s}
+.export-btn:hover{background:var(--blush)}
+.search-input{width:100%;padding:9px 13px;border:1px solid var(--border);border-radius:10px;font-family:'Jost',sans-serif;font-size:13px;color:var(--dark);background:#fff;outline:none;margin-bottom:1rem;transition:border-color .2s}
+.search-input:focus{border-color:var(--rose)}
+.ped-row{background:#fff;border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 2px 8px rgba(201,125,138,.05)}
+.ped-num{font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--rose);font-style:italic;min-width:24px}
 .ped-info{flex:1;min-width:0}
 .ped-nombre{font-size:14px;font-weight:500;color:var(--dark)}
-.ped-iglesia{font-size:12px;color:var(--taupe);margin-top:1px;font-style:italic}
-.ped-dias{margin-top:6px;display:flex;flex-direction:column;gap:3px}
-.ped-dia-item{font-size:11px;color:var(--taupe);display:flex;gap:6px}
-.ped-dia-item strong{color:var(--rose-d);min-width:60px}
-.ped-hora{font-size:10px;color:var(--taupe);letter-spacing:.05em;margin-top:4px}
-
-/* ── ADMIN ── */
+.ped-iglesia-tag{font-size:11px;color:var(--taupe);font-style:italic;margin-top:1px;margin-bottom:6px}
+.ped-dias{display:flex;flex-direction:column;gap:3px}
+.ped-dia-item{font-size:11px;display:flex;gap:6px}
+.ped-dia-item strong{color:var(--rose-d);min-width:80px;flex-shrink:0}
+.ped-dia-item span{color:var(--taupe)}
+.ped-hora{font-size:10px;color:var(--taupe);letter-spacing:.05em;margin-top:5px}
 .admin-2col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
-@media(max-width:600px){.admin-2col{grid-template-columns:1fr}}
-.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.25rem;margin-bottom:1.25rem;box-shadow:0 2px 12px rgba(201,125,138,.06)}
-.card-title{
-  font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;
-  margin-bottom:.9rem;padding-bottom:9px;border-bottom:1px solid var(--border);
-  color:var(--dark);display:flex;align-items:center;justify-content:space-between;
-}
-.form-row{margin-bottom:10px}
-.form-row label{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-bottom:4px}
-.form-row input{
-  width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:8px;
-  font-family:'Jost',sans-serif;font-size:13px;color:var(--dark);
-  background:var(--blush);outline:none;transition:border-color .2s;
-}
-.form-row input:focus{border-color:var(--rose)}
-.admin-btn{
-  width:100%;padding:9px;border-radius:9px;
-  border:1.5px solid var(--dark);background:var(--dark);
-  color:#fff;font-family:'Jost',sans-serif;font-size:13px;letter-spacing:.04em;
-  cursor:pointer;transition:all .2s;
-}
+@media(max-width:640px){.admin-2col{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.35rem;margin-bottom:1.25rem;box-shadow:0 2px 12px rgba(201,125,138,.05)}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--dark);margin-bottom:.9rem;padding-bottom:9px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cupos-row{display:flex;gap:8px;align-items:center}
+.cupos-row input{flex:1;padding:9px 11px;border:1px solid var(--border);border-radius:9px;font-family:'Jost',sans-serif;font-size:15px;color:var(--dark);background:var(--blush);outline:none;transition:border-color .2s}
+.cupos-row input:focus{border-color:var(--rose)}
+.admin-btn{width:100%;padding:9px;border-radius:9px;border:1.5px solid var(--dark);background:var(--dark);color:#fff;font-family:'Jost',sans-serif;font-size:13px;letter-spacing:.04em;cursor:pointer;transition:all .2s}
 .admin-btn:hover{background:#4A2D34;border-color:#4A2D34}
 .admin-btn.outline{background:transparent;color:var(--dark);border-color:var(--border)}
 .admin-btn.outline:hover{background:var(--blush)}
 .admin-btn.danger-btn{border-color:var(--rose-d);background:var(--rose-d)}
-.admin-btn.danger-btn:hover{background:var(--rose-d);opacity:.85}
-.cupos-row{display:flex;gap:8px;align-items:center}
-.cupos-row input{flex:1;padding:8px 11px;border:1px solid var(--border);border-radius:8px;font-family:'Jost',sans-serif;font-size:14px;color:var(--dark);background:var(--blush);outline:none}
-.cupos-row input:focus{border-color:var(--rose)}
-
-.admin-lock{background:#fff;border:1px solid var(--border);border-radius:16px;padding:2rem;text-align:center;margin-bottom:1.25rem}
-.admin-lock p{font-size:13px;color:var(--taupe);margin-bottom:1rem;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1rem}
-
-/* ── RESUMEN ── */
-.resumen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:1.25rem}
+.admin-btn.danger-btn:hover{opacity:.85}
+.admin-lock{background:#fff;border:1px solid var(--border);border-radius:20px;padding:3rem 2rem;text-align:center;margin-bottom:1.25rem;box-shadow:var(--shadow)}
+.al-deco{font-size:2rem;margin-bottom:.75rem}
+.al-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-style:italic;color:var(--dark);margin-bottom:.3rem}
+.al-sub{font-size:12px;color:var(--taupe);letter-spacing:.07em;margin-bottom:1.75rem}
+.admin-pass-input{padding:11px 16px;border:1.5px solid var(--border);border-radius:11px;font-size:15px;font-family:'Jost',sans-serif;width:100%;max-width:260px;display:block;margin:0 auto 12px;background:var(--blush);color:var(--dark);outline:none;text-align:center;letter-spacing:.1em;transition:border-color .2s}
+.admin-pass-input:focus{border-color:var(--rose)}
+.plato-stat-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.plato-stat-nombre{font-size:12px;color:var(--dark);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plato-stat-bar-wrap{flex:2;height:6px;background:var(--rose-l);border-radius:999px;overflow:hidden}
+.plato-stat-bar{height:100%;background:linear-gradient(90deg,var(--rose-d),var(--rose));border-radius:999px;transition:width .4s}
+.plato-stat-count{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:600;color:var(--rose-d);min-width:22px;text-align:right}
+.resumen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:1rem}
 .res-card{background:var(--blush);border:1px solid var(--border);border-radius:10px;padding:10px 13px}
 .rc-lbl{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--taupe);margin-bottom:3px}
 .rc-val{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--dark)}
-.rc-sub{font-size:10px;color:var(--rose-d);margin-top:1px;font-style:italic}
-
-/* ── ADMIN PEDIDOS ── */
-.adm-ped-row{
-  background:var(--blush);border:1px solid var(--border);border-radius:12px;
-  padding:10px 14px;margin-bottom:6px;
-}
+.rc-sub{font-size:10px;color:var(--rose-d);font-style:italic;margin-top:1px}
+.adm-ped-row{background:var(--blush);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:6px}
 .adm-ped-nombre{font-size:14px;font-weight:500;color:var(--dark)}
-.adm-ped-iglesia{font-size:12px;color:var(--rose-d);font-style:italic;margin-bottom:6px}
-.adm-ped-dias{display:flex;flex-direction:column;gap:3px;margin-bottom:6px}
-.adm-ped-dia{font-size:11px;color:var(--taupe);display:flex;gap:6px}
-.adm-ped-dia strong{color:var(--dark);min-width:60px}
-.adm-ped-meta{font-size:10px;color:var(--taupe);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.tag-lugar{display:inline-block;font-size:10px;font-weight:600;padding:2px 9px;border-radius:999px;letter-spacing:.04em}
-.tag-iglesia{background:#D6EAF8;color:#1B3A4B}
-.tag-sabrosia{background:var(--rose-l);color:var(--rose-d)}
+.adm-ped-iglesia{font-size:11px;color:var(--rose-d);font-style:italic;margin-bottom:6px}
+.adm-ped-dias{display:flex;flex-direction:column;gap:3px;margin-bottom:4px}
+.adm-ped-dia{font-size:11px;display:flex;gap:6px}
+.adm-ped-dia strong{color:var(--dark);min-width:80px;flex-shrink:0;font-weight:500}
+.adm-ped-dia span{color:var(--taupe)}
 .adm-actions{display:flex;gap:5px;margin-top:8px}
-.icon-btn{padding:5px 10px;border-radius:7px;border:1px solid var(--border);background:transparent;font-size:11px;cursor:pointer;font-family:'Jost',sans-serif;color:var(--taupe);transition:all .15s}
+.icon-btn{padding:5px 11px;border-radius:7px;border:1px solid var(--border);background:transparent;font-size:11px;cursor:pointer;font-family:'Jost',sans-serif;color:var(--taupe);transition:all .15s}
 .icon-btn:hover{background:var(--blush)}
 .icon-btn.danger{border-color:rgba(158,95,108,.3);color:var(--rose-d)}
 .icon-btn.danger:hover{background:var(--rose-l)}
-
-/* ── CONFIRM ── */
 .confirm-dialog{background:#fff;border-radius:16px;padding:1.75rem;width:100%;max-width:340px;box-shadow:0 16px 48px rgba(46,31,35,.3);border:1px solid var(--border)}
 .confirm-dialog h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;margin-bottom:8px}
 .confirm-dialog p{font-size:13px;color:var(--taupe);margin-bottom:1.25rem;line-height:1.5}
@@ -332,41 +164,16 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-ind
 .btn-row button{flex:1;padding:9px;border-radius:8px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.05em;cursor:pointer;border:1.5px solid var(--border)}
 .btn-cancel{background:transparent;color:var(--dark)}.btn-cancel:hover{background:var(--blush)}
 .btn-ok{background:var(--rose-d);border-color:var(--rose-d);color:#fff}.btn-ok:hover{opacity:.85}
-
-/* ── TOAST ── */
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:10px 24px;border-radius:999px;font-size:12px;letter-spacing:.06em;z-index:999;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.25)}
-.toast.show{display:block}.toast.success{background:#3A6B44}.toast.error{background:var(--rose-d)}
-
-/* ── FILTERS ── */
-.ped-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
-.filter-btn{padding:6px 15px;border-radius:999px;border:1px solid var(--border);background:transparent;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--taupe);cursor:pointer;transition:all .15s}
-.filter-btn:hover{background:var(--blush)}
-.filter-btn.active{background:var(--dark);color:#fff;border-color:var(--dark)}
-.export-btn{margin-left:auto;padding:6px 15px;border-radius:999px;border:1px solid var(--border);background:#fff;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--taupe);cursor:pointer;transition:all .15s}
-.export-btn:hover{background:var(--blush)}
-
-/* ── EMPTY ── */
-.empty{text-align:center;padding:3rem 1rem;color:var(--taupe);font-size:14px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.1rem}
-
-/* ── SEARCH ── */
-.search-input{width:100%;padding:9px 13px;border:1px solid var(--border);border-radius:10px;font-family:'Jost',sans-serif;font-size:13px;color:var(--dark);background:#fff;outline:none;margin-bottom:1rem;transition:border-color .2s}
-.search-input:focus{border-color:var(--rose)}
-
-/* ── TAB BADGE ── */
-.tab-badge{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:var(--rose);color:#fff;font-size:9px;font-weight:700;margin-left:4px}
-
-@media(max-width:480px){
-  main{padding:1.25rem 1rem}
-  .opciones-grid{grid-template-columns:1fr}
-  .stats-row{grid-template-columns:repeat(3,1fr)}
-  header{padding:0 1rem}
-}
+.toast.show{display:block}.toast.success{background:var(--green)}.toast.error{background:var(--rose-d)}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--taupe);font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic}
+@media(max-width:480px){main{padding:1.25rem 1rem}.opciones-grid{grid-template-columns:1fr}.stat-bar{gap:7px}header{padding:0 1rem}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo-wrap">
+  <div>
     <div class="logo-main"><em>Dama</em> Torca</div>
     <div class="logo-sub">Menú del Encuentro</div>
   </div>
@@ -380,498 +187,399 @@ main{max-width:1000px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-ind
 
 <div class="tabs">
   <button class="tab active" onclick="goTab('menu',this)">✦ Menú</button>
-  <button class="tab" id="tab-btn-pedidos" style="display:none" onclick="goTab('pedidos',this)">Pedidos <span class="tab-badge" id="ped-count" style="display:none">0</span></button>
+  <button class="tab" id="tab-btn-pedidos" style="display:none" onclick="goTab('pedidos',this)">Inscritas <span class="tab-badge" id="ped-count" style="display:none">0</span></button>
   <button class="tab" onclick="goTab('admin',this)">Admin</button>
 </div>
 
 <main>
 
-<!-- ═══ PESTAÑA MENÚ ═══ -->
+<!-- ══ MENÚ ══ -->
 <div id="tab-menu" class="panel active">
   <div class="hero">
     <div class="hero-title">Bienvenida, <span>hermana</span></div>
     <div class="hero-sub">Elige tus comidas para los tres días</div>
-    <div class="divider"><span class="divider-gem">✦</span></div>
+    <div class="divider"><span>✦</span></div>
   </div>
-
-  <div class="stats-row">
-    <div class="stat"><div class="lbl">Cupos Iglesia</div><div class="val" id="s-libre-igl">—</div></div>
-    <div class="stat"><div class="lbl">Cupos Sabrosía</div><div class="val" id="s-libre-sab">—</div></div>
+  <div class="stat-bar">
+    <div class="stat"><div class="lbl">Cupos disponibles</div><div class="val" id="s-libre">—</div></div>
     <div class="stat"><div class="lbl">Inscritas</div><div class="val ok" id="s-ped">0</div></div>
+    <div class="stat"><div class="lbl">Total cupos</div><div class="val" id="s-total">—</div></div>
   </div>
 
-  <!-- DÍA 1 -->
   <div class="dias-grid">
+    <!-- DÍA 1 -->
     <div class="dia-block">
       <div class="dia-header">
         <div class="dia-num">01</div>
-        <div class="dia-info">
-          <div class="dia-nombre">Primer Día</div>
-          <div class="dia-comidas">Cena</div>
-        </div>
+        <div style="flex:1"><div class="dia-nombre">Primer Día</div><div class="dia-comidas-lbl">Cena</div></div>
+        <div class="dia-status" id="status-d1">0 / 1</div>
       </div>
       <div class="comida-section">
         <div class="comida-label">🌙 Cena</div>
         <div class="opciones-grid" id="ops-d1-cena">
-          <button class="opcion-btn" onclick="elegir('d1','cena',0,this)">
-            <span>Caserito Sabrosía<br><small style="font-size:10px;opacity:.7">Patacones, picadillo y salchicha</small></span>
-          </button>
-          <button class="opcion-btn" onclick="elegir('d1','cena',1,this)">
-            <span>Sándwich Gratinado</span>
-          </button>
+          <button class="opcion-btn" onclick="elegir('d1','cena',0,this)"><span>Caserito Sabrosía</span><span class="sub">Patacones, picadillo y salchicha</span><div class="check-mark">✓</div></button>
+          <button class="opcion-btn" onclick="elegir('d1','cena',1,this)"><span>Sándwich Gratinado</span><div class="check-mark">✓</div></button>
         </div>
       </div>
     </div>
-
     <!-- DÍA 2 -->
     <div class="dia-block">
       <div class="dia-header">
         <div class="dia-num">02</div>
-        <div class="dia-info">
-          <div class="dia-nombre">Segundo Día</div>
-          <div class="dia-comidas">Desayuno · Almuerzo · Cena</div>
-        </div>
+        <div style="flex:1"><div class="dia-nombre">Segundo Día</div><div class="dia-comidas-lbl">Desayuno · Almuerzo · Cena</div></div>
+        <div class="dia-status" id="status-d2">0 / 3</div>
       </div>
       <div class="comida-section">
         <div class="comida-label">🌸 Desayuno</div>
         <div class="opciones-grid" id="ops-d2-desayuno">
-          <button class="opcion-btn" onclick="elegir('d2','desayuno',0,this)"><span>Papas Chorreadas</span></button>
-          <button class="opcion-btn" onclick="elegir('d2','desayuno',1,this)"><span>Patacones con Queso</span></button>
+          <button class="opcion-btn" onclick="elegir('d2','desayuno',0,this)"><span>Papas Chorreadas</span><div class="check-mark">✓</div></button>
+          <button class="opcion-btn" onclick="elegir('d2','desayuno',1,this)"><span>Patacones con Queso</span><div class="check-mark">✓</div></button>
         </div>
       </div>
       <div class="comida-section">
         <div class="comida-label">☀️ Almuerzo</div>
         <div class="opciones-grid" id="ops-d2-almuerzo">
-          <button class="opcion-btn" onclick="elegir('d2','almuerzo',0,this)"><span>Carne Goulash</span></button>
-          <button class="opcion-btn" onclick="elegir('d2','almuerzo',1,this)"><span>Pollo a la Piña</span></button>
+          <button class="opcion-btn" onclick="elegir('d2','almuerzo',0,this)"><span>Carne Goulash</span><div class="check-mark">✓</div></button>
+          <button class="opcion-btn" onclick="elegir('d2','almuerzo',1,this)"><span>Pollo a la Piña</span><div class="check-mark">✓</div></button>
         </div>
-        <div class="acompan">✦ Acompañado de tajadas, ensalada y arroz blanco</div>
+        <div class="acompan">✦ Con tajadas, ensalada y arroz blanco</div>
       </div>
       <div class="comida-section">
         <div class="comida-label">🌙 Cena</div>
         <div class="opciones-grid" id="ops-d2-cena">
-          <button class="opcion-btn" onclick="elegir('d2','cena',0,this)"><span>Salchipapa</span></button>
-          <button class="opcion-btn" onclick="elegir('d2','cena',1,this)"><span>Empanadas de Carne</span></button>
+          <button class="opcion-btn" onclick="elegir('d2','cena',0,this)"><span>Salchipapa</span><div class="check-mark">✓</div></button>
+          <button class="opcion-btn" onclick="elegir('d2','cena',1,this)"><span>Empanadas de Carne</span><div class="check-mark">✓</div></button>
         </div>
       </div>
     </div>
-
     <!-- DÍA 3 -->
     <div class="dia-block">
       <div class="dia-header">
         <div class="dia-num">03</div>
-        <div class="dia-info">
-          <div class="dia-nombre">Tercer Día</div>
-          <div class="dia-comidas">Desayuno · Almuerzo</div>
-        </div>
+        <div style="flex:1"><div class="dia-nombre">Tercer Día</div><div class="dia-comidas-lbl">Desayuno · Almuerzo</div></div>
+        <div class="dia-status" id="status-d3">0 / 2</div>
       </div>
       <div class="comida-section">
         <div class="comida-label">🌸 Desayuno</div>
         <div class="opciones-grid" id="ops-d3-desayuno">
-          <button class="opcion-btn" onclick="elegir('d3','desayuno',0,this)">
-            <span>Huevo Perico con Patacones<br><small style="font-size:10px;opacity:.7">+ Chocolate</small></span>
-          </button>
-          <button class="opcion-btn" onclick="elegir('d3','desayuno',1,this)">
-            <span>Arepuelas con Queso<br><small style="font-size:10px;opacity:.7">+ Café con Leche</small></span>
-          </button>
+          <button class="opcion-btn" onclick="elegir('d3','desayuno',0,this)"><span>Huevo Perico con Patacones</span><span class="sub">+ Chocolate</span><div class="check-mark">✓</div></button>
+          <button class="opcion-btn" onclick="elegir('d3','desayuno',1,this)"><span>Arepuelas con Queso</span><span class="sub">+ Café con Leche</span><div class="check-mark">✓</div></button>
         </div>
       </div>
       <div class="comida-section">
         <div class="comida-label">☀️ Almuerzo</div>
         <div class="opciones-grid" id="ops-d3-almuerzo">
-          <button class="opcion-btn" onclick="elegir('d3','almuerzo',0,this)"><span>Posta de Pescado</span></button>
-          <button class="opcion-btn" onclick="elegir('d3','almuerzo',1,this)"><span>Lomo en BBQ</span></button>
+          <button class="opcion-btn" onclick="elegir('d3','almuerzo',0,this)"><span>Posta de Pescado</span><div class="check-mark">✓</div></button>
+          <button class="opcion-btn" onclick="elegir('d3','almuerzo',1,this)"><span>Lomo en BBQ</span><div class="check-mark">✓</div></button>
         </div>
       </div>
     </div>
-  </div><!-- /dias-grid -->
+  </div>
 
   <div class="pedir-wrap">
-    <button class="btn-pedir-main" id="btn-pedir-main" onclick="abrirModal()" disabled>
-      <span class="petal">✦</span> Confirmar mis elecciones
-    </button>
-    <p id="progreso-txt" style="font-size:11px;color:var(--taupe);margin-top:8px;letter-spacing:.05em">Selecciona una opción por cada comida para continuar</p>
+    <button class="btn-pedir-main" id="btn-pedir-main" onclick="abrirModal()" disabled>✦ Confirmar mis elecciones</button>
+    <p class="progreso-txt" id="progreso-txt">Selecciona una opción en cada comida para continuar</p>
   </div>
-</div><!-- /tab-menu -->
+</div>
 
-
-<!-- ═══ PESTAÑA PEDIDOS ═══ -->
+<!-- ══ INSCRITAS ══ -->
 <div id="tab-pedidos" class="panel">
   <div class="ped-filters">
     <button class="filter-btn active" onclick="filtrar('todos',this)">Todas</button>
-    <button class="filter-btn" onclick="filtrar('La Iglesia',this)">La Iglesia</button>
-    <button class="filter-btn" onclick="filtrar('Sabrosía',this)">Sabrosía</button>
-    <button class="export-btn" onclick="exportarCSV()">Exportar CSV</button>
+    <button class="export-btn" onclick="exportarCSV()">⬇ Exportar CSV</button>
   </div>
-  <input type="text" class="search-input" placeholder="Buscar por nombre..." id="search-input" oninput="renderPedidosFiltrados()">
+  <input type="text" class="search-input" id="search-input" placeholder="Buscar por nombre..." oninput="renderPedidosFiltrados()">
   <div id="pedidos-list"><div class="empty">Cargando...</div></div>
 </div>
 
-
-<!-- ═══ PESTAÑA ADMIN ═══ -->
+<!-- ══ ADMIN ══ -->
 <div id="tab-admin" class="panel">
   <div class="admin-lock" id="admin-lock">
-    <p>Panel de administración · Dama Torca</p>
-    <input type="password" id="admin-pass" placeholder="Contraseña"
-      style="padding:9px 14px;border:1px solid var(--border);border-radius:9px;font-size:14px;font-family:'Jost',sans-serif;width:220px;display:block;margin:0 auto 12px;background:var(--blush);color:var(--dark);outline:none">
-    <button class="admin-btn" style="width:auto;padding:9px 28px" onclick="checkPass()">Ingresar</button>
+    <div class="al-deco">✦</div>
+    <div class="al-title">Panel de Administración</div>
+    <div class="al-sub">Dama Torca · Menú del Encuentro</div>
+    <input type="password" id="admin-pass" class="admin-pass-input" placeholder="••••••••••••"
+      onkeydown="if(event.key==='Enter')checkPass()">
+    <button class="admin-btn" style="width:auto;padding:10px 36px;margin:0 auto;display:block" onclick="checkPass()">Ingresar</button>
+    <p id="pass-error" style="font-size:12px;color:var(--rose-d);margin-top:12px;display:none;font-style:italic">Contraseña incorrecta — inténtalo de nuevo</p>
   </div>
 
   <div id="admin-content" style="display:none">
     <div class="admin-2col">
       <div>
-        <!-- CUPOS -->
         <div class="card">
-          <div class="card-title">Cupos por sede</div>
-          <div style="margin-bottom:12px">
-            <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-bottom:6px">La Iglesia</div>
-            <div class="cupos-row">
-              <input type="number" id="cupos-iglesia-in" min="0" value="110"/>
-              <button class="admin-btn" style="width:auto;padding:8px 14px" onclick="setCuposIglesia()">Guardar</button>
-            </div>
-            <p style="font-size:11px;color:var(--taupe);margin-top:5px;font-style:italic">Libres: <b id="libres-iglesia">—</b></p>
+          <div class="card-title">Cupos del evento</div>
+          <div class="cupos-row" style="margin-bottom:8px">
+            <input type="number" id="cupos-in" min="1" value="100"/>
+            <button class="admin-btn" style="width:auto;padding:8px 16px;flex-shrink:0" onclick="setCupos()">Guardar</button>
           </div>
-          <div>
-            <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-bottom:6px">Sabrosía</div>
-            <div class="cupos-row">
-              <input type="number" id="cupos-sabrosia-in" min="0" value="120"/>
-              <button class="admin-btn" style="width:auto;padding:8px 14px" onclick="setCuposSabrosia()">Guardar</button>
-            </div>
-            <p style="font-size:11px;color:var(--taupe);margin-top:5px;font-style:italic">Libres: <b id="libres-sabrosia">—</b></p>
-          </div>
+          <p style="font-size:11px;color:var(--taupe);font-style:italic">Inscritas: <b id="ped-actual">0</b> &nbsp;·&nbsp; Libres: <b id="libres-admin">—</b></p>
         </div>
-        <!-- ACCIONES -->
+        <div class="card">
+          <div class="card-title">Estado del menú</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="admin-btn danger-btn" id="btn-cerrar-adm" onclick="cerrarMenu()">🔒 Cerrar menú ahora</button>
+            <button class="admin-btn outline" id="btn-abrir-adm" onclick="abrirMenu()" style="display:none">🔓 Reabrir menú</button>
+          </div>
+          <p style="font-size:11px;color:var(--taupe);font-style:italic;margin-top:10px" id="menu-estado-txt"></p>
+        </div>
         <div class="card">
           <div class="card-title">Acciones</div>
           <div style="display:flex;flex-direction:column;gap:8px">
-            <button class="admin-btn outline" onclick="exportarCSV()">Exportar CSV</button>
-            <button class="admin-btn outline" onclick="resetPedidos()">Limpiar pedidos</button>
-            <button class="admin-btn danger-btn" onclick="cerrarMenu()">Cerrar menú</button>
-            <button class="admin-btn outline" id="btn-abrir" onclick="abrirMenu()" style="display:none">Reabrir menú</button>
+            <button class="admin-btn outline" onclick="exportarCSV()">⬇ Exportar CSV</button>
+            <button class="admin-btn outline" onclick="goTab('pedidos', document.querySelectorAll('.tab')[1])">👁 Ver inscritas</button>
+            <button class="admin-btn outline" style="border-color:rgba(158,95,108,.4);color:var(--rose-d)" onclick="resetPedidos()">🗑 Limpiar todos los pedidos</button>
           </div>
         </div>
       </div>
-      <!-- RESUMEN -->
       <div class="card">
         <div class="card-title">Resumen en vivo</div>
         <div class="resumen-grid" id="resumen-grid"></div>
-        <p style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--taupe);margin-bottom:10px">Elecciones más populares</p>
-        <div id="plato-rank"></div>
       </div>
     </div>
-    <!-- TABLA ADMIN -->
+
     <div class="card">
-      <div class="card-title">Todas las inscritas <span style="font-size:11px;color:var(--taupe);font-family:'Jost',sans-serif;font-weight:400;font-style:normal" id="admin-ped-count"></span></div>
-      <input type="text" class="search-input" placeholder="Buscar hermana..." id="admin-search" oninput="renderAdminPedidos()">
+      <div class="card-title">📊 Estadísticas por plato</div>
+      <div id="stats-platos"><div class="empty" style="padding:1rem">Sin datos aún</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Inscritas <span style="font-size:11px;color:var(--taupe);font-family:'Jost',sans-serif;font-weight:400;font-style:normal" id="admin-ped-count"></span></div>
+      <input type="text" class="search-input" id="admin-search" placeholder="Buscar hermana..." oninput="renderAdminPedidos()">
       <div id="admin-pedidos-list"></div>
     </div>
   </div>
 </div>
-
 </main>
 
-<!-- MODAL CONFIRMACIÓN PEDIDO -->
+<!-- MODAL -->
 <div class="overlay" id="overlay">
   <div class="modal">
     <div class="modal-rose"></div>
-    <div class="modal-title">Confirma tu pedido</div>
-    <div class="modal-sub">Revisa tus elecciones y completa tus datos</div>
-
+    <div class="modal-title">Tu menú elegido</div>
+    <div class="modal-sub">Revisa y completa tus datos</div>
     <div class="resumen-pedido" id="modal-resumen"></div>
-
     <div class="field-group">
       <label>Nombre completo *</label>
       <input type="text" class="field-input" id="f-nombre" placeholder="Tu nombre y apellido"/>
-      <div class="err-msg" id="err-nombre">Ingresa tu nombre</div>
+      <div class="err-msg" id="err-nombre">Ingresa tu nombre completo</div>
     </div>
     <div class="field-group">
       <label>Iglesia a la que perteneces *</label>
-      <input type="text" class="field-input" id="f-iglesia" placeholder="Nombre de tu iglesia"/>
+      <input type="text" class="field-input" id="f-iglesia-input" placeholder="Nombre de tu iglesia"/>
       <div class="err-msg" id="err-iglesia">Indica tu iglesia</div>
     </div>
-    <div class="field-group">
-      <label>¿Dónde vas a comer? *</label>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <button class="opcion-btn" id="opt-lugar-iglesia" onclick="selLugar('La Iglesia',this)"><span>La Iglesia</span></button>
-        <button class="opcion-btn" id="opt-lugar-sabrosia" onclick="selLugar('Sabrosía',this)"><span>Sabrosía</span></button>
-      </div>
-      <div class="err-msg" id="err-lugar">Selecciona el lugar</div>
-    </div>
-
-    <button class="btn-confirmar" onclick="confirmar()">✦ Registrar mi pedido</button>
+    <button class="btn-confirmar" onclick="confirmar()">✦ Confirmar inscripción</button>
     <span class="cancel-link" onclick="cerrarModal()">Cancelar</span>
   </div>
 </div>
 
-<!-- CONFIRM DIALOG -->
+<!-- CONFIRM -->
 <div class="overlay" id="confirm-overlay">
   <div class="confirm-dialog">
-    <h3 id="confirm-title">¿Confirmar acción?</h3>
-    <p id="confirm-msg">Esta acción no se puede deshacer.</p>
+    <h3 id="confirm-title">¿Confirmar?</h3>
+    <p id="confirm-msg"></p>
     <div class="btn-row">
       <button class="btn-cancel" onclick="cerrarConfirm()">Cancelar</button>
       <button class="btn-ok" id="confirm-ok">Confirmar</button>
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 <script>
-const ADMIN_PASSWORD = "damatorca2024";
+// ── CONTRASEÑA ADMIN ──
+const ADMIN_PASSWORD = "DamaTorca2024";
 
-// ── MENÚ ESTRUCTURADO ──
+// ── MENÚ ──
 const MENU = {
-  d1: {
-    label: 'Día 1',
-    comidas: {
-      cena: { label: 'Cena', opciones: ['Caserito Sabrosía (patacones, picadillo y salchicha)', 'Sándwich Gratinado'] }
-    }
-  },
-  d2: {
-    label: 'Día 2',
-    comidas: {
-      desayuno: { label: 'Desayuno', opciones: ['Papas Chorreadas', 'Patacones con Queso'] },
-      almuerzo: { label: 'Almuerzo', opciones: ['Carne Goulash', 'Pollo a la Piña'] },
-      cena:     { label: 'Cena',     opciones: ['Salchipapa', 'Empanadas de Carne'] }
-    }
-  },
-  d3: {
-    label: 'Día 3',
-    comidas: {
-      desayuno: { label: 'Desayuno', opciones: ['Huevo Perico con Patacones + Chocolate', 'Arepuelas con Queso + Café con Leche'] },
-      almuerzo: { label: 'Almuerzo', opciones: ['Posta de Pescado', 'Lomo en BBQ'] }
-    }
-  }
+  d1:{ label:'Día 1', comidas:{
+    cena:{ label:'Cena', opciones:['Caserito Sabrosía (patacones, picadillo y salchicha)','Sándwich Gratinado'] }
+  }},
+  d2:{ label:'Día 2', comidas:{
+    desayuno:{ label:'Desayuno', opciones:['Papas Chorreadas','Patacones con Queso'] },
+    almuerzo:{ label:'Almuerzo', opciones:['Carne Goulash','Pollo a la Piña'] },
+    cena:    { label:'Cena',     opciones:['Salchipapa','Empanadas de Carne'] }
+  }},
+  d3:{ label:'Día 3', comidas:{
+    desayuno:{ label:'Desayuno', opciones:['Huevo Perico con Patacones + Chocolate','Arepuelas con Queso + Café con Leche'] },
+    almuerzo:{ label:'Almuerzo', opciones:['Posta de Pescado','Lomo en BBQ'] }
+  }}
 };
+const COMIDAS_REQ = [];
+Object.entries(MENU).forEach(([d,info])=>Object.keys(info.comidas).forEach(c=>COMIDAS_REQ.push(d+'|'+c)));
+const DIA_TOTAL = { d1:1, d2:3, d3:2 };
 
-// Todas las comidas requeridas (clave: "d1|cena", etc.)
-const COMIDAS_REQUERIDAS = [];
-Object.entries(MENU).forEach(([dia, info]) => {
-  Object.entries(info.comidas).forEach(([comida]) => {
-    COMIDAS_REQUERIDAS.push(dia + '|' + comida);
-  });
-});
-// Total: 1+3+2 = 6 selecciones
-
+// ── FIREBASE ──
 const firebaseConfig = {
-  apiKey: "AIzaSyD5WdfLeEQTUTqoSICqsg8eC0XqMIfSAqY",
-  authDomain: "menu-sabrosia.firebaseapp.com",
-  databaseURL: "https://menu-sabrosia-default-rtdb.firebaseio.com",
-  projectId: "menu-sabrosia",
-  storageBucket: "menu-sabrosia.firebasestorage.app",
-  messagingSenderId: "160071731190",
-  appId: "1:160071731190:web:bf498efe1bfd8c82fde9d7"
+  apiKey:"AIzaSyD5WdfLeEQTUTqoSICqsg8eC0XqMIfSAqY",
+  authDomain:"menu-sabrosia.firebaseapp.com",
+  databaseURL:"https://menu-sabrosia-default-rtdb.firebaseio.com",
+  projectId:"menu-sabrosia",
+  storageBucket:"menu-sabrosia.firebasestorage.app",
+  messagingSenderId:"160071731190",
+  appId:"1:160071731190:web:bf498efe1bfd8c82fde9d7"
 };
 const app = firebase.initializeApp(firebaseConfig);
 const db  = firebase.database(app);
 
-let adminOk = false;
-let allPedidos = {};
-let menuCerrado = false;
-let filtroActual = 'todos';
-let lugarSel = null;
+let adminOk=false, allPedidos={}, menuCerrado=false, filtroActual='todos';
+let selecciones={};
 
-// Selecciones actuales del usuario
-let selecciones = {}; // { "d1|cena": 0, "d2|desayuno": 1, ... }
-
-/* ── SESSION ── */
+// ── SESSION ──
 function getSession(){
-  let s=localStorage.getItem('dtSess');
-  if(!s){s='u'+Date.now()+Math.random().toString(36).slice(2,7);localStorage.setItem('dtSess',s);}
+  let s=localStorage.getItem('dtSess3');
+  if(!s){s='u'+Date.now()+Math.random().toString(36).slice(2,8);localStorage.setItem('dtSess3',s);}
   return s;
 }
-function yaPidio(peds){ if(!peds) return false; const sid=getSession(); return Object.values(peds).some(p=>p.session===sid); }
+function yaPidio(peds){ if(!peds) return false; return Object.values(peds).some(p=>p.session===getSession()); }
+function calcLibres(d,peds){ return Math.max(0,(d.total||100)-Object.keys(peds).length); }
 
-/* ── CUPOS ── */
-function libreIglesia(d,peds){ const max=d.iglesia!=null?d.iglesia:110; const ocu=Object.values(peds).filter(p=>p.lugar==='La Iglesia').length; return Math.max(0,max-ocu); }
-function libreSabrosia(d,peds){ const max=d.sabrosia!=null?d.sabrosia:120; const ocu=Object.values(peds).filter(p=>p.lugar==='Sabrosía').length; return Math.max(0,max-ocu); }
-
-/* ── INIT ── */
+// ── INIT ──
 window.addEventListener('DOMContentLoaded',()=>{
-  db.ref('cupos').once('value',snap=>{ if(!snap.val()) db.ref('cupos').set({sabrosia:120,iglesia:110,cerrado:false}); });
+  db.ref('cupos_dt').once('value',snap=>{ if(!snap.val()) db.ref('cupos_dt').set({total:100,cerrado:false}); });
   listenAll();
 });
 
 function listenAll(){
-  db.ref('pedidos').on('value',snap=>{
+  db.ref('pedidos_dt').on('value',snap=>{
     allPedidos=snap.val()||{};
     renderPedidosFiltrados();
-    if(adminOk){renderAdminPedidos();renderResumen();}
+    if(adminOk){ renderAdminPedidos(); renderResumen(); renderStatsPlatos(); }
     updateTabBadge();
-    db.ref('cupos').once('value',cs=>{
-      const d=cs.val()||{sabrosia:120,iglesia:110,cerrado:false};
-      const ambosLlenos=libreIglesia(d,allPedidos)<=0&&libreSabrosia(d,allPedidos)<=0;
-      if(!d.cerrado&&ambosLlenos) db.ref('cupos').update({cerrado:true});
-      menuCerrado=!!d.cerrado||ambosLlenos;
+    db.ref('cupos_dt').once('value',cs=>{
+      const d=cs.val()||{total:100,cerrado:false};
+      const lib=calcLibres(d,allPedidos);
+      if(!d.cerrado && lib<=0){ db.ref('cupos_dt').update({cerrado:true}); }
+      menuCerrado=!!d.cerrado||(lib<=0);
       updateStats(d);
     });
   });
-  db.ref('cupos').on('value',snap=>{
-    const d=snap.val()||{sabrosia:120,iglesia:110,cerrado:false};
-    menuCerrado=!!d.cerrado;
+  db.ref('cupos_dt').on('value',snap=>{
+    const d=snap.val()||{total:100,cerrado:false};
+    const lib=calcLibres(d,allPedidos);
+    menuCerrado=!!d.cerrado||(lib<=0);
     updateStats(d);
   });
 }
 
 function updateStats(d){
-  const libIgl=libreIglesia(d,allPedidos);
-  const libSab=libreSabrosia(d,allPedidos);
+  const lib=calcLibres(d,allPedidos);
   const ped=Object.keys(allPedidos).length;
+  const tot=d.total||100;
 
-  const elIgl=document.getElementById('s-libre-igl');
-  const elSab=document.getElementById('s-libre-sab');
-  if(elIgl){elIgl.textContent=libIgl;elIgl.className='val'+(libIgl===0?' bad':libIgl<15?' warn':' ok');}
-  if(elSab){elSab.textContent=libSab;elSab.className='val'+(libSab===0?' bad':libSab<15?' warn':' ok');}
-  document.getElementById('s-ped').textContent=ped;
+  const elLib=document.getElementById('s-libre');
+  if(elLib){elLib.textContent=lib;elLib.className='val'+(lib===0?' bad':lib<=10?' warn':' ok');}
+  const elPed=document.getElementById('s-ped'); if(elPed) elPed.textContent=ped;
+  const elTot=document.getElementById('s-total'); if(elTot) elTot.textContent=tot;
+  if(document.getElementById('ped-actual')) document.getElementById('ped-actual').textContent=ped;
+  if(document.getElementById('libres-admin')) document.getElementById('libres-admin').textContent=lib;
+  if(document.getElementById('cupos-in')) document.getElementById('cupos-in').value=tot;
 
-  if(document.getElementById('libres-iglesia')) document.getElementById('libres-iglesia').textContent=libIgl;
-  if(document.getElementById('libres-sabrosia')) document.getElementById('libres-sabrosia').textContent=libSab;
-  if(document.getElementById('cupos-iglesia-in')) document.getElementById('cupos-iglesia-in').value=d.iglesia!=null?d.iglesia:110;
-  if(document.getElementById('cupos-sabrosia-in')) document.getElementById('cupos-sabrosia-in').value=d.sabrosia!=null?d.sabrosia:120;
-
-  const badge=document.getElementById('main-badge'),txt=document.getElementById('badge-txt'),banner=document.getElementById('banner');
-  const ambosLlenos=libIgl<=0&&libSab<=0;
-  const cerrado=!!d.cerrado||ambosLlenos;
+  const badge=document.getElementById('main-badge'), btxt=document.getElementById('badge-txt'), banner=document.getElementById('banner');
+  const cerrado=!!d.cerrado||(lib<=0);
   if(cerrado){
-    badge.className='badge-estado cerrado';txt.textContent='Menú cerrado';
-    banner.className='banner cerrado show';banner.textContent='El menú está cerrado — no se aceptan más inscripciones.';
-    if(document.getElementById('btn-abrir')) document.getElementById('btn-abrir').style.display='block';
+    badge.className='badge-estado cerrado'; btxt.textContent='Inscripciones cerradas';
+    banner.className='banner cerrado show'; banner.textContent='Las inscripciones están cerradas.';
+    if(document.getElementById('btn-abrir-adm')) document.getElementById('btn-abrir-adm').style.display='block';
+    if(document.getElementById('btn-cerrar-adm')) document.getElementById('btn-cerrar-adm').style.display='none';
+    if(document.getElementById('menu-estado-txt')) document.getElementById('menu-estado-txt').textContent='Estado actual: Cerrado';
   } else {
-    badge.className='badge-estado';txt.textContent=(libIgl+libSab)+' cupos disponibles';
-    banner.className='banner';banner.textContent='';
-    if(document.getElementById('btn-abrir')) document.getElementById('btn-abrir').style.display='none';
+    badge.className='badge-estado'; btxt.textContent=lib+' cupo'+(lib!==1?'s':'')+' disponible'+(lib!==1?'s':'');
+    banner.className='banner'; banner.textContent='';
+    if(document.getElementById('btn-abrir-adm')) document.getElementById('btn-abrir-adm').style.display='none';
+    if(document.getElementById('btn-cerrar-adm')) document.getElementById('btn-cerrar-adm').style.display='block';
+    if(document.getElementById('menu-estado-txt')) document.getElementById('menu-estado-txt').textContent='Abierto — se cierra automáticamente al completar '+tot+' inscritas';
   }
   actualizarBtnPedir();
 }
 
 function updateTabBadge(){
-  const c=document.getElementById('ped-count'),n=Object.keys(allPedidos).length;
-  c.textContent=n;c.style.display=n>0?'inline-flex':'none';
-  document.getElementById('s-ped').textContent=n;
+  const c=document.getElementById('ped-count'), n=Object.keys(allPedidos).length;
+  c.textContent=n; c.style.display=n>0?'inline-flex':'none';
+  const s=document.getElementById('s-ped'); if(s) s.textContent=n;
   if(document.getElementById('admin-ped-count')) document.getElementById('admin-ped-count').textContent='('+n+' inscritas)';
 }
 
-/* ── SELECCIÓN DE OPCIONES ── */
-function elegir(dia, comida, idx, btn){
-  const key = dia+'|'+comida;
-  selecciones[key] = idx;
-  // Desmarcar hermanas del mismo grupo
-  const contenedor = document.getElementById('ops-'+dia+'-'+comida);
-  contenedor.querySelectorAll('.opcion-btn').forEach(b=>{
-    b.classList.remove('sel');
-    const ch = b.querySelector('.check'); if(ch) ch.remove();
-  });
+// ── SELECCIÓN ──
+function elegir(dia,comida,idx,btn){
+  selecciones[dia+'|'+comida]=idx;
+  document.getElementById('ops-'+dia+'-'+comida).querySelectorAll('.opcion-btn').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
-  if(!btn.querySelector('.check')){
-    const ch=document.createElement('div'); ch.className='check'; ch.textContent='✓'; btn.appendChild(ch);
-  }
+  actualizarStatusDia(dia);
   actualizarBtnPedir();
 }
 
-function selLugar(lugar, btn){
-  lugarSel=lugar;
-  document.querySelectorAll('#overlay .opcion-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  document.getElementById('err-lugar').classList.remove('show');
+function actualizarStatusDia(dia){
+  const total=DIA_TOTAL[dia];
+  const hechas=Object.keys(selecciones).filter(k=>k.startsWith(dia+'|')).length;
+  const el=document.getElementById('status-'+dia); if(!el) return;
+  el.textContent=hechas+' / '+total;
+  el.className='dia-status'+(hechas===total?' completo':'');
 }
 
-function seleccionesCompletas(){
-  return COMIDAS_REQUERIDAS.every(k => selecciones[k] !== undefined);
-}
+function seleccionesCompletas(){ return COMIDAS_REQ.every(k=>selecciones[k]!==undefined); }
 
 function actualizarBtnPedir(){
-  const btn=document.getElementById('btn-pedir-main');
-  const txt=document.getElementById('progreso-txt');
+  const btn=document.getElementById('btn-pedir-main'), txt=document.getElementById('progreso-txt');
   if(!btn) return;
-  const completas=seleccionesCompletas();
-  const yp=yaPidio(allPedidos);
-  btn.disabled = menuCerrado || yp || !completas;
-  if(yp){ txt.textContent='✦ Ya realizaste tu inscripción'; }
-  else if(menuCerrado){ txt.textContent='El menú está cerrado'; }
-  else if(!completas){
-    const faltantes=COMIDAS_REQUERIDAS.length-COMIDAS_REQUERIDAS.filter(k=>selecciones[k]!==undefined).length;
-    txt.textContent='Faltan '+faltantes+' elección'+(faltantes!==1?'es':')+' por hacer';
-  } else {
-    txt.textContent='¡Todo listo! Confirma tu pedido';
-  }
+  const completas=seleccionesCompletas(), yp=yaPidio(allPedidos);
+  btn.disabled=menuCerrado||yp||!completas;
+  if(yp) txt.textContent='✦ Ya estás inscrita — ¡gracias!';
+  else if(menuCerrado) txt.textContent='Las inscripciones están cerradas';
+  else if(!completas){ const f=COMIDAS_REQ.filter(k=>selecciones[k]===undefined).length; txt.textContent='Faltan '+f+' elección'+(f!==1?'es':'')+' por hacer'; }
+  else txt.textContent='¡Todo listo! Confirma tu inscripción';
 }
 
-/* ── MODAL ── */
+// ── MODAL ──
 function abrirModal(){
-  if(!seleccionesCompletas()){ toast('Selecciona una opción por cada comida','error'); return; }
-  if(yaPidio(allPedidos)){ toast('Ya realizaste tu inscripción','error'); return; }
-  // Construir resumen
-  let html='<h4>Tu menú elegido</h4>';
+  if(!seleccionesCompletas()){ toast('Selecciona una opción en cada comida','error'); return; }
+  if(yaPidio(allPedidos)){ toast('Ya estás inscrita','error'); return; }
+  let html='<h4>Tu menú ✦</h4>';
   Object.entries(MENU).forEach(([dia,info])=>{
     Object.entries(info.comidas).forEach(([comida,data])=>{
-      const key=dia+'|'+comida;
-      const idx=selecciones[key];
-      const opcion=data.opciones[idx];
-      html+=`<div class="res-item"><strong>${info.label} · ${data.label}</strong><span>${opcion}</span></div>`;
+      html+=`<div class="res-item"><strong>${info.label} · ${data.label}</strong><span>${data.opciones[selecciones[dia+'|'+comida]]}</span></div>`;
     });
   });
   document.getElementById('modal-resumen').innerHTML=html;
   document.getElementById('f-nombre').value='';
-  document.getElementById('f-iglesia').value='';
-  lugarSel=null;
-  document.querySelectorAll('#overlay .opcion-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('f-iglesia-input').value='';
   document.querySelectorAll('.err-msg').forEach(e=>e.classList.remove('show'));
-  document.querySelectorAll('.field-input').forEach(i=>i.classList.remove('error'));
-  // Deshabilitar lugares sin cupos
-  db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{sabrosia:120,iglesia:110,cerrado:false};
-    const libIgl=libreIglesia(d,allPedidos), libSab=libreSabrosia(d,allPedidos);
-    const bIgl=document.getElementById('opt-lugar-iglesia'), bSab=document.getElementById('opt-lugar-sabrosia');
-    bIgl.disabled=libIgl<=0; bIgl.style.opacity=libIgl<=0?'.4':'';
-    bSab.disabled=libSab<=0; bSab.style.opacity=libSab<=0?'.4':'';
-    document.getElementById('overlay').classList.add('show');
-  });
+  document.querySelectorAll('#overlay .field-input').forEach(i=>i.classList.remove('error'));
+  document.getElementById('overlay').classList.add('show');
 }
 function cerrarModal(){ document.getElementById('overlay').classList.remove('show'); }
 
 function confirmar(){
   const nom=document.getElementById('f-nombre').value.trim();
-  const igl=document.getElementById('f-iglesia').value.trim();
+  const igl=document.getElementById('f-iglesia-input').value.trim();
   let ok=true;
-  if(!nom){ document.getElementById('err-nombre').classList.add('show'); document.getElementById('f-nombre').classList.add('error'); ok=false; }
-  if(!igl){ document.getElementById('err-iglesia').classList.add('show'); document.getElementById('f-iglesia').classList.add('error'); ok=false; }
-  if(!lugarSel){ document.getElementById('err-lugar').classList.add('show'); ok=false; }
+  if(!nom){document.getElementById('err-nombre').classList.add('show');document.getElementById('f-nombre').classList.add('error');ok=false;}
+  if(!igl){document.getElementById('err-iglesia').classList.add('show');document.getElementById('f-iglesia-input').classList.add('error');ok=false;}
   if(!ok) return;
-
-  db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{sabrosia:120,iglesia:110,cerrado:false};
-    if(!!d.cerrado){ cerrarModal(); toast('El menú está cerrado','error'); return; }
-    if(lugarSel==='La Iglesia'&&libreIglesia(d,allPedidos)<=0){ cerrarModal(); toast('Sin cupos para La Iglesia','error'); return; }
-    if(lugarSel==='Sabrosía'&&libreSabrosia(d,allPedidos)<=0){ cerrarModal(); toast('Sin cupos para Sabrosía','error'); return; }
-    if(yaPidio(allPedidos)){ cerrarModal(); toast('Ya estás inscrita','error'); return; }
-
+  db.ref('cupos_dt').once('value',cs=>{
+    const d=cs.val()||{total:100,cerrado:false};
+    if(!!d.cerrado||calcLibres(d,allPedidos)<=0){cerrarModal();toast('Las inscripciones están cerradas','error');return;}
+    if(yaPidio(allPedidos)){cerrarModal();toast('Ya estás inscrita','error');return;}
     const hora=new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
-    // Construir objeto de días elegidos
     const elecciones={};
     Object.entries(MENU).forEach(([dia,info])=>{
       elecciones[dia]={};
-      Object.entries(info.comidas).forEach(([comida,data])=>{
-        const idx=selecciones[dia+'|'+comida];
-        elecciones[dia][comida]=data.opciones[idx];
-      });
+      Object.entries(info.comidas).forEach(([comida,data])=>{ elecciones[dia][comida]=data.opciones[selecciones[dia+'|'+comida]]; });
     });
-
-    db.ref('pedidos').push({
-      nombre:nom, iglesia:igl, lugar:lugarSel,
-      elecciones, hora, session:getSession(), ts:Date.now()
-    });
+    db.ref('pedidos_dt').push({nombre:nom,iglesia:igl,elecciones,hora,session:getSession(),ts:Date.now()});
     cerrarModal();
     toast('✦ ¡Inscripción confirmada!','success');
     selecciones={};
-    document.querySelectorAll('.opcion-btn').forEach(b=>{ b.classList.remove('sel'); const ch=b.querySelector('.check'); if(ch)ch.remove(); });
+    document.querySelectorAll('.dias-grid .opcion-btn').forEach(b=>b.classList.remove('sel'));
+    Object.keys(DIA_TOTAL).forEach(d=>actualizarStatusDia(d));
     actualizarBtnPedir();
   });
 }
 
-/* ── PEDIDOS (vista pública) ── */
+// ── LISTAS ──
 function filtrar(f,el){
   filtroActual=f;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
@@ -884,7 +592,6 @@ function renderPedidosFiltrados(){
   let list=Object.entries(allPedidos);
   const q=(document.getElementById('search-input')||{}).value||'';
   if(q) list=list.filter(([,p])=>p.nombre.toLowerCase().includes(q.toLowerCase()));
-  if(filtroActual!=='todos') list=list.filter(([,p])=>p.lugar===filtroActual);
   list=list.slice().reverse();
   if(!list.length){l.innerHTML='<div class="empty">Sin inscripciones aún…</div>';return;}
   l.innerHTML=list.map(([id,p],i)=>`
@@ -892,27 +599,26 @@ function renderPedidosFiltrados(){
       <span class="ped-num">${list.length-i}</span>
       <div class="ped-info">
         <div class="ped-nombre">${p.nombre}</div>
-        <div class="ped-iglesia">${p.iglesia}</div>
+        <div class="ped-iglesia-tag">✦ ${p.iglesia||''}</div>
         <div class="ped-dias">${renderElecciones(p.elecciones)}</div>
-        <div class="ped-hora"><span class="tag-lugar ${p.lugar==='La Iglesia'?'tag-iglesia':'tag-sabrosia'}">${p.lugar}</span> · ${p.hora||''}</div>
+        <div class="ped-hora">${p.hora||''}</div>
       </div>
     </div>`).join('');
 }
 
 function renderElecciones(el){
   if(!el) return '';
-  let html='';
+  let h='';
   Object.entries(MENU).forEach(([dia,info])=>{
     if(!el[dia]) return;
     Object.entries(info.comidas).forEach(([comida,data])=>{
       if(!el[dia][comida]) return;
-      html+=`<div class="ped-dia-item"><strong>${info.label} · ${data.label}</strong><span>${el[dia][comida]}</span></div>`;
+      h+=`<div class="ped-dia-item"><strong>${info.label}·${data.label}</strong><span>${el[dia][comida]}</span></div>`;
     });
   });
-  return html;
+  return h;
 }
 
-/* ── ADMIN PEDIDOS ── */
 function renderAdminPedidos(){
   const l=document.getElementById('admin-pedidos-list'); if(!l) return;
   let list=Object.entries(allPedidos);
@@ -923,122 +629,113 @@ function renderAdminPedidos(){
   l.innerHTML=list.map(([id,p],i)=>`
     <div class="adm-ped-row">
       <div class="adm-ped-nombre">${list.length-i}. ${p.nombre}</div>
-      <div class="adm-ped-iglesia">✦ ${p.iglesia}</div>
-      <div class="adm-ped-dias">${renderElecciones(p.elecciones)}</div>
-      <div class="adm-ped-meta">
-        <span class="tag-lugar ${p.lugar==='La Iglesia'?'tag-iglesia':'tag-sabrosia'}">${p.lugar}</span>
-        <span>${p.hora||''}</span>
-      </div>
+      <div class="adm-ped-iglesia">✦ ${p.iglesia||'—'}</div>
+      <div class="adm-ped-dias">${renderEleccionesAdmin(p.elecciones)}</div>
+      <div class="adm-ped-meta" style="font-size:10px;color:var(--taupe)">${p.hora||''}</div>
       <div class="adm-actions">
         <button class="icon-btn danger" onclick="confirmarEliminar('${id}','${p.nombre.replace(/'/g,"\\'")}')">Eliminar</button>
       </div>
     </div>`).join('');
 }
 
-/* ── RESUMEN ── */
-function renderResumen(){
-  const ped=Object.values(allPedidos);
-  const total=ped.length;
-  const nIgl=ped.filter(p=>p.lugar==='La Iglesia').length;
-  const nSab=ped.filter(p=>p.lugar==='Sabrosía').length;
-
-  // Contar elecciones por opción
-  const counts={};
-  ped.forEach(p=>{
-    if(!p.elecciones) return;
-    Object.entries(p.elecciones).forEach(([dia,comidas])=>{
-      Object.entries(comidas).forEach(([comida,opcion])=>{
-        const k=opcion; counts[k]=(counts[k]||0)+1;
-      });
+function renderEleccionesAdmin(el){
+  if(!el) return '';
+  let h='';
+  Object.entries(MENU).forEach(([dia,info])=>{
+    if(!el[dia]) return;
+    Object.entries(info.comidas).forEach(([comida,data])=>{
+      if(!el[dia][comida]) return;
+      h+=`<div class="adm-ped-dia"><strong>${info.label}·${data.label}</strong><span>${el[dia][comida]}</span></div>`;
     });
   });
-  const maxC=Math.max(...Object.values(counts),1);
+  return h;
+}
 
-  db.ref('cupos').once('value',cs=>{
-    const d=cs.val()||{sabrosia:120,iglesia:110};
-    const libIgl=libreIglesia(d,allPedidos), libSab=libreSabrosia(d,allPedidos);
+// ── RESUMEN ──
+function renderResumen(){
+  const ped=Object.values(allPedidos);
+  db.ref('cupos_dt').once('value',cs=>{
+    const d=cs.val()||{total:100};
+    const lib=calcLibres(d,allPedidos);
     document.getElementById('resumen-grid').innerHTML=[
-      ['Total inscritas',total,''],
-      ['La Iglesia',nIgl,'de '+(d.iglesia||110)+' cupos'],
-      ['Libres Iglesia',libIgl,''],
-      ['Sabrosía',nSab,'de '+(d.sabrosia||120)+' cupos'],
-      ['Libres Sabrosía',libSab,''],
+      ['Total inscritas',ped.length,''],
+      ['Cupos libres',lib,'de '+d.total],
+      ['% completado',Math.round(ped.length/d.total*100)+'%','']
     ].map(([l,v,s])=>`<div class="res-card"><div class="rc-lbl">${l}</div><div class="rc-val">${v}</div>${s?`<div class="rc-sub">${s}</div>`:''}</div>`).join('');
-
-    const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
-    document.getElementById('plato-rank').innerHTML=sorted.length
-      ? sorted.map(([n,c])=>`
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-          <span style="font-size:11px;min-width:170px;color:var(--dark)">${n}</span>
-          <div style="flex:1;height:5px;background:var(--rose-l);border-radius:999px;overflow:hidden"><div style="width:${Math.round(c/maxC*100)}%;height:100%;background:var(--rose);border-radius:999px"></div></div>
-          <span style="font-size:11px;font-weight:600;color:var(--rose-d);min-width:18px;text-align:right">${c}</span>
-        </div>`).join('')
-      : '<div class="empty" style="padding:1rem">Sin datos aún</div>';
   });
 }
 
-/* ── CUPOS ── */
-function setCuposIglesia(){
-  const v=parseInt(document.getElementById('cupos-iglesia-in').value);
-  if(isNaN(v)||v<0){toast('Número inválido','error');return;}
-  db.ref('cupos').update({iglesia:v});
-  toast('Cupos La Iglesia: '+v,'success');
-}
-function setCuposSabrosia(){
-  const v=parseInt(document.getElementById('cupos-sabrosia-in').value);
-  if(isNaN(v)||v<0){toast('Número inválido','error');return;}
-  db.ref('cupos').update({sabrosia:v});
-  toast('Cupos Sabrosía: '+v,'success');
+// ── STATS PLATOS ──
+function renderStatsPlatos(){
+  const ped=Object.values(allPedidos);
+  if(!ped.length){document.getElementById('stats-platos').innerHTML='<div class="empty" style="padding:1rem">Sin datos aún</div>';return;}
+  let html='';
+  Object.entries(MENU).forEach(([dia,info])=>{
+    Object.entries(info.comidas).forEach(([comida,data])=>{
+      const titulo=info.label+' · '+data.label;
+      const counts={};
+      data.opciones.forEach(o=>counts[o]=0);
+      ped.forEach(p=>{ if(p.elecciones&&p.elecciones[dia]&&p.elecciones[dia][comida]){ const o=p.elecciones[dia][comida]; counts[o]=(counts[o]||0)+1; } });
+      const maxV=Math.max(...Object.values(counts),1);
+      html+=`<div style="margin-bottom:18px"><p style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose-d);font-weight:500;margin-bottom:9px">${titulo}</p>`;
+      Object.entries(counts).forEach(([nombre,c])=>{
+        html+=`<div class="plato-stat-row"><span class="plato-stat-nombre" title="${nombre}">${nombre}</span><div class="plato-stat-bar-wrap"><div class="plato-stat-bar" style="width:${Math.round(c/maxV*100)}%"></div></div><span class="plato-stat-count">${c}</span></div>`;
+      });
+      html+='</div>';
+    });
+  });
+  document.getElementById('stats-platos').innerHTML=html;
 }
 
+// ── CUPOS ──
+function setCupos(){
+  const v=parseInt(document.getElementById('cupos-in').value);
+  if(isNaN(v)||v<1){toast('Ingresa un número válido','error');return;}
+  db.ref('cupos_dt').update({total:v});
+  toast('Cupos actualizados: '+v,'success');
+}
 function cerrarMenu(){
-  document.getElementById('confirm-title').textContent='Cerrar menú';
-  document.getElementById('confirm-msg').textContent='¿Cerrar el menú ahora? Nadie más podrá inscribirse.';
+  document.getElementById('confirm-title').textContent='Cerrar inscripciones';
+  document.getElementById('confirm-msg').textContent='¿Cerrar el menú ahora? Nadie más podrá inscribirse hasta que lo vuelvas a abrir.';
   document.getElementById('confirm-ok').textContent='Cerrar';
-  document.getElementById('confirm-ok').onclick=()=>{db.ref('cupos').update({cerrado:true});cerrarConfirm();toast('Menú cerrado');};
+  document.getElementById('confirm-ok').onclick=()=>{db.ref('cupos_dt').update({cerrado:true});cerrarConfirm();toast('Menú cerrado');};
   document.getElementById('confirm-overlay').classList.add('show');
 }
-function abrirMenu(){db.ref('cupos').update({cerrado:false});toast('Menú abierto','success');}
+function abrirMenu(){db.ref('cupos_dt').update({cerrado:false});toast('Menú abierto ✦','success');}
 
 function resetPedidos(){
   document.getElementById('confirm-title').textContent='Limpiar inscripciones';
   document.getElementById('confirm-msg').textContent='¿Eliminar TODAS las inscripciones? Esta acción no se puede deshacer.';
-  document.getElementById('confirm-ok').textContent='Limpiar';
-  document.getElementById('confirm-ok').onclick=()=>{db.ref('pedidos').remove();cerrarConfirm();toast('Inscripciones eliminadas');};
+  document.getElementById('confirm-ok').textContent='Eliminar todo';
+  document.getElementById('confirm-ok').onclick=()=>{db.ref('pedidos_dt').remove();cerrarConfirm();toast('Inscripciones eliminadas');};
   document.getElementById('confirm-overlay').classList.add('show');
 }
-
 function confirmarEliminar(id,nombre){
   document.getElementById('confirm-title').textContent='Eliminar inscripción';
   document.getElementById('confirm-msg').textContent='¿Eliminar la inscripción de '+nombre+'?';
   document.getElementById('confirm-ok').textContent='Eliminar';
-  document.getElementById('confirm-ok').onclick=()=>{db.ref('pedidos/'+id).remove();cerrarConfirm();toast('Inscripción eliminada');};
+  document.getElementById('confirm-ok').onclick=()=>{db.ref('pedidos_dt/'+id).remove();cerrarConfirm();toast('Inscripción eliminada');};
   document.getElementById('confirm-overlay').classList.add('show');
 }
 function cerrarConfirm(){document.getElementById('confirm-overlay').classList.remove('show');}
 
-/* ── EXPORTAR CSV ── */
+// ── CSV ──
 function exportarCSV(){
   const ped=Object.values(allPedidos);
   if(!ped.length){toast('No hay inscripciones','error');return;}
-  const rows=[['Nombre','Iglesia','Lugar',
-    'D1-Cena','D2-Desayuno','D2-Almuerzo','D2-Cena','D3-Desayuno','D3-Almuerzo','Hora']];
+  const rows=[['Nombre','Iglesia','D1-Cena','D2-Desayuno','D2-Almuerzo','D2-Cena','D3-Desayuno','D3-Almuerzo','Hora']];
   ped.forEach(p=>{
     const e=p.elecciones||{};
-    rows.push([
-      p.nombre,p.iglesia,p.lugar,
-      (e.d1&&e.d1.cena)||'',(e.d2&&e.d2.desayuno)||'',(e.d2&&e.d2.almuerzo)||'',(e.d2&&e.d2.cena)||'',
-      (e.d3&&e.d3.desayuno)||'',(e.d3&&e.d3.almuerzo)||'',p.hora||''
-    ]);
+    rows.push([p.nombre,p.iglesia||'',(e.d1&&e.d1.cena)||'',(e.d2&&e.d2.desayuno)||'',(e.d2&&e.d2.almuerzo)||'',(e.d2&&e.d2.cena)||'',(e.d3&&e.d3.desayuno)||'',(e.d3&&e.d3.almuerzo)||'',p.hora||'']);
   });
   const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='dama-torca-pedidos.csv';a.click();
+  const a=document.createElement('a');a.href=url;a.download='dama-torca-inscritas.csv';a.click();
   URL.revokeObjectURL(url);toast('CSV descargado','success');
 }
 
-/* ── TABS ── */
+// ── TABS ──
 function goTab(name,el){
   if(name==='pedidos'&&!adminOk) return;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -1049,18 +746,27 @@ function goTab(name,el){
   if(name==='pedidos'&&adminOk) renderPedidosFiltrados();
 }
 
-/* ── ADMIN LOGIN ── */
+// ── LOGIN ──
 function checkPass(){
-  if(document.getElementById('admin-pass').value===ADMIN_PASSWORD){
+  const val=document.getElementById('admin-pass').value;
+  if(val===ADMIN_PASSWORD){
     adminOk=true;
+    document.getElementById('pass-error').style.display='none';
     document.getElementById('admin-lock').style.display='none';
     document.getElementById('admin-content').style.display='block';
     document.getElementById('tab-btn-pedidos').style.display='';
     document.getElementById('logout-btn').style.display='';
-    renderAdminPedidos();renderResumen();
-    toast('Bienvenida, administradora','success');
-  } else { toast('Contraseña incorrecta','error'); }
+    renderAdminPedidos(); renderResumen(); renderStatsPlatos();
+    toast('Bienvenida, administradora ✦','success');
+  } else {
+    document.getElementById('pass-error').style.display='block';
+    const inp=document.getElementById('admin-pass');
+    inp.style.borderColor='var(--rose-d)';
+    inp.value='';
+    setTimeout(()=>inp.style.borderColor='',2000);
+  }
 }
+
 function cerrarSesionAdmin(){
   adminOk=false;
   document.getElementById('admin-lock').style.display='block';
@@ -1068,14 +774,15 @@ function cerrarSesionAdmin(){
   document.getElementById('tab-btn-pedidos').style.display='none';
   document.getElementById('logout-btn').style.display='none';
   document.getElementById('admin-pass').value='';
+  document.getElementById('pass-error').style.display='none';
   goTab('menu',document.querySelector('.tab'));
   toast('Sesión cerrada');
 }
 
-/* ── TOAST ── */
+// ── TOAST ──
 function toast(msg,type=''){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast'+(type?' '+type:'')+' show';
+  t.textContent=msg; t.className='toast'+(type?' '+type:'')+' show';
   setTimeout(()=>t.classList.remove('show'),3200);
 }
 </script>
