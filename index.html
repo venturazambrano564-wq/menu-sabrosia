@@ -2,7 +2,1473 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewp<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menú del Evento — Sistema de Registro</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: #7a5e1f;
+    --dark: #0d0b07;
+    --dark2: #161208;
+    --dark3: #1e1810;
+    --card: #201a0e;
+    --border: #2e2410;
+    --text: #f0e8d5;
+    --text-dim: #8a7a5a;
+    --red: #c0392b;
+    --green: #27ae60;
+    --blue: #2980b9;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(201,168,76,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(201,168,76,0.05) 0%, transparent 60%);
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    text-align: center;
+    padding: 48px 20px 32px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .logo-cross {
+    font-size: 28px;
+    color: var(--gold);
+    letter-spacing: 12px;
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    color: var(--gold-light);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  header p {
+    color: var(--text-dim);
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 10px 22px;
+    border-radius: 99px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .nav-btn:hover { border-color: var(--gold-dim); color: var(--gold-light); }
+  .nav-btn.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--dark);
+    font-weight: 600;
+  }
+
+  /* ===== MAIN ===== */
+  main { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+  /* ===== SECTIONS ===== */
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .card h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold-light);
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+  .card .subtitle {
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== FORM ===== */
+  .form-group { margin-bottom: 16px; }
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  input, select, textarea {
+    width: 100%;
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 12px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    transition: border-color 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--gold-dim);
+  }
+  select option { background: var(--dark3); }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    color: var(--dark);
+  }
+  .btn-gold:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+  .btn-outline:hover { border-color: var(--gold-dim); color: var(--gold-light); }
+  .btn-danger { background: var(--red); color: #fff; }
+  .btn-danger:hover { filter: brightness(0.9); }
+  .btn-sm { padding: 7px 14px; font-size: 12px; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* ===== PLATOS GRID ===== */
+  .platos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 20px 0;
+  }
+  .plato-card {
+    background: var(--dark3);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .plato-card:hover { border-color: var(--gold-dim); transform: translateY(-2px); }
+  .plato-card.selected { border-color: var(--gold); background: rgba(201,168,76,0.07); }
+  .plato-card.agotado { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+  .plato-card img {
+    width: 80px; height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    background: var(--dark2);
+  }
+  .plato-card .plato-img-placeholder {
+    width: 80px; height: 80px;
+    border-radius: 8px;
+    background: var(--dark2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 10px;
+  }
+  .plato-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .plato-card .cupos {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+  .plato-card .cupos.bajo { color: #e67e22; }
+  .plato-card .cupos.agotado-text { color: var(--red); }
+  .badge-check {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: var(--gold);
+    color: var(--dark);
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: none;
+    align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .plato-card.selected .badge-check { display: flex; }
+
+  /* ===== CANTIDAD SELECTOR ===== */
+  .qty-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .qty-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--dark3);
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .qty-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .qty-val {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--gold-light);
+    min-width: 36px;
+    text-align: center;
+  }
+
+  /* ===== DIA SELECTOR ===== */
+  .dia-selector {
+    display: flex;
+    gap: 10px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .dia-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 14px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: var(--dark3);
+    color: var(--text-dim);
+    cursor: pointer;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .dia-btn:hover { border-color: var(--gold-dim); }
+  .dia-btn.selected { border-color: var(--gold); color: var(--gold-light); background: rgba(201,168,76,0.07); font-weight: 600; }
+
+  /* ===== PEDIDOS MULTI-DIA ===== */
+  .pedido-dia-block {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .pedido-dia-block h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .plato-select-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .plato-select-row span {
+    font-size: 13px;
+    color: var(--text-dim);
+    min-width: 60px;
+  }
+  .plato-select-row select { max-width: 260px; }
+
+  /* ===== RESUMEN ===== */
+  .resumen-box {
+    background: var(--dark2);
+    border: 1px solid var(--gold-dim);
+    border-radius: 10px;
+    padding: 18px;
+    margin: 16px 0;
+  }
+  .resumen-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 14px; }
+  .resumen-row .label { color: var(--text-dim); }
+  .resumen-row .val { color: var(--gold-light); font-weight: 600; }
+
+  /* ===== STATS ===== */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-card .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: var(--gold-light);
+  }
+  .stat-card .lbl { font-size: 11px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ===== TABLA ADMIN ===== */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:hover td { background: rgba(201,168,76,0.03); }
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .tag-sab { background: rgba(41,128,185,0.2); color: #5dade2; }
+  .tag-dom { background: rgba(39,174,96,0.2); color: #58d68d; }
+  .tag-amb { background: rgba(201,168,76,0.2); color: var(--gold-light); }
+
+  /* ===== ADMIN PLATOS ===== */
+  .admin-plato-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .admin-plato-row img {
+    width: 48px; height: 48px;
+    border-radius: 6px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px dashed var(--border);
+  }
+  .admin-plato-row .plato-placeholder-sm {
+    width: 48px; height: 48px;
+    border-radius: 6px;
+    background: var(--dark2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    border: 1px dashed var(--gold-dim);
+  }
+  .admin-plato-row .info { flex: 1; }
+  .admin-plato-row .info h4 { font-size: 14px; font-weight: 600; }
+  .admin-plato-row .info small { color: var(--text-dim); font-size: 12px; }
+  .admin-plato-row .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ===== TOAST ===== */
+  #toast {
+    position: fixed;
+    bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--card);
+    border: 1px solid var(--gold-dim);
+    color: var(--text);
+    padding: 14px 28px;
+    border-radius: 99px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 9999;
+    transition: transform 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+  #toast.ok { border-color: var(--green); }
+  #toast.err { border-color: var(--red); }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 1000;
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    width: 100%; max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold-light);
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+  /* ===== MENU CERRADO ===== */
+  .menu-closed-banner {
+    background: rgba(192,57,43,0.15);
+    border: 1px solid rgba(192,57,43,0.4);
+    border-radius: 10px;
+    padding: 16px 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #e74c3c;
+    font-weight: 600;
+    font-size: 15px;
+    display: none;
+  }
+
+  /* ===== DIVIDER ===== */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 24px 0;
+  }
+
+  /* ===== LOADING ===== */
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-dim);
+  }
+  .spinner {
+    width: 32px; height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== ADMIN LOGIN ===== */
+  .admin-login {
+    max-width: 360px;
+    margin: 40px auto;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .platos-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    td, th { padding: 8px 10px; }
+  }
+
+  /* ===== STEP INDICATOR ===== */
+  .steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 28px;
+  }
+  .step {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .step-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--dark3);
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dim);
+    transition: all 0.2s;
+  }
+  .step.active .step-dot { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.1); }
+  .step.done .step-dot { background: var(--gold); color: var(--dark); border-color: var(--gold); }
+  .step-label { font-size: 10px; color: var(--text-dim); letter-spacing: 0.5px; }
+  .step.active .step-label { color: var(--gold); }
+  .step-line { width: 40px; height: 2px; background: var(--border); margin-bottom: 16px; }
+  .step-line.done { background: var(--gold-dim); }
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- MODAL EDITAR PLATO -->
+<div class="modal-overlay" id="modal-plato">
+  <div class="modal">
+    <h3 id="modal-plato-title">Editar Plato</h3>
+    <div class="form-group">
+      <label>Nombre del Plato</label>
+      <input type="text" id="mp-nombre">
+    </div>
+    <div class="form-group">
+      <label>Emoji (ícono)</label>
+      <input type="text" id="mp-emoji" placeholder="🍗" maxlength="4">
+    </div>
+    <div class="form-group">
+      <label>URL de Imagen (opcional)</label>
+      <input type="text" id="mp-img" placeholder="https://...">
+    </div>
+    <div class="form-group">
+      <label>Cupos Disponibles</label>
+      <input type="number" id="mp-cupos" min="0">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-plato')">Cancelar</button>
+      <button class="btn btn-gold" onclick="guardarPlato()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR PEDIDO -->
+<div class="modal-overlay" id="modal-pedido">
+  <div class="modal">
+    <h3>Editar Pedido</h3>
+    <div class="form-group">
+      <label>Nombre del Líder</label>
+      <input type="text" id="ep-nombre">
+    </div>
+    <div class="form-group">
+      <label>Iglesia de Origen</label>
+      <input type="text" id="ep-iglesia">
+    </div>
+    <div class="form-group">
+      <label>Día</label>
+      <select id="ep-dia">
+        <option value="sabado">Sábado</option>
+        <option value="domingo">Domingo</option>
+        <option value="ambos">Ambos días</option>
+      </select>
+    </div>
+    <div id="ep-platos-container"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('modal-pedido')">Cancelar</button>
+      <button class="btn btn-gold" onclick="guardarPedido()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-cross">✦ ✦ ✦</div>
+  <h1>Registro de Menú</h1>
+  <p>Evento de Líderes — La Iglesia</p>
+</header>
+
+<!-- NAV -->
+<nav>
+  <button class="nav-btn active" onclick="showSection('registro')">🍽️ Registro</button>
+  <button class="nav-btn" onclick="showSection('admin-login')">🔐 Admin</button>
+</nav>
+
+<main>
+
+  <!-- ===== SECCIÓN REGISTRO ===== -->
+  <div class="section active" id="section-registro">
+
+    <div id="menu-cerrado-banner" class="menu-closed-banner">
+      🚫 El menú está cerrado. Ya no se aceptan nuevos pedidos.
+    </div>
+
+    <div id="form-registro">
+      <!-- STEP INDICATOR -->
+      <div class="steps" id="steps">
+        <div class="step active" id="s1"><div class="step-dot">1</div><div class="step-label">Datos</div></div>
+        <div class="step-line" id="sl1"></div>
+        <div class="step active" id="s2"><div class="step-dot">2</div><div class="step-label">Cantidad</div></div>
+        <div class="step-line" id="sl2"></div>
+        <div class="step" id="s3"><div class="step-dot">3</div><div class="step-label">Platos</div></div>
+        <div class="step-line" id="sl3"></div>
+        <div class="step" id="s4"><div class="step-dot">4</div><div class="step-label">Confirmar</div></div>
+      </div>
+
+      <!-- PASO 1: DATOS -->
+      <div class="card" id="paso-datos">
+        <h2>Información del Líder</h2>
+        <div class="subtitle">Completa tus datos de registro</div>
+        <div class="form-group">
+          <label>Nombre completo del líder</label>
+          <input type="text" id="r-nombre" placeholder="Ej: María González">
+        </div>
+        <div class="form-group">
+          <label>Iglesia de origen</label>
+          <input type="text" id="r-iglesia" placeholder="Ej: Iglesia Central Riohacha">
+        </div>
+      </div>
+
+      <!-- PASO 2: CANTIDAD Y DÍA -->
+      <div class="card" id="paso-cantidad">
+        <h2>¿Cuántos almuerzos?</h2>
+        <div class="subtitle">Selecciona cuántos platos necesitas</div>
+
+        <div class="qty-row">
+          <button class="qty-btn" onclick="cambiarQty(-1)">−</button>
+          <div class="qty-val" id="qty-display">1</div>
+          <button class="qty-btn" onclick="cambiarQty(1)">+</button>
+          <span style="color:var(--text-dim); font-size:14px">almuerzo(s)</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2>¿Qué día(s)?</h2>
+        <div class="subtitle">Elige cuándo vas a almorzar</div>
+        <div class="dia-selector">
+          <button class="dia-btn" id="dia-sab" onclick="selDia('sabado')">📅 Sábado</button>
+          <button class="dia-btn" id="dia-dom" onclick="selDia('domingo')">📅 Domingo</button>
+          <button class="dia-btn" id="dia-amb" onclick="selDia('ambos')">📅 Ambos días</button>
+        </div>
+      </div>
+
+      <!-- PASO 3: SELECCIÓN DE PLATOS -->
+      <div class="card" id="paso-platos">
+        <h2>Elige tus platos</h2>
+        <div class="subtitle" id="platos-subtitle">Selecciona un plato por cada almuerzo</div>
+
+        <div id="platos-seleccion"></div>
+
+        <div style="margin-top:20px;">
+          <button class="btn btn-gold" style="width:100%; justify-content:center; padding:14px;" onclick="irAConfirmar()">
+            Continuar → Ver resumen
+          </button>
+        </div>
+      </div>
+
+      <!-- PASO 4: RESUMEN -->
+      <div class="card" id="paso-resumen" style="display:none;">
+        <h2>Confirmar Pedido</h2>
+        <div class="subtitle">Revisa tu pedido antes de enviar</div>
+        <div class="resumen-box" id="resumen-contenido"></div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="btn btn-gold" id="btn-confirmar" style="width:100%; justify-content:center; padding:14px;" onclick="confirmarPedido()">✅ Confirmar Pedido</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== SECCIÓN ADMIN LOGIN ===== -->
+  <div class="section" id="section-admin-login">
+    <div class="admin-login card">
+      <h2>Panel Administrativo</h2>
+      <div class="subtitle">Acceso restringido</div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="admin-pass" placeholder="Contraseña" onkeydown="if(event.key==='Enter')checkAdmin()">
+      </div>
+      <button class="btn btn-gold" onclick="checkAdmin()" style="width:100%">Entrar →</button>
+    </div>
+  </div>
+
+  <!-- ===== SECCIÓN ADMIN ===== -->
+  <div class="section" id="section-admin">
+
+    <!-- ESTADO MENÚ -->
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h2>Estado del Menú</h2>
+          <div class="subtitle" style="margin-bottom:0">Controla si los usuarios pueden registrarse</div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <span id="menu-estado-badge" class="tag" style="font-size:13px; padding:6px 16px;"></span>
+          <button class="btn btn-sm" id="btn-toggle-menu" onclick="toggleMenu()"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESTADÍSTICAS -->
+    <div class="card">
+      <h2>Estadísticas</h2>
+      <div class="subtitle">Resumen de pedidos y platos</div>
+      <div class="stats-grid" id="stats-grid">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- GESTIÓN DE PLATOS -->
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <div>
+          <h2>Gestión de Platos</h2>
+          <div class="subtitle" style="margin-bottom:0">Edita platos, imágenes y cupos</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="abrirNuevoPlato()">+ Nuevo plato</button>
+      </div>
+      <div id="admin-platos-list">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- PEDIDOS -->
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <div>
+          <h2>Pedidos Registrados</h2>
+          <div class="subtitle" style="margin-bottom:0">Administra y exporta</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="exportarCSV()">⬇️ Exportar CSV</button>
+      </div>
+      <div id="filtros-pedidos" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;">
+        <button class="btn btn-outline btn-sm" onclick="filtrarPedidos('todos')" id="f-todos">Todos</button>
+        <button class="btn btn-outline btn-sm" onclick="filtrarPedidos('sabado')" id="f-sabado">Sábado</button>
+        <button class="btn btn-outline btn-sm" onclick="filtrarPedidos('domingo')" id="f-domingo">Domingo</button>
+        <button class="btn btn-outline btn-sm" onclick="filtrarPedidos('ambos')" id="f-ambos">Ambos</button>
+      </div>
+      <div id="admin-pedidos-list">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FIREBASE SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, set, get, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ============================================================
+//  ⚠️  CONFIGURA TU FIREBASE AQUÍ
+// ============================================================
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_PROJECT.firebaseapp.com",
+  databaseURL: "https://TU_PROJECT-default-rtdb.firebaseio.com",
+  projectId: "TU_PROJECT",
+  storageBucket: "TU_PROJECT.appspot.com",
+  messagingSenderId: "TU_ID",
+  appId: "TU_APP_ID"
+};
+// ============================================================
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ============================================================
+//  CONSTANTES
+// ============================================================
+const ADMIN_PASS = "iglesia2024"; // ← Cambia esta contraseña
+const ACOMPANIANTES = "Arroz blanco · Ensalada · Tajadas · Refresco";
+
+const PLATOS_DEFAULT = [
+  { nombre: "Carne Goulash",    emoji: "🥩", cupos: 50, cuposUsados: 0, img: "" },
+  { nombre: "Carne Desmechada", emoji: "🫕", cupos: 50, cuposUsados: 0, img: "" },
+  { nombre: "Pollo a la Piña",  emoji: "🍍", cupos: 50, cuposUsados: 0, img: "" },
+  { nombre: "Posta de Pescado", emoji: "🐟", cupos: 50, cuposUsados: 0, img: "" },
+];
+
+// ============================================================
+//  ESTADO LOCAL
+// ============================================================
+let platos = {};
+// Cargar platos por defecto de inmediato (sin esperar Firebase)
+PLATOS_DEFAULT.forEach((p, i) => { platos[`default_${i}`] = { ...p }; });
+let pedidos = {};
+let menuAbierto = true;
+let editandoPlatoKey = null;
+let editandoPedidoKey = null;
+let filtroPedidos = 'todos';
+
+// REGISTRO STATE
+let regState = {
+  nombre: '', iglesia: '',
+  cantidad: 1, dia: '',
+  platosSeleccionados: {}  // { 'sabado': ['key1', 'key2'], 'domingo': ['key3'] }
+};
+
+// ============================================================
+//  INIT
+// ============================================================
+async function init() {
+  // Mostrar platos por defecto de inmediato (sin Firebase)
+  renderPlatosSeleccion();
+  actualizarEstadoMenu();
+
+  // Intentar conectar con Firebase
+  try {
+    const snap = await get(ref(db, 'platos'));
+    if (!snap.exists()) {
+      for (const p of PLATOS_DEFAULT) {
+        await push(ref(db, 'platos'), p);
+      }
+    }
+
+    // Escuchar platos en tiempo real
+    onValue(ref(db, 'platos'), (snap) => {
+      const data = snap.val();
+      if (data) {
+        platos = data;
+        renderAdminPlatos();
+        renderPlatosSeleccion();
+        calcularStats();
+      }
+    });
+
+    // Escuchar pedidos en tiempo real
+    onValue(ref(db, 'pedidos'), (snap) => {
+      pedidos = snap.val() || {};
+      renderAdminPedidos();
+      calcularStats();
+    });
+
+    // Escuchar estado menú
+    onValue(ref(db, 'config/menuAbierto'), (snap) => {
+      menuAbierto = snap.val() !== false;
+      actualizarEstadoMenu();
+    });
+  } catch (e) {
+    // Firebase no configurado — funciona solo con platos por defecto
+    console.warn('Firebase no disponible, usando datos locales:', e.message);
+  }
+}
+
+// ============================================================
+//  NAVEGACIÓN
+// ============================================================
+window.showSection = function(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (id === 'admin') {
+    document.getElementById('section-admin').classList.add('active');
+    document.querySelector('.nav-btn:last-child').classList.add('active');
+  } else if (id === 'admin-login') {
+    document.getElementById('section-admin-login').classList.add('active');
+    document.querySelector('.nav-btn:last-child').classList.add('active');
+  } else {
+    document.getElementById('section-registro').classList.add('active');
+    document.querySelector('.nav-btn:first-child').classList.add('active');
+  }
+}
+
+// ============================================================
+//  ADMIN LOGIN
+// ============================================================
+window.checkAdmin = function() {
+  const pass = document.getElementById('admin-pass').value;
+  if (pass === ADMIN_PASS) {
+    document.getElementById('section-admin-login').classList.remove('active');
+    document.getElementById('section-admin').classList.add('active');
+    toast('Bienvenida, administradora 🌟', 'ok');
+  } else {
+    toast('Contraseña incorrecta', 'err');
+    document.getElementById('admin-pass').value = '';
+  }
+}
+
+// ============================================================
+//  ESTADO MENÚ
+// ============================================================
+window.toggleMenu = async function() {
+  const nuevo = !menuAbierto;
+  await set(ref(db, 'config/menuAbierto'), nuevo);
+  toast(nuevo ? 'Menú abierto ✅' : 'Menú cerrado 🚫', nuevo ? 'ok' : 'err');
+}
+
+function actualizarEstadoMenu() {
+  const badge = document.getElementById('menu-estado-badge');
+  const btn = document.getElementById('btn-toggle-menu');
+  const banner = document.getElementById('menu-cerrado-banner');
+  const formReg = document.getElementById('form-registro');
+  if (badge && btn) {
+    if (menuAbierto) {
+      badge.textContent = '✅ Abierto'; badge.style.background = 'rgba(39,174,96,0.2)'; badge.style.color = '#58d68d';
+      btn.textContent = '🚫 Cerrar menú'; btn.className = 'btn btn-danger btn-sm';
+    } else {
+      badge.textContent = '🚫 Cerrado'; badge.style.background = 'rgba(192,57,43,0.2)'; badge.style.color = '#e74c3c';
+      btn.textContent = '✅ Abrir menú'; btn.className = 'btn btn-gold btn-sm';
+    }
+  }
+  if (banner) banner.style.display = menuAbierto ? 'none' : 'block';
+  if (formReg) formReg.style.opacity = menuAbierto ? '1' : '0.4';
+  if (formReg) formReg.style.pointerEvents = menuAbierto ? '' : 'none';
+}
+
+// ============================================================
+//  REGISTRO: CANTIDAD Y DÍA
+// ============================================================
+window.cambiarQty = function(delta) {
+  regState.cantidad = Math.max(1, Math.min(10, regState.cantidad + delta));
+  document.getElementById('qty-display').textContent = regState.cantidad;
+  renderPlatosSeleccion();
+}
+
+window.selDia = function(dia) {
+  regState.dia = dia;
+  document.querySelectorAll('.dia-btn').forEach(b => b.classList.remove('selected'));
+  const map = { sabado: 'dia-sab', domingo: 'dia-dom', ambos: 'dia-amb' };
+  document.getElementById(map[dia])?.classList.add('selected');
+  regState.platosSeleccionados = {};
+  renderPlatosSeleccion();
+}
+
+// ============================================================
+//  SELECCIÓN DE PLATOS
+// ============================================================
+function renderPlatosSeleccion() {
+  const container = document.getElementById('platos-seleccion');
+  if (!container) return;
+  const subtitle = document.getElementById('platos-subtitle');
+
+  if (!regState.dia) {
+    // Mostrar platos disponibles aunque no haya elegido día aún
+    const platosEntries = Object.entries(platos);
+    if (platosEntries.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-dim); font-size:14px;">⬆️ Primero elige el día</p>';
+      return;
+    }
+    if (subtitle) subtitle.textContent = 'Primero elige el día, luego selecciona tu(s) plato(s)';
+    let previewHtml = `<p style="color:var(--text-dim); font-size:13px; margin-bottom:14px;">📋 Platos disponibles:</p>
+      <div class="platos-grid">`;
+    platosEntries.forEach(([k, p]) => {
+      const disp = p.cupos - (p.cuposUsados || 0);
+      const ago = disp <= 0;
+      previewHtml += `<div class="plato-card ${ago ? 'agotado' : ''}" style="pointer-events:none; opacity:${ago ? 0.4 : 0.75};">
+        <div class="plato-img-placeholder">${p.emoji || '🍽️'}</div>
+        <h3>${p.nombre}</h3>
+        <div class="cupos ${disp <= 5 ? 'bajo' : ''} ${ago ? 'agotado-text' : ''}">${ago ? 'Agotado' : `${disp} disponibles`}</div>
+      </div>`;
+    });
+    previewHtml += `</div>
+      <div style="margin-top:14px; padding:12px 16px; background:var(--dark2); border-radius:8px; border:1px solid var(--border); font-size:13px; color:var(--text-dim);">
+        🥗 <strong style="color:var(--gold);">Acompañantes:</strong> ${ACOMPANIANTES}
+      </div>`;
+    container.innerHTML = previewHtml;
+    return;
+  }
+
+  const dias = regState.dia === 'ambos' ? ['sabado', 'domingo'] : [regState.dia];
+  const diasLabel = { sabado: '📅 Sábado', domingo: '📅 Domingo' };
+  if (subtitle) subtitle.textContent = `Elige ${regState.cantidad} plato(s) por cada día`;
+
+  let html = '';
+  dias.forEach(dia => {
+    html += `<div class="pedido-dia-block"><h4>${diasLabel[dia]}</h4>`;
+    for (let i = 0; i < regState.cantidad; i++) {
+      const selected = (regState.platosSeleccionados[dia] || [])[i] || '';
+      html += `<p style="font-size:12px; color:var(--text-dim); margin-bottom:10px; letter-spacing:0.5px;">Plato ${i + 1} — elige uno:</p>
+        <div class="platos-grid" style="margin:0 0 16px;">`;
+      Object.entries(platos).forEach(([k, p]) => {
+        const disp = p.cupos - (p.cuposUsados || 0);
+        const ago = disp <= 0;
+        const isSel = selected === k;
+        html += `<div class="plato-card ${isSel ? 'selected' : ''} ${ago ? 'agotado' : ''}"
+          onclick="selPlatoCard('${dia}', ${i}, '${k}')" style="${ago ? '' : ''}">
+          <div class="badge-check">✓</div>
+          <div class="plato-img-placeholder">${p.emoji || '🍽️'}</div>
+          <h3>${p.nombre}</h3>
+          <div class="cupos ${disp <= 5 && !ago ? 'bajo' : ''} ${ago ? 'agotado-text' : ''}">${ago ? 'Agotado' : disp <= 5 ? `⚠️ ${disp} disp.` : `${disp} disponibles`}</div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  });
+
+  html += `<div style="margin-top:6px; padding:12px 16px; background:var(--dark2); border-radius:8px; border:1px solid var(--border); font-size:13px; color:var(--text-dim);">
+    🥗 <strong style="color:var(--gold);">Acompañantes:</strong> ${ACOMPANIANTES}
+  </div>`;
+
+  container.innerHTML = html;
+}
+
+window.selPlatoCard = function(dia, idx, key) {
+  if (!regState.platosSeleccionados[dia]) regState.platosSeleccionados[dia] = [];
+  regState.platosSeleccionados[dia][idx] = key;
+  renderPlatosSeleccion();
+}
+
+window.selPlato = function(dia, idx, key) {
+  if (!regState.platosSeleccionados[dia]) regState.platosSeleccionados[dia] = [];
+  regState.platosSeleccionados[dia][idx] = key;
+  renderPlatosSeleccion();
+}
+
+// ============================================================
+//  CONFIRMAR PEDIDO
+// ============================================================
+window.volverEditar = function() {
+  document.getElementById('paso-resumen').style.display = 'none';
+  document.getElementById('paso-datos').style.display = '';
+  document.getElementById('paso-cantidad').style.display = '';
+  document.getElementById('paso-platos').style.display = '';
+}
+
+window.irAConfirmar = function() {
+  // Validar platos elegidos
+  if (!regState.dia) { toast('⬆️ Primero elige el día', 'err'); return; }
+  const dias = regState.dia === 'ambos' ? ['sabado', 'domingo'] : [regState.dia];
+  for (const dia of dias) {
+    const sel = regState.platosSeleccionados[dia] || [];
+    const diaLabel = dia === 'sabado' ? 'Sábado' : 'Domingo';
+    for (let i = 0; i < regState.cantidad; i++) {
+      if (!sel[i]) { toast(`Elige el plato ${i + 1} del ${diaLabel}`, 'err'); return; }
+    }
+  }
+  // Validar datos del paso 1
+  const nombre = document.getElementById('r-nombre').value.trim();
+  const iglesia = document.getElementById('r-iglesia').value.trim();
+  if (!nombre || !iglesia) { toast('Completa tu nombre e iglesia en el paso 1', 'err'); return; }
+  mostrarResumen(nombre, iglesia);
+}
+
+window.confirmarPedido = async function() {
+  const nombre = document.getElementById('r-nombre').value.trim();
+  const iglesia = document.getElementById('r-iglesia').value.trim();
+  if (!nombre || !iglesia) { toast('Completa tu nombre e iglesia', 'err'); return; }
+  if (!regState.dia) { toast('Elige un día', 'err'); return; }
+
+  const dias = regState.dia === 'ambos' ? ['sabado', 'domingo'] : [regState.dia];
+  for (const dia of dias) {
+    const sel = regState.platosSeleccionados[dia] || [];
+    for (let i = 0; i < regState.cantidad; i++) {
+      if (!sel[i]) { toast(`Selecciona todos los platos (${dia})`, 'err'); return; }
+    }
+  }
+
+  if (!mostrarResumen(nombre, iglesia)) return;
+}
+
+function mostrarResumen(nombre, iglesia) {
+  const dias = regState.dia === 'ambos' ? ['sabado', 'domingo'] : [regState.dia];
+  const diasLabel = { sabado: 'Sábado', domingo: 'Domingo', ambos: 'Ambos días' };
+  let html = `
+    <div class="resumen-row"><span class="label">Nombre</span><span class="val">${nombre}</span></div>
+    <div class="resumen-row"><span class="label">Iglesia</span><span class="val">${iglesia}</span></div>
+    <div class="resumen-row"><span class="label">Día(s)</span><span class="val">${diasLabel[regState.dia]}</span></div>
+    <div class="resumen-row"><span class="label">Cantidad</span><span class="val">${regState.cantidad} almuerzo(s)</span></div>
+    <div class="divider"></div>`;
+
+  dias.forEach(dia => {
+    html += `<div style="font-size:12px; color:var(--gold); letter-spacing:1px; margin:8px 0 4px; text-transform:uppercase;">${diasLabel[dia]}</div>`;
+    const sel = regState.platosSeleccionados[dia] || [];
+    sel.forEach((k, i) => {
+      const p = platos[k];
+      html += `<div class="resumen-row"><span class="label">Plato ${i + 1}</span><span class="val">${p?.emoji || '🍽️'} ${p?.nombre || '—'}</span></div>`;
+    });
+  });
+  html += `<div class="divider"></div><div class="resumen-row"><span class="label">Incluye</span><span class="val" style="font-size:12px;">${ACOMPANIANTES}</span></div>`;
+
+  document.getElementById('resumen-contenido').innerHTML = html;
+  document.getElementById('paso-datos').style.display = 'none';
+  document.getElementById('paso-cantidad').style.display = 'none';
+  document.getElementById('paso-platos').style.display = 'none';
+  const resumen = document.getElementById('paso-resumen');
+  resumen.style.display = '';
+  resumen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // El botón confirmar envía el pedido
+  document.getElementById('btn-confirmar').onclick = () => enviarPedido(nombre, iglesia);
+  return true;
+}
+
+async function enviarPedido(nombre, iglesia) {
+  const btn = document.getElementById('btn-confirmar');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  try {
+    const pedido = {
+      nombre, iglesia,
+      dia: regState.dia,
+      cantidad: regState.cantidad,
+      platos: regState.platosSeleccionados,
+      timestamp: Date.now()
+    };
+    // Guardar pedido en Firebase (si está configurado)
+    await push(ref(db, 'pedidos'), pedido);
+
+    // Actualizar cuposUsados
+    const dias = regState.dia === 'ambos' ? ['sabado', 'domingo'] : [regState.dia];
+    for (const dia of dias) {
+      const sel = regState.platosSeleccionados[dia] || [];
+      for (const k of sel) {
+        if (k && platos[k]) {
+          const actual = platos[k].cuposUsados || 0;
+          await update(ref(db, `platos/${k}`), { cuposUsados: actual + 1 });
+        }
+      }
+    }
+    toast('¡Pedido registrado exitosamente! 🎉', 'ok');
+    resetRegistro();
+  } catch (e) {
+    // Si Firebase no está configurado, guardar localmente
+    const dias = regState.dia === 'ambos' ? ['sabado', 'domingo'] : [regState.dia];
+    dias.forEach(dia => {
+      (regState.platosSeleccionados[dia] || []).forEach(k => {
+        if (k && platos[k]) platos[k].cuposUsados = (platos[k].cuposUsados || 0) + 1;
+      });
+    });
+    toast('¡Pedido registrado! (modo local) 🎉', 'ok');
+    resetRegistro();
+  }
+}
+
+function resetRegistro() {
+  regState = { nombre: '', iglesia: '', cantidad: 1, dia: '', platosSeleccionados: {} };
+  document.getElementById('r-nombre').value = '';
+  document.getElementById('r-iglesia').value = '';
+  document.getElementById('qty-display').textContent = '1';
+  document.querySelectorAll('.dia-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('paso-resumen').style.display = 'none';
+  document.getElementById('paso-datos').style.display = '';
+  document.getElementById('paso-cantidad').style.display = '';
+  document.getElementById('paso-platos').style.display = '';
+  renderPlatosSeleccion();
+}
+
+// ============================================================
+//  ADMIN: PLATOS
+// ============================================================
+function renderAdminPlatos() {
+  const container = document.getElementById('admin-platos-list');
+  if (!container) return;
+  if (Object.keys(platos).length === 0) { container.innerHTML = '<p style="color:var(--text-dim)">No hay platos.</p>'; return; }
+
+  let html = '';
+  Object.entries(platos).forEach(([k, p]) => {
+    const disp = (p.cupos || 0) - (p.cuposUsados || 0);
+    html += `<div class="admin-plato-row">
+      ${p.img
+        ? `<img src="${p.img}" alt="${p.nombre}" onclick="abrirEditarPlato('${k}')">`
+        : `<div class="plato-placeholder-sm" onclick="abrirEditarPlato('${k}')">${p.emoji || '🍽️'}</div>`}
+      <div class="info">
+        <h4>${p.emoji || ''} ${p.nombre}</h4>
+        <small>Cupos: ${disp} / ${p.cupos} disponibles · ${p.cuposUsados || 0} pedidos</small>
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline btn-sm" onclick="abrirEditarPlato('${k}')">✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="eliminarPlato('${k}')">🗑️</button>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+window.abrirNuevoPlato = function() {
+  editandoPlatoKey = null;
+  document.getElementById('modal-plato-title').textContent = 'Nuevo Plato';
+  document.getElementById('mp-nombre').value = '';
+  document.getElementById('mp-emoji').value = '🍽️';
+  document.getElementById('mp-img').value = '';
+  document.getElementById('mp-cupos').value = '50';
+  document.getElementById('modal-plato').classList.add('open');
+}
+
+window.abrirEditarPlato = function(key) {
+  editandoPlatoKey = key;
+  const p = platos[key];
+  document.getElementById('modal-plato-title').textContent = 'Editar Plato';
+  document.getElementById('mp-nombre').value = p.nombre || '';
+  document.getElementById('mp-emoji').value = p.emoji || '';
+  document.getElementById('mp-img').value = p.img || '';
+  document.getElementById('mp-cupos').value = p.cupos || 0;
+  document.getElementById('modal-plato').classList.add('open');
+}
+
+window.guardarPlato = async function() {
+  const nombre = document.getElementById('mp-nombre').value.trim();
+  const emoji = document.getElementById('mp-emoji').value.trim();
+  const img = document.getElementById('mp-img').value.trim();
+  const cupos = parseInt(document.getElementById('mp-cupos').value) || 0;
+  if (!nombre) { toast('Ingresa el nombre del plato', 'err'); return; }
+
+  // Actualizar localmente siempre
+  if (editandoPlatoKey) {
+    platos[editandoPlatoKey] = { ...platos[editandoPlatoKey], nombre, emoji, img, cupos };
+    try { await update(ref(db, `platos/${editandoPlatoKey}`), { nombre, emoji, img, cupos }); } catch(e) {}
+    toast('Plato actualizado ✅', 'ok');
+  } else {
+    const newKey = `local_${Date.now()}`;
+    platos[newKey] = { nombre, emoji, img, cupos, cuposUsados: 0 };
+    try { await push(ref(db, 'platos'), { nombre, emoji, img, cupos, cuposUsados: 0 }); } catch(e) {}
+    toast('Plato agregado ✅', 'ok');
+  }
+
+  renderAdminPlatos();
+  renderPlatosSeleccion();
+  closeModal('modal-plato');
+  editandoPlatoKey = null;
+}
+
+window.eliminarPlato = async function(key) {
+  if (!confirm(`¿Eliminar el plato "${platos[key]?.nombre}"?`)) return;
+  await remove(ref(db, `platos/${key}`));
+  toast('Plato eliminado', 'ok');
+}
+
+// ============================================================
+//  ADMIN: PEDIDOS
+// ============================================================
+function renderAdminPedidos(filtro = filtroPedidos) {
+  const container = document.getElementById('admin-pedidos-list');
+  if (!container) return;
+
+  const lista = Object.entries(pedidos)
+    .filter(([, p]) => filtro === 'todos' || p.dia === filtro)
+    .sort(([, a], [, b]) => (b.timestamp || 0) - (a.timestamp || 0));
+
+  if (lista.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-dim); font-size:14px;">No hay pedidos.</p>';
+    return;
+  }
+
+  const diasLabel = { sabado: 'Sábado', domingo: 'Domingo', ambos: 'Ambos' };
+  let html = `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>#</th><th>Líder</th><th>Iglesia</th><th>Día</th><th>Cant.</th><th>Platos</th><th>Acciones</th>
+    </tr></thead><tbody>`;
+
+  lista.forEach(([k, p], i) => {
+    const diasArr = p.dia === 'ambos' ? ['sabado', 'domingo'] : [p.dia];
+    let platosStr = '';
+    diasArr.forEach(dia => {
+      const sel = (p.platos || {})[dia] || [];
+      const nombres = sel.map(key => platos[key]?.nombre || key).join(', ');
+      platosStr += `<div style="font-size:11px;"><strong style="color:var(--text-dim)">${dia}:</strong> ${nombres}</div>`;
+    });
+    const tagClass = p.dia === 'sabado' ? 'tag-sab' : p.dia === 'domingo' ? 'tag-dom' : 'tag-amb';
+    html += `<tr>
+      <td style="color:var(--text-dim)">${lista.length - i}</td>
+      <td><strong>${p.nombre}</strong></td>
+      <td style="color:var(--text-dim); font-size:13px;">${p.iglesia}</td>
+      <td><span class="tag ${tagClass}">${diasLabel[p.dia] || p.dia}</span></td>
+      <td style="text-align:center;">${p.cantidad}</td>
+      <td>${platosStr}</td>
+      <td>
+        <div style="display:flex; gap:6px;">
+          <button class="btn btn-outline btn-sm" onclick="abrirEditarPedido('${k}')">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="eliminarPedido('${k}')">🗑️</button>
+        </div>
+      </td>
+    </tr>`;
+  });
+
+  html += `</tbody></table></div>`;
+  container.innerHTML = html;
+}
+
+window.filtrarPedidos = function(filtro) {
+  filtroPedidos = filtro;
+  document.querySelectorAll('#filtros-pedidos .btn').forEach(b => b.classList.remove('btn-gold'));
+  document.getElementById(`f-${filtro}`)?.classList.add('btn-gold');
+  renderAdminPedidos(filtro);
+}
+
+window.abrirEditarPedido = function(key) {
+  editandoPedidoKey = key;
+  const p = pedidos[key];
+  document.getElementById('ep-nombre').value = p.nombre || '';
+  document.getElementById('ep-iglesia').value = p.iglesia || '';
+  document.getElementById('ep-dia').value = p.dia || 'sabado';
+
+  // Platos editar simplificado
+  const diasArr = p.dia === 'ambos' ? ['sabado', 'domingo'] : [p.dia];
+  let html = '';
+  diasArr.forEach(dia => {
+    html += `<div class="form-group"><label>${dia.charAt(0).toUpperCase() + dia.slice(1)} — Platos</label>`;
+    for (let i = 0; i < (p.cantidad || 1); i++) {
+      const selected = (p.platos?.[dia] || [])[i] || '';
+      html += `<select style="margin-bottom:8px" id="ep-${dia}-${i}">
+        <option value="">—</option>`;
+      Object.entries(platos).forEach(([k, pl]) => {
+        html += `<option value="${k}" ${selected === k ? 'selected' : ''}>${pl.emoji || ''} ${pl.nombre}</option>`;
+      });
+      html += `</select>`;
+    }
+    html += `</div>`;
+  });
+  document.getElementById('ep-platos-container').innerHTML = html;
+  document.getElementById('modal-pedido').classList.add('open');
+}
+
+window.guardarPedido = async function() {
+  const key = editandoPedidoKey;
+  const p = pedidos[key];
+  const nombre = document.getElementById('ep-nombre').value.trim();
+  const iglesia = document.getElementById('ep-iglesia').value.trim();
+  const dia = document.getElementById('ep-dia').value;
+  if (!nombre) { toast('Nombre requerido', 'err'); return; }
+
+  const diasArr = p.dia === 'ambos' ? ['sabado', 'domingo'] : [p.dia];
+  const nuevosPlatos = {};
+  diasArr.forEach(d => {
+    nuevosPlatos[d] = [];
+    for (let i = 0; i < (p.cantidad || 1); i++) {
+      const val = document.getElementById(`ep-${d}-${i}`)?.value || '';
+      nuevosPlatos[d].push(val);
+    }
+  });
+
+  // Actualizar localmente siempre
+  pedidos[key] = { ...pedidos[key], nombre, iglesia, dia, platos: nuevosPlatos };
+  renderAdminPedidos();
+
+  // Intentar guardar en Firebase si está disponible
+  try {
+    await update(ref(db, `pedidos/${key}`), { nombre, iglesia, dia, platos: nuevosPlatos });
+  } catch (e) {
+    // Firebase no configurado, se guardó solo localmente
+  }
+
+  toast('Pedido actualizado ✅', 'ok');
+  closeModal('modal-pedido');
+  editandoPedidoKey = null;
+}
+
+window.eliminarPedido = async function(key) {
+  const p = pedidos[key];
+  if (!confirm(`¿Eliminar pedido de "${p?.nombre}"?`)) return;
+  await remove(ref(db, `pedidos/${key}`));
+  toast('Pedido eliminado', 'ok');
+}
+
+// ============================================================
+//  ESTADÍSTICAS
+// ============================================================
+function calcularStats() {
+  const container = document.getElementById('stats-grid');
+  if (!container) return;
+
+  const totalPedidos = Object.keys(pedidos).length;
+  const totalAlmuerzos = Object.values(pedidos).reduce((a, p) => a + (p.cantidad || 0), 0);
+  const sab = Object.values(pedidos).filter(p => p.dia === 'sabado').length;
+  const dom = Object.values(pedidos).filter(p => p.dia === 'domingo').length;
+  const amb = Object.values(pedidos).filter(p => p.dia === 'ambos').length;
+
+  // Plato más pedido
+  const conteo = {};
+  Object.values(pedidos).forEach(p => {
+    const dias = p.dia === 'ambos' ? ['sabado', 'domingo'] : [p.dia];
+    dias.forEach(dia => {
+      (p.platos?.[dia] || []).forEach(k => {
+        if (k) conteo[k] = (conteo[k] || 0) + 1;
+      });
+    });
+  });
+  const topKey = Object.entries(conteo).sort(([, a], [, b]) => b - a)[0];
+  const topPlato = topKey ? (platos[topKey[0]]?.nombre || '—') : '—';
+
+  container.innerHTML = `
+    <div class="stat-card"><div class="num">${totalPedidos}</div><div class="lbl">Registros</div></div>
+    <div class="stat-card"><div class="num">${totalAlmuerzos}</div><div class="lbl">Almuerzos</div></div>
+    <div class="stat-card"><div class="num">${sab}</div><div class="lbl">Solo Sábado</div></div>
+    <div class="stat-card"><div class="num">${dom}</div><div class="lbl">Solo Domingo</div></div>
+    <div class="stat-card"><div class="num">${amb}</div><div class="lbl">Ambos días</div></div>
+    <div class="stat-card" style="grid-column: span 1;">
+      <div class="num" style="font-size:16px; padding-top:8px;">${topPlato}</div>
+      <div class="lbl">Plato estrella</div>
+    </div>
+    ${Object.entries(conteo).map(([k, c]) => `
+      <div class="stat-card">
+        <div class="num">${c}</div>
+        <div class="lbl">${platos[k]?.emoji || ''} ${platos[k]?.nombre || k}</div>
+      </div>`).join('')}
+  `;
+}
+
+// ============================================================
+//  EXPORTAR CSV
+// ============================================================
+window.exportarCSV = function() {
+  const diasLabel = { sabado: 'Sábado', domingo: 'Domingo', ambos: 'Ambos días' };
+  let csv = 'Nombre,Iglesia,Día,Cantidad,Sábado-Platos,Domingo-Platos,Fecha\n';
+  Object.values(pedidos).forEach(p => {
+    const platSab = (p.platos?.sabado || []).map(k => platos[k]?.nombre || k).join(' | ');
+    const platDom = (p.platos?.domingo || []).map(k => platos[k]?.nombre || k).join(' | ');
+    const fecha = p.timestamp ? new Date(p.timestamp).toLocaleDateString('es-CO') : '';
+    csv += `"${p.nombre}","${p.iglesia}","${diasLabel[p.dia] || p.dia}",${p.cantidad},"${platSab}","${platDom}","${fecha}"\n`;
+  });
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'pedidos-evento.csv'; a.click();
+  toast('CSV descargado ✅', 'ok');
+}
+
+// ============================================================
+//  MODALS & TOAST
+// ============================================================
+window.closeModal = function(id) {
+  document.getElementById(id)?.classList.remove('open');
+}
+
+window.toast = function(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `show ${type}`;
+  setTimeout(() => el.className = '', 3000);
+}
+
+// Cerrar modales al click fuera
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+// ============================================================
+//  START
+// ============================================================
+init();
+</script>
+</body>
+</html>
+ort" content="width=device-width, initial-scale=1.0">
 <title>Dama Dorca — Menú del Encuentro</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
