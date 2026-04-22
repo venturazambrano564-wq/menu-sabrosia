@@ -921,13 +921,20 @@ function iToogleTiempo(k,checked){
 function iElegir(dia,t,platoKey,btn){
   const k=dia+'|'+t;
   iSel[k]=platoKey;
+  // Si el toggle no estaba activo, activarlo automáticamente
+  if(!iTiempos[k]){
+    iTiempos[k]=true;
+    const cb=document.getElementById('itgl-'+k);
+    if(cb) cb.checked=true;
+    const lbl=document.getElementById('itlbl-'+k);
+    if(lbl) lbl.textContent='Sí quiero';
+    const sec=document.getElementById('itopc-'+k);
+    if(sec) sec.classList.add('abierto');
+  }
   document.getElementById('itopc-'+k).querySelectorAll('.opcion-btn').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
   iActualizarBtn();
 }
-
-function iHayAlMenosUna(){return Object.values(iTiempos).some(v=>v);}
-function iTodasSeleccionadas(){return Object.entries(iTiempos).every(([k,v])=>!v||iSel[k]!==undefined);}
 
 function iActualizarBtn(){
   const btn=document.getElementById('i-btn-pedir');
@@ -936,11 +943,12 @@ function iActualizarBtn(){
   const yp=yaPidio(allPedidos);
   if(yp){btn.disabled=true;txt.textContent='✦ Ya estás inscrita — ¡gracias!';return;}
   if(menuCerrado){btn.disabled=true;txt.textContent='Las inscripciones están cerradas';return;}
-  if(!iHayAlMenosUna()){btn.disabled=true;txt.textContent='Activa al menos un tiempo de comida para continuar';return;}
-  if(!iTodasSeleccionadas()){
-    const f=Object.entries(iTiempos).filter(([k,v])=>v&&!iSel[k]).length;
-    btn.disabled=true;txt.textContent='Faltan '+f+' elección'+(f!==1?'es':'')+' en los tiempos activados';return;
-  }
+  // Hay al menos una selección hecha
+  const haySeleccion=Object.keys(iSel).length>0;
+  if(!haySeleccion){btn.disabled=true;txt.textContent='Activa al menos un tiempo de comida y elige tu plato';return;}
+  // Todos los tiempos activos tienen selección
+  const falt=Object.entries(iTiempos).filter(([k,v])=>v===true&&iSel[k]===undefined).length;
+  if(falt>0){btn.disabled=true;txt.textContent='Faltan '+falt+' elección'+(falt!==1?'es':'')+' en los tiempos activados';return;}
   btn.disabled=false;txt.textContent='¡Todo listo! Confirma tu inscripción';
 }
 
