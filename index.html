@@ -7,16 +7,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --rose:#C97D8A; --rose-d:#9E5F6C; --rose-l:#F2D9DF;
-  --blush:#FAF0F2; --gold:#C4A35A; --gold-l:#F0DFB5;
-  --ivory:#FDFAF5; --taupe:#7A6B65; --dark:#2E1F23;
-  --green:#3A6B44; --border:rgba(201,125,138,.18);
+  --rose:#C97D8A;--rose-d:#9E5F6C;--rose-l:#F2D9DF;
+  --blush:#FAF0F2;--gold:#C4A35A;--gold-l:#F0DFB5;
+  --ivory:#FDFAF5;--taupe:#7A6B65;--dark:#2E1F23;
+  --green:#3A6B44;--border:rgba(201,125,138,.18);
   --shadow:0 8px 32px rgba(46,31,35,.10);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Jost',sans-serif;background:var(--ivory);color:var(--dark);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 10% 0%,rgba(201,125,138,.11) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 90% 100%,rgba(196,163,90,.08) 0%,transparent 60%);pointer-events:none;z-index:0}
+
+/* ── HEADER ── */
 header{background:var(--dark);position:sticky;top:0;z-index:100;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:62px;box-shadow:0 2px 24px rgba(46,31,35,.35)}
 .logo-main{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:300;font-style:italic;color:#fff;letter-spacing:.04em;line-height:1}
 .logo-main em{color:var(--rose);font-style:normal;font-weight:600}
@@ -32,12 +34,16 @@ header{background:var(--dark);position:sticky;top:0;z-index:100;padding:0 1.5rem
 .banner{padding:10px 1.5rem;font-size:12px;font-weight:500;text-align:center;letter-spacing:.05em;display:none}
 .banner.show{display:block}
 .banner.cerrado{background:var(--rose-d);color:#fff}
+
+/* ── TABS ── */
 .tabs{background:var(--dark);display:flex;border-top:1px solid rgba(255,255,255,.07);overflow-x:auto}
 .tab{flex:1;padding:11px 10px;border:none;background:transparent;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.42);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;min-width:80px;transition:all .2s}
 .tab:hover{color:rgba(255,255,255,.75)}
 .tab.active{color:var(--rose-l);border-bottom-color:var(--rose)}
 .panel{display:none}.panel.active{display:block}
 .tab-badge{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:var(--rose);color:#fff;font-size:9px;font-weight:700;margin-left:4px}
+
+/* ── MAIN ── */
 main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-index:1}
 .hero{text-align:center;margin-bottom:2.5rem;padding:1.5rem 1rem}
 .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,3rem);font-weight:300;font-style:italic;color:var(--dark);line-height:1.1;margin-bottom:.4rem}
@@ -46,12 +52,15 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 .divider{display:flex;align-items:center;gap:12px;margin:1.25rem auto;max-width:280px}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--rose),transparent)}
 .divider span{color:var(--rose);font-size:13px}
+
+/* ── STATS ── */
 .stat-bar{display:flex;gap:10px;margin-bottom:2rem;flex-wrap:wrap}
 .stat{background:#fff;border:1px solid var(--border);border-radius:14px;padding:13px 16px;flex:1;min-width:110px;box-shadow:0 2px 10px rgba(201,125,138,.06)}
 .stat .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--taupe);margin-bottom:4px}
 .stat .val{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--dark)}
 .val.ok{color:var(--green)}.val.warn{color:var(--gold)}.val.bad{color:var(--rose-d)}
-/* PASOS */
+
+/* ── PASOS ── */
 .steps-bar{display:flex;align-items:center;justify-content:center;gap:0;margin:0 auto 2rem;max-width:340px}
 .step-item{display:flex;flex-direction:column;align-items:center;gap:5px}
 .step-circle{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--taupe);transition:all .3s}
@@ -61,7 +70,8 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 .step-item.active .step-label{color:var(--rose-d)}
 .step-line{flex:1;height:2px;background:var(--border);margin:0 6px;margin-bottom:20px;min-width:35px;transition:background .3s}
 .step-line.done{background:var(--green)}
-/* DATOS */
+
+/* ── DATOS CARD ── */
 .datos-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:2rem 1.75rem;max-width:480px;margin:0 auto;box-shadow:var(--shadow)}
 .datos-deco{font-size:1.5rem;color:var(--rose);margin-bottom:.5rem}
 .datos-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-style:italic;font-weight:300;color:var(--dark);margin-bottom:.2rem}
@@ -73,14 +83,51 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 .field-input.error{border-color:var(--rose-d)}
 .err-msg{font-size:11px;color:var(--rose-d);margin-top:4px;display:none;font-weight:500}
 .err-msg.show{display:block}
-/* RESUMEN MINI */
+
+/* ── RESUMEN MINI ── */
 .datos-resumen-mini{background:linear-gradient(135deg,var(--dark) 0%,#4A2D34 100%);border-radius:14px;padding:12px 18px;margin-bottom:1.5rem;display:flex;align-items:center;gap:12px}
 .drm-icon{font-size:1.2rem;flex-shrink:0}
 .drm-nombre{font-size:14px;font-weight:500;color:#fff}
 .drm-detalle{font-size:11px;color:rgba(255,255,255,.55);font-style:italic}
 .drm-edit{margin-left:auto;font-size:11px;color:rgba(255,255,255,.45);cursor:pointer;border:1px solid rgba(255,255,255,.2);padding:4px 10px;border-radius:999px;flex-shrink:0;background:transparent;font-family:'Jost',sans-serif;transition:all .2s}
 .drm-edit:hover{color:#fff;border-color:rgba(255,255,255,.5)}
-/* TIEMPOS DE COMIDA */
+
+/* ── MENÚ COMPLETO (días) ── */
+.dias-grid{display:flex;flex-direction:column;gap:1.5rem}
+.dia-block{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+.dia-header{background:linear-gradient(135deg,var(--dark) 0%,#4A2D34 100%);padding:14px 20px;display:flex;align-items:center;gap:14px}
+.dia-num{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:rgba(242,217,223,.5);font-style:italic;line-height:1}
+.dia-nombre{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:#fff;font-weight:300}
+.dia-comidas-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:1px}
+.dia-status{display:inline-flex;align-items:center;gap:5px;font-size:10px;letter-spacing:.06em;margin-left:auto;padding:3px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.45);flex-shrink:0}
+.dia-status.completo{color:#a8e6b0;border-color:rgba(168,230,176,.35)}
+.comida-section{padding:16px 20px;border-bottom:1px solid var(--border)}
+.comida-section:last-child{border-bottom:none}
+.comida-label{display:flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--rose-d);font-weight:500;margin-bottom:12px}
+.comida-label::after{content:'';flex:1;height:1px;background:var(--rose-l)}
+.acompan{font-size:11px;color:var(--taupe);font-style:italic;margin-top:9px;padding:7px 13px;background:var(--rose-l);border-radius:8px;border-left:2px solid var(--rose)}
+
+/* ── OPCIONES (compartido menú completo e individual) ── */
+.opciones-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opcion-btn{padding:0;border-radius:14px;border:1.5px solid var(--border);background:var(--blush);cursor:pointer;text-align:left;transition:all .18s;position:relative;overflow:hidden;display:flex;flex-direction:column;font-family:'Jost',sans-serif}
+.opcion-btn:hover:not(:disabled){border-color:var(--rose);background:#fff;transform:translateY(-1px)}
+.opcion-btn.sel{border-color:var(--rose-d);background:var(--rose-l)}
+/* Menú completo: sin foto, solo texto */
+.opcion-btn.texto-only{padding:13px 14px;border-radius:12px;flex-direction:row;align-items:flex-start}
+.opcion-btn.texto-only .opcion-nombre{font-size:13px;font-weight:400;color:var(--dark)}
+.opcion-btn.texto-only.sel .opcion-nombre{color:var(--rose-d)}
+.opcion-btn.texto-only .opcion-sub{font-size:10px;opacity:.65;margin-top:2px;display:block;color:var(--taupe)}
+.opcion-btn.texto-only .opcion-texto{padding:0;flex:1}
+/* Menú individual: con foto */
+.opcion-foto{width:100%;height:85px;object-fit:cover;display:block;border-radius:12px 12px 0 0}
+.opcion-foto-placeholder{width:100%;height:85px;display:flex;align-items:center;justify-content:center;font-size:2rem;background:linear-gradient(135deg,var(--rose-l),var(--gold-l));border-radius:12px 12px 0 0}
+.opcion-texto{padding:9px 11px 10px}
+.opcion-nombre{font-size:13px;font-weight:500;color:var(--dark);display:block;line-height:1.3}
+.opcion-sub{display:block;font-size:10px;color:var(--taupe);margin-top:2px}
+.check-mark{position:absolute;top:6px;right:7px;width:20px;height:20px;border-radius:50%;background:var(--rose-d);color:#fff;font-size:10px;display:none;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.opcion-btn.sel .check-mark{display:flex}
+
+/* ── INDIVIDUAL: TIEMPOS TOGGLE ── */
 .comidas-grid{display:flex;flex-direction:column;gap:1.25rem}
 .tiempo-block{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
 .tiempo-header{padding:14px 20px;display:flex;align-items:center;gap:14px}
@@ -98,26 +145,19 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 .toggle-switch input:checked+.toggle-slider::before{transform:translateX(18px)}
 .tiempo-opciones{display:none;padding:0 20px 16px}
 .tiempo-opciones.abierto{display:block}
-.opciones-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.opcion-btn{padding:0;border-radius:14px;border:1.5px solid var(--border);background:var(--blush);cursor:pointer;text-align:left;transition:all .18s;position:relative;overflow:hidden;display:flex;flex-direction:column;font-family:'Jost',sans-serif}
-.opcion-btn:hover:not(:disabled){border-color:var(--rose);background:#fff;transform:translateY(-1px)}
-.opcion-btn.sel{border-color:var(--rose-d);background:var(--rose-l)}
-.opcion-foto{width:100%;height:85px;object-fit:cover;display:block;border-radius:12px 12px 0 0}
-.opcion-foto-placeholder{width:100%;height:85px;display:flex;align-items:center;justify-content:center;font-size:2rem;background:linear-gradient(135deg,var(--rose-l),var(--gold-l));border-radius:12px 12px 0 0}
-.opcion-texto{padding:9px 11px 10px}
-.opcion-nombre{font-size:13px;font-weight:500;color:var(--dark);display:block;line-height:1.3}
-.opcion-sub{display:block;font-size:10px;color:var(--taupe);margin-top:2px}
-.check-mark{position:absolute;top:6px;right:7px;width:20px;height:20px;border-radius:50%;background:var(--rose-d);color:#fff;font-size:10px;display:none;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
-.opcion-btn.sel .check-mark{display:flex}
 .nota-libre{font-size:11px;color:var(--taupe);font-style:italic;text-align:center;margin:1.25rem 0 .5rem;padding:10px 16px;background:var(--rose-l);border-radius:10px;border-left:3px solid var(--rose);line-height:1.5}
+
+/* ── BTN PEDIR ── */
 .btn-pedir-main{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--rose-d),var(--dark));color:#fff;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;font-weight:300;letter-spacing:.06em;padding:13px 38px;border-radius:999px;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(158,95,108,.3);transition:all .22s}
 .btn-pedir-main:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(158,95,108,.45)}
 .btn-pedir-main:disabled{opacity:.38;cursor:not-allowed;transform:none}
-.pedir-wrap{padding:1.75rem 1.5rem;text-align:center;margin-top:1rem;background:var(--blush);border-radius:16px;border:1px solid var(--border)}
+.pedir-wrap{padding:1.75rem 1.5rem;border-top:1px solid var(--border);background:var(--blush);text-align:center}
+.pedir-wrap-ind{padding:1.75rem 1.5rem;text-align:center;margin-top:1rem;background:var(--blush);border-radius:16px;border:1px solid var(--border)}
 .progreso-txt{font-size:11px;color:var(--taupe);margin-top:8px;letter-spacing:.05em}
 .btn-volver{background:transparent;border:none;font-family:'Jost',sans-serif;font-size:12px;color:var(--taupe);cursor:pointer;margin-top:.75rem;letter-spacing:.05em;display:block;width:100%;text-align:center}
 .btn-volver:hover{color:var(--rose-d)}
-/* OVERLAY/MODAL */
+
+/* ── OVERLAY / MODAL ── */
 .overlay{position:fixed;inset:0;background:rgba(30,15,20,.65);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
 .overlay.show{display:flex}
 .modal{background:var(--ivory);border-radius:22px;padding:2rem;width:100%;max-width:440px;box-shadow:0 32px 80px rgba(46,31,35,.35);max-height:92vh;overflow-y:auto;border:1px solid var(--border)}
@@ -133,7 +173,8 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 .btn-confirmar:hover{opacity:.9;transform:translateY(-1px)}
 .cancel-link{display:block;text-align:center;font-size:12px;color:var(--taupe);cursor:pointer;letter-spacing:.05em}
 .cancel-link:hover{color:var(--rose-d)}
-/* LISTAS */
+
+/* ── LISTAS ── */
 .ped-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
 .filter-btn{padding:6px 15px;border-radius:999px;border:1px solid var(--border);background:transparent;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--taupe);cursor:pointer;transition:all .15s}
 .filter-btn:hover{background:var(--blush)}
@@ -152,7 +193,11 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 .ped-dia-item strong{color:var(--rose-d);min-width:90px;flex-shrink:0}
 .ped-dia-item span{color:var(--taupe)}
 .ped-hora{font-size:10px;color:var(--taupe);letter-spacing:.05em;margin-top:5px}
-/* ADMIN */
+.ped-tipo{display:inline-flex;align-items:center;padding:2px 8px;border-radius:999px;font-size:10px;letter-spacing:.05em;margin-top:3px}
+.ped-tipo.completo{background:rgba(58,107,68,.12);color:var(--green)}
+.ped-tipo.individual{background:var(--rose-l);color:var(--rose-d)}
+
+/* ── ADMIN ── */
 .admin-2col{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
 @media(max-width:640px){.admin-2col{grid-template-columns:1fr}}
 .card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.35rem;margin-bottom:1.25rem;box-shadow:0 2px 12px rgba(201,125,138,.05)}
@@ -172,11 +217,12 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 .al-sub{font-size:12px;color:var(--taupe);letter-spacing:.07em;margin-bottom:1.75rem}
 .admin-pass-input{padding:11px 16px;border:1.5px solid var(--border);border-radius:11px;font-size:15px;font-family:'Jost',sans-serif;width:100%;max-width:260px;display:block;margin:0 auto 12px;background:var(--blush);color:var(--dark);outline:none;text-align:center;letter-spacing:.1em;transition:border-color .2s}
 .admin-pass-input:focus{border-color:var(--rose)}
-/* GESTIÓN PLATOS */
+
+/* ── GESTIÓN PLATOS ── */
 .platos-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
-.plato-tab-btn{padding:5px 14px;border-radius:999px;border:1px solid var(--border);background:transparent;font-family:'Jost',sans-serif;font-size:11px;color:var(--taupe);cursor:pointer;transition:all .15s}
-.plato-tab-btn:hover{background:var(--blush)}
-.plato-tab-btn.active{background:var(--rose-d);color:#fff;border-color:var(--rose-d)}
+.ptab{padding:5px 14px;border-radius:999px;border:1px solid var(--border);background:transparent;font-family:'Jost',sans-serif;font-size:11px;color:var(--taupe);cursor:pointer;transition:all .15s}
+.ptab:hover{background:var(--blush)}
+.ptab.active{background:var(--rose-d);color:#fff;border-color:var(--rose-d)}
 .plato-adm-row{background:var(--blush);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
 .plato-adm-foto{width:52px;height:52px;border-radius:9px;object-fit:cover;flex-shrink:0;cursor:pointer;border:2px solid transparent;transition:border-color .15s}
 .plato-adm-foto:hover{border-color:var(--rose)}
@@ -202,7 +248,8 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 .foto-upload-wrap .up-ico{font-size:1.6rem;color:var(--taupe)}
 .foto-upload-wrap .up-txt{font-size:11px;color:var(--taupe)}
 .foto-prev-img{width:72px;height:72px;object-fit:cover;border-radius:8px}
-/* STATS */
+
+/* ── STATS / RESUMEN ADMIN ── */
 .plato-stat-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .plato-stat-nombre{font-size:12px;color:var(--dark);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .plato-stat-bar-wrap{flex:2;height:6px;background:var(--rose-l);border-radius:999px;overflow:hidden}
@@ -221,6 +268,8 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 .adm-ped-dia strong{color:var(--dark);min-width:90px;flex-shrink:0;font-weight:500}
 .adm-ped-dia span{color:var(--taupe)}
 .adm-actions{display:flex;gap:5px;margin-top:8px}
+
+/* ── CONFIRM / TOAST ── */
 .confirm-dialog{background:#fff;border-radius:16px;padding:1.75rem;width:100%;max-width:340px;box-shadow:0 16px 48px rgba(46,31,35,.3);border:1px solid var(--border)}
 .confirm-dialog h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;margin-bottom:8px}
 .confirm-dialog p{font-size:13px;color:var(--taupe);margin-bottom:1.25rem;line-height:1.5}
@@ -231,7 +280,7 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:10px 24px;border-radius:999px;font-size:12px;letter-spacing:.06em;z-index:999;display:none;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.25)}
 .toast.show{display:block}.toast.success{background:var(--green)}.toast.error{background:var(--rose-d)}
 .empty{text-align:center;padding:2.5rem 1rem;color:var(--taupe);font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic}
-@media(max-width:480px){main{padding:1.25rem 1rem}.opciones-grid{grid-template-columns:1fr}.stat-bar{gap:7px}header{padding:0 1rem}.tiempo-toggle-wrap .toggle-lbl{display:none}}
+@media(max-width:480px){main{padding:1.25rem 1rem}.opciones-grid{grid-template-columns:1fr}.stat-bar{gap:7px}header{padding:0 1rem}.toggle-lbl{display:none}}
 </style>
 </head>
 <body>
@@ -246,35 +295,35 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
     <div class="badge-estado" id="main-badge"><span class="dot"></span><span id="badge-txt">Cargando...</span></div>
   </div>
 </header>
-
 <div class="banner" id="banner"></div>
 
 <div class="tabs">
-  <button class="tab active" onclick="goTab('menu',this)">✦ Menú Individual</button>
+  <button class="tab active"          onclick="goTab('menu',this)">✦ Menú</button>
+  <button class="tab"                 onclick="goTab('individual',this)">✦ Individual</button>
   <button class="tab" id="tab-btn-pedidos" style="display:none" onclick="goTab('pedidos',this)">Inscritas <span class="tab-badge" id="ped-count" style="display:none">0</span></button>
-  <button class="tab" onclick="goTab('admin',this)">Admin</button>
+  <button class="tab"                 onclick="goTab('admin',this)">Admin</button>
 </div>
 
 <main>
 
-<!-- ══ MENÚ ══ -->
+<!-- ══════════════════════════════════
+     PESTAÑA 1 — MENÚ COMPLETO
+══════════════════════════════════ -->
 <div id="tab-menu" class="panel active">
   <div class="hero">
     <div class="hero-title">Bienvenida, <span>hermana</span></div>
-    <div class="hero-sub">Inscripción al Menú · Elección individual</div>
+    <div class="hero-sub">Inscripción al Menú del Encuentro</div>
     <div class="divider"><span>✦</span></div>
   </div>
 
   <div class="steps-bar">
-    <div class="step-item active" id="step-ind-1"><div class="step-circle">1</div><div class="step-label">Tus datos</div></div>
-    <div class="step-line" id="sl-12"></div>
-    <div class="step-item" id="step-ind-2"><div class="step-circle">2</div><div class="step-label">Tu menú</div></div>
-    <div class="step-line" id="sl-23"></div>
-    <div class="step-item" id="step-ind-3"><div class="step-circle">3</div><div class="step-label">Confirmar</div></div>
+    <div class="step-item active" id="m-step-1"><div class="step-circle">1</div><div class="step-label">Tus datos</div></div>
+    <div class="step-line" id="m-sl-12"></div>
+    <div class="step-item" id="m-step-2"><div class="step-circle">2</div><div class="step-label">Tu menú</div></div>
   </div>
 
-  <!-- PASO 1 -->
-  <div id="paso-1">
+  <!-- Paso 1: datos -->
+  <div id="m-paso-1">
     <div class="stat-bar">
       <div class="stat"><div class="lbl">Cupos disponibles</div><div class="val" id="s-libre">—</div></div>
       <div class="stat"><div class="lbl">Inscritas</div><div class="val ok" id="s-ped">0</div></div>
@@ -282,51 +331,117 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
     </div>
     <div class="datos-card">
       <div class="datos-deco">✦</div>
-      <div class="datos-title">Tus datos para la inscripción</div>
-      <div class="datos-sub">Completa tus datos antes de elegir tu menú</div>
+      <div class="datos-title">Tus datos</div>
+      <div class="datos-sub">Completa antes de elegir tu menú</div>
       <div class="field-group">
-        <label>Tu nombre completo *</label>
-        <input type="text" class="field-input" id="f-nombre" placeholder="Tu nombre y apellido" oninput="limpiarErr('f-nombre','err-nombre')"/>
-        <div class="err-msg" id="err-nombre">Ingresa tu nombre completo</div>
+        <label>Nombre completo *</label>
+        <input class="field-input" id="m-nombre" type="text" placeholder="Tu nombre y apellido" oninput="limpiarErr('m-nombre','m-err-nombre')">
+        <div class="err-msg" id="m-err-nombre">Ingresa tu nombre completo</div>
       </div>
       <div class="field-group">
         <label>Nombre de tu líder *</label>
-        <input type="text" class="field-input" id="f-lider" placeholder="Nombre del líder o pastora" oninput="limpiarErr('f-lider','err-lider')"/>
-        <div class="err-msg" id="err-lider">Indica el nombre de tu líder</div>
+        <input class="field-input" id="m-lider" type="text" placeholder="Nombre del líder o pastora" oninput="limpiarErr('m-lider','m-err-lider')">
+        <div class="err-msg" id="m-err-lider">Indica el nombre de tu líder</div>
       </div>
       <div class="field-group">
-        <label>Iglesia a la que perteneces *</label>
-        <input type="text" class="field-input" id="f-iglesia-input" placeholder="Nombre de tu iglesia" oninput="limpiarErr('f-iglesia-input','err-iglesia')"/>
-        <div class="err-msg" id="err-iglesia">Indica tu iglesia</div>
+        <label>Iglesia *</label>
+        <input class="field-input" id="m-iglesia" type="text" placeholder="Nombre de tu iglesia" oninput="limpiarErr('m-iglesia','m-err-iglesia')">
+        <div class="err-msg" id="m-err-iglesia">Indica tu iglesia</div>
       </div>
-      <button class="btn-pedir-main" onclick="irPaso2()" style="margin-top:.5rem">Continuar al menú →</button>
+      <button class="btn-pedir-main" onclick="mIrPaso2()" style="margin-top:.5rem">Continuar al menú →</button>
     </div>
   </div>
 
-  <!-- PASO 2 -->
-  <div id="paso-2" style="display:none">
-    <div class="datos-resumen-mini" id="datos-resumen-mini"></div>
-    <div class="nota-libre">✦ Activa únicamente los tiempos de comida que deseas pedir. Puedes elegir desayuno, almuerzo, cena, o cualquier combinación — ¡sin ningún problema!</div>
-    <div class="comidas-grid" id="comidas-grid"></div>
+  <!-- Paso 2: elección por días (todo obligatorio) -->
+  <div id="m-paso-2" style="display:none">
+    <div class="datos-resumen-mini" id="m-resumen-mini"></div>
+    <div class="dias-grid" id="m-dias-grid">
+      <!-- Se renderiza dinámicamente -->
+    </div>
     <div class="pedir-wrap">
-      <button class="btn-pedir-main" id="btn-pedir-main" onclick="abrirModal()" disabled>✦ Ver resumen y confirmar</button>
-      <p class="progreso-txt" id="progreso-txt">Activa al menos un tiempo de comida y elige tu plato</p>
-      <button class="btn-volver" onclick="irPaso1()">← Volver a mis datos</button>
+      <button class="btn-pedir-main" id="m-btn-pedir" onclick="mAbrirModal()" disabled>✦ Confirmar mis elecciones</button>
+      <p class="progreso-txt" id="m-progreso-txt">Selecciona una opción en cada comida para continuar</p>
+      <button class="btn-volver" onclick="mIrPaso1()">← Volver a mis datos</button>
     </div>
   </div>
 </div>
 
-<!-- ══ INSCRITAS ══ -->
+
+<!-- ══════════════════════════════════
+     PESTAÑA 2 — MENÚ INDIVIDUAL
+══════════════════════════════════ -->
+<div id="tab-individual" class="panel">
+  <div class="hero">
+    <div class="hero-title">Elección <span>individual</span></div>
+    <div class="hero-sub">Elige solo los tiempos que necesitas</div>
+    <div class="divider"><span>✦</span></div>
+  </div>
+
+  <div class="steps-bar">
+    <div class="step-item active" id="i-step-1"><div class="step-circle">1</div><div class="step-label">Tus datos</div></div>
+    <div class="step-line" id="i-sl-12"></div>
+    <div class="step-item" id="i-step-2"><div class="step-circle">2</div><div class="step-label">Tu menú</div></div>
+    <div class="step-line" id="i-sl-23"></div>
+    <div class="step-item" id="i-step-3"><div class="step-circle">3</div><div class="step-label">Confirmar</div></div>
+  </div>
+
+  <!-- Paso 1: datos -->
+  <div id="i-paso-1">
+    <div class="datos-card">
+      <div class="datos-deco">✦</div>
+      <div class="datos-title">Tus datos</div>
+      <div class="datos-sub">Completa tus datos antes de elegir</div>
+      <div class="field-group">
+        <label>Nombre completo *</label>
+        <input class="field-input" id="i-nombre" type="text" placeholder="Tu nombre y apellido" oninput="limpiarErr('i-nombre','i-err-nombre')">
+        <div class="err-msg" id="i-err-nombre">Ingresa tu nombre completo</div>
+      </div>
+      <div class="field-group">
+        <label>Nombre de tu líder *</label>
+        <input class="field-input" id="i-lider" type="text" placeholder="Nombre del líder o pastora" oninput="limpiarErr('i-lider','i-err-lider')">
+        <div class="err-msg" id="i-err-lider">Indica el nombre de tu líder</div>
+      </div>
+      <div class="field-group">
+        <label>Iglesia *</label>
+        <input class="field-input" id="i-iglesia" type="text" placeholder="Nombre de tu iglesia" oninput="limpiarErr('i-iglesia','i-err-iglesia')">
+        <div class="err-msg" id="i-err-iglesia">Indica tu iglesia</div>
+      </div>
+      <button class="btn-pedir-main" onclick="iIrPaso2()" style="margin-top:.5rem">Continuar al menú →</button>
+    </div>
+  </div>
+
+  <!-- Paso 2: toggles libres -->
+  <div id="i-paso-2" style="display:none">
+    <div class="datos-resumen-mini" id="i-resumen-mini"></div>
+    <div class="nota-libre">✦ Activa solo los tiempos que deseas pedir — desayuno, almuerzo, cena o cualquier combinación. ¡Sin problema!</div>
+    <div class="comidas-grid" id="i-comidas-grid"></div>
+    <div class="pedir-wrap-ind">
+      <button class="btn-pedir-main" id="i-btn-pedir" onclick="iAbrirModal()" disabled>✦ Ver resumen y confirmar</button>
+      <p class="progreso-txt" id="i-progreso-txt">Activa al menos un tiempo y elige tu plato</p>
+      <button class="btn-volver" onclick="iIrPaso1()">← Volver a mis datos</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PESTAÑA 3 — INSCRITAS
+══════════════════════════════════ -->
 <div id="tab-pedidos" class="panel">
   <div class="ped-filters">
     <button class="filter-btn active" onclick="filtrar('todos',this)">Todas</button>
-    <button class="export-btn" onclick="exportarCSV()">⬇ Exportar CSV</button>
+    <button class="filter-btn" onclick="filtrar('completo',this)">Menú completo</button>
+    <button class="filter-btn" onclick="filtrar('individual',this)">Individual</button>
+    <button class="export-btn" onclick="exportarCSV()">⬇ CSV</button>
   </div>
   <input type="text" class="search-input" id="search-input" placeholder="Buscar por nombre..." oninput="renderPedidosFiltrados()">
   <div id="pedidos-list"><div class="empty">Cargando...</div></div>
 </div>
 
-<!-- ══ ADMIN ══ -->
+
+<!-- ══════════════════════════════════
+     PESTAÑA 4 — ADMIN
+══════════════════════════════════ -->
 <div id="tab-admin" class="panel">
   <div class="admin-lock" id="admin-lock">
     <div class="al-deco">✦</div>
@@ -334,7 +449,7 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
     <div class="al-sub">Dama Dorca · Menú del Encuentro</div>
     <input type="password" id="admin-pass" class="admin-pass-input" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')checkPass()">
     <button class="admin-btn" style="width:auto;padding:10px 36px;margin:0 auto;display:block" onclick="checkPass()">Ingresar</button>
-    <p id="pass-error" style="font-size:12px;color:var(--rose-d);margin-top:12px;display:none;font-style:italic">Contraseña incorrecta — inténtalo de nuevo</p>
+    <p id="pass-error" style="font-size:12px;color:var(--rose-d);margin-top:12px;display:none;font-style:italic">Contraseña incorrecta</p>
   </div>
 
   <div id="admin-content" style="display:none">
@@ -360,7 +475,7 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
           <div class="card-title">Acciones</div>
           <div style="display:flex;flex-direction:column;gap:8px">
             <button class="admin-btn outline" onclick="exportarCSV()">⬇ Exportar CSV</button>
-            <button class="admin-btn outline" onclick="goTab('pedidos', document.querySelectorAll('.tab')[1])">👁 Ver inscritas</button>
+            <button class="admin-btn outline" onclick="goTab('pedidos',document.querySelectorAll('.tab')[2])">👁 Ver inscritas</button>
             <button class="admin-btn outline" style="border-color:rgba(158,95,108,.4);color:var(--rose-d)" onclick="resetPedidos()">🗑 Limpiar todos los pedidos</button>
           </div>
         </div>
@@ -387,11 +502,11 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
         </div>
         <div class="field-group">
           <label>Nombre del plato *</label>
-          <input type="text" class="field-input" id="new-plato-nombre" placeholder="Ej: Sancocho de Gallina"/>
+          <input type="text" class="field-input" id="new-plato-nombre" placeholder="Ej: Sancocho de Gallina" style="background:#fff"/>
         </div>
         <div class="field-group">
           <label>Descripción / acompañamientos (opcional)</label>
-          <input type="text" class="field-input" id="new-plato-desc" placeholder="Ej: Con arroz y patacones"/>
+          <input type="text" class="field-input" id="new-plato-desc" placeholder="Ej: Con arroz y patacones" style="background:#fff"/>
         </div>
         <div class="field-group">
           <label>Foto del plato (opcional)</label>
@@ -419,15 +534,27 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 </div>
 </main>
 
-<!-- MODAL CONFIRMACIÓN -->
-<div class="overlay" id="overlay">
+<!-- MODAL MENÚ COMPLETO -->
+<div class="overlay" id="m-overlay">
   <div class="modal">
     <div class="modal-rose"></div>
     <div class="modal-title">Tu menú elegido</div>
     <div class="modal-sub">Revisa y confirma tu pedido</div>
-    <div class="resumen-pedido" id="modal-resumen"></div>
-    <button class="btn-confirmar" onclick="confirmar()">✦ Confirmar inscripción</button>
-    <span class="cancel-link" onclick="cerrarModal()">Cancelar</span>
+    <div class="resumen-pedido" id="m-modal-resumen"></div>
+    <button class="btn-confirmar" onclick="mConfirmar()">✦ Confirmar inscripción</button>
+    <span class="cancel-link" onclick="document.getElementById('m-overlay').classList.remove('show')">Cancelar</span>
+  </div>
+</div>
+
+<!-- MODAL MENÚ INDIVIDUAL -->
+<div class="overlay" id="i-overlay">
+  <div class="modal">
+    <div class="modal-rose"></div>
+    <div class="modal-title">Tu menú individual</div>
+    <div class="modal-sub">Revisa y confirma tu pedido</div>
+    <div class="resumen-pedido" id="i-modal-resumen"></div>
+    <button class="btn-confirmar" onclick="iConfirmar()">✦ Confirmar inscripción</button>
+    <span class="cancel-link" onclick="document.getElementById('i-overlay').classList.remove('show')">Cancelar</span>
   </div>
 </div>
 
@@ -448,7 +575,7 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
   </div>
 </div>
 
-<!-- CONFIRM DIALOG -->
+<!-- CONFIRM -->
 <div class="overlay" id="confirm-overlay">
   <div class="confirm-dialog">
     <h3 id="confirm-title">¿Confirmar?</h3>
@@ -466,11 +593,11 @@ main{max-width:980px;margin:0 auto;padding:2rem 1.25rem;position:relative;z-inde
 <script>
 const ADMIN_PASSWORD = "DamaDorca2024";
 
-// Estructura de días y tiempos (sin platos — los platos viven en Firebase)
+// ── Estructura de días y tiempos ──
 const DIAS = {
-  d1:{ label:'Día 1', comidas:{ cena:{label:'Cena',emoji:'🌙'} }},
-  d2:{ label:'Día 2', comidas:{ desayuno:{label:'Desayuno',emoji:'🌸'}, almuerzo:{label:'Almuerzo',emoji:'☀️'}, cena:{label:'Cena',emoji:'🌙'} }},
-  d3:{ label:'Día 3', comidas:{ desayuno:{label:'Desayuno',emoji:'🌸'}, almuerzo:{label:'Almuerzo',emoji:'☀️'} }}
+  d1:{ label:'Día 1', num:'01', nombre:'Primer Día',  comidas:{ cena:{label:'Cena',emoji:'🌙'} }},
+  d2:{ label:'Día 2', num:'02', nombre:'Segundo Día', comidas:{ desayuno:{label:'Desayuno',emoji:'🌸'}, almuerzo:{label:'Almuerzo',emoji:'☀️',acomp:'Con tajadas, ensalada y arroz blanco'}, cena:{label:'Cena',emoji:'🌙'} }},
+  d3:{ label:'Día 3', num:'03', nombre:'Tercer Día',  comidas:{ desayuno:{label:'Desayuno',emoji:'🌸'}, almuerzo:{label:'Almuerzo',emoji:'☀️'} }}
 };
 
 const firebaseConfig = {
@@ -486,22 +613,25 @@ const app = firebase.initializeApp(firebaseConfig);
 const db  = firebase.database(app);
 
 let adminOk=false, allPedidos={}, menuCerrado=false;
-let tiemposActivos={};   // "d1|cena" -> bool
-let selecciones={};      // "d1|cena" -> platoKey
-let platosDB={};         // todos los platos de Firebase
-let admFiltro='todos';
-let fotoNuevoB64=null, fotoEditarB64=null;
+let platosDB={};
 
-// SESSION
+// Selecciones menú completo
+let mSel={};
+// Selecciones menú individual
+let iSel={}, iTiempos={};
+
+let admFiltro='todos', fotoNuevoB64=null, fotoEditarB64=null;
+
+// ── SESSION ──
 function getSession(){
-  let s=localStorage.getItem('dtSess4');
-  if(!s){s='u'+Date.now()+Math.random().toString(36).slice(2,8);localStorage.setItem('dtSess4',s);}
+  let s=localStorage.getItem('dtSess5');
+  if(!s){s='u'+Date.now()+Math.random().toString(36).slice(2,8);localStorage.setItem('dtSess5',s);}
   return s;
 }
 function yaPidio(peds){return !peds?false:Object.values(peds).some(p=>p.session===getSession());}
 function calcLibres(d,peds){return Math.max(0,(d.total||100)-Object.keys(peds).length);}
 
-// INIT
+// ── INIT ──
 window.addEventListener('DOMContentLoaded',()=>{
   db.ref('cupos_dd').once('value',snap=>{if(!snap.val()) db.ref('cupos_dd').set({total:100,cerrado:false});});
   seedPlatos();
@@ -511,28 +641,28 @@ window.addEventListener('DOMContentLoaded',()=>{
 function seedPlatos(){
   db.ref('platos_dd').once('value',snap=>{
     if(snap.val()) return;
-    const d={
-      'd1_cena_0':{dia:'d1',tiempo:'cena',nombre:'Caserito Sabrosía',desc:'Patacones, picadillo y salchicha',foto:'',orden:0},
-      'd1_cena_1':{dia:'d1',tiempo:'cena',nombre:'Sándwich Gratinado',desc:'',foto:'',orden:1},
-      'd2_desayuno_0':{dia:'d2',tiempo:'desayuno',nombre:'Papas Chorreadas',desc:'',foto:'',orden:0},
-      'd2_desayuno_1':{dia:'d2',tiempo:'desayuno',nombre:'Patacones con Queso',desc:'',foto:'',orden:1},
-      'd2_almuerzo_0':{dia:'d2',tiempo:'almuerzo',nombre:'Carne Goulash',desc:'Con tajadas, ensalada y arroz',foto:'',orden:0},
-      'd2_almuerzo_1':{dia:'d2',tiempo:'almuerzo',nombre:'Pollo a la Piña',desc:'Con tajadas, ensalada y arroz',foto:'',orden:1},
-      'd2_cena_0':{dia:'d2',tiempo:'cena',nombre:'Salchipapa',desc:'',foto:'',orden:0},
-      'd2_cena_1':{dia:'d2',tiempo:'cena',nombre:'Empanadas de Carne',desc:'',foto:'',orden:1},
-      'd3_desayuno_0':{dia:'d3',tiempo:'desayuno',nombre:'Huevo Perico con Patacones',desc:'+ Chocolate',foto:'',orden:0},
-      'd3_desayuno_1':{dia:'d3',tiempo:'desayuno',nombre:'Arepuelas con Queso',desc:'+ Café con Leche',foto:'',orden:1},
-      'd3_almuerzo_0':{dia:'d3',tiempo:'almuerzo',nombre:'Posta de Pescado',desc:'',foto:'',orden:0},
-      'd3_almuerzo_1':{dia:'d3',tiempo:'almuerzo',nombre:'Lomo en BBQ',desc:'',foto:'',orden:1}
-    };
-    db.ref('platos_dd').set(d);
+    db.ref('platos_dd').set({
+      'd1_c0':{dia:'d1',tiempo:'cena',    nombre:'Caserito Sabrosía',          desc:'Patacones, picadillo y salchicha',foto:'',orden:0},
+      'd1_c1':{dia:'d1',tiempo:'cena',    nombre:'Sándwich Gratinado',          desc:'',foto:'',orden:1},
+      'd2_d0':{dia:'d2',tiempo:'desayuno',nombre:'Papas Chorreadas',            desc:'',foto:'',orden:0},
+      'd2_d1':{dia:'d2',tiempo:'desayuno',nombre:'Patacones con Queso',         desc:'',foto:'',orden:1},
+      'd2_a0':{dia:'d2',tiempo:'almuerzo',nombre:'Carne Goulash',               desc:'Con tajadas, ensalada y arroz',foto:'',orden:0},
+      'd2_a1':{dia:'d2',tiempo:'almuerzo',nombre:'Pollo a la Piña',             desc:'Con tajadas, ensalada y arroz',foto:'',orden:1},
+      'd2_c0':{dia:'d2',tiempo:'cena',    nombre:'Salchipapa',                  desc:'',foto:'',orden:0},
+      'd2_c1':{dia:'d2',tiempo:'cena',    nombre:'Empanadas de Carne',          desc:'',foto:'',orden:1},
+      'd3_d0':{dia:'d3',tiempo:'desayuno',nombre:'Huevo Perico con Patacones',  desc:'+ Chocolate',foto:'',orden:0},
+      'd3_d1':{dia:'d3',tiempo:'desayuno',nombre:'Arepuelas con Queso',         desc:'+ Café con Leche',foto:'',orden:1},
+      'd3_a0':{dia:'d3',tiempo:'almuerzo',nombre:'Posta de Pescado',            desc:'',foto:'',orden:0},
+      'd3_a1':{dia:'d3',tiempo:'almuerzo',nombre:'Lomo en BBQ',                 desc:'',foto:'',orden:1}
+    });
   });
 }
 
 function listenAll(){
   db.ref('platos_dd').on('value',snap=>{
     platosDB=snap.val()||{};
-    renderComidas();
+    mRenderDias();
+    iRenderComidas();
     if(adminOk) renderPlatosAdm();
   });
   db.ref('pedidos_dd').on('value',snap=>{
@@ -555,7 +685,7 @@ function listenAll(){
   });
 }
 
-// HELPERS PLATOS
+// ── HELPERS ──
 function getPlatosFor(dia,tiempo){
   return Object.entries(platosDB)
     .filter(([,p])=>p.dia===dia&&p.tiempo===tiempo)
@@ -563,192 +693,346 @@ function getPlatosFor(dia,tiempo){
     .map(([k,p])=>({key:k,...p}));
 }
 
-// RENDER COMIDAS (Paso 2)
-function renderComidas(){
-  const g=document.getElementById('comidas-grid');if(!g)return;
-  let h='';
-  Object.entries(DIAS).forEach(([diaKey,diaInfo])=>{
-    Object.entries(diaInfo.comidas).forEach(([tKey,tInfo])=>{
-      const k=diaKey+'|'+tKey;
-      const activo=!!tiemposActivos[k];
-      const platos=getPlatosFor(diaKey,tKey);
-      h+=`<div class="tiempo-block">
-        <div class="tiempo-header">
-          <span class="tiempo-emoji">${tInfo.emoji}</span>
-          <div class="tiempo-info">
-            <div class="tiempo-nombre">${diaInfo.label} · ${tInfo.label}</div>
-            <div class="tiempo-sub">${platos.length} opciones disponibles</div>
-          </div>
-          <div class="tiempo-toggle-wrap">
-            <span class="toggle-lbl" id="tlbl-${k}">${activo?'Sí quiero':'No aplica'}</span>
-            <label class="toggle-switch">
-              <input type="checkbox" id="tgl-${k}" ${activo?'checked':''} onchange="toggleTiempo('${k}',this.checked)">
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-        </div>
-        <div class="tiempo-opciones ${activo?'abierto':''}" id="topc-${k}">
-          <div class="opciones-grid">
-            ${platos.map(p=>renderOpcionBtn(diaKey,tKey,p)).join('')}
-          </div>
-        </div>
-      </div>`;
-    });
-  });
-  g.innerHTML=h;
-  actualizarBtnPedir();
-}
-
-function renderOpcionBtn(diaKey,tKey,p){
-  const k=diaKey+'|'+tKey;
-  const sel=selecciones[k]===p.key;
-  const fotoEl=p.foto
-    ?`<img class="opcion-foto" src="${p.foto}" alt="${p.nombre}" loading="lazy">`
-    :`<div class="opcion-foto-placeholder">${DIAS[diaKey].comidas[tKey].emoji}</div>`;
-  return `<button class="opcion-btn${sel?' sel':''}" onclick="elegir('${diaKey}','${tKey}','${p.key}',this)">
-    ${fotoEl}
-    <div class="opcion-texto">
-      <span class="opcion-nombre">${p.nombre}</span>
-      ${p.desc?`<span class="opcion-sub">${p.desc}</span>`:''}
-    </div>
-    <div class="check-mark">✓</div>
-  </button>`;
-}
-
-function toggleTiempo(k,checked){
-  tiemposActivos[k]=checked;
-  document.getElementById('tlbl-'+k).textContent=checked?'Sí quiero':'No aplica';
-  const sec=document.getElementById('topc-'+k);
-  checked?sec.classList.add('abierto'):sec.classList.remove('abierto');
-  if(!checked) delete selecciones[k];
-  actualizarBtnPedir();
-}
-
-function elegir(dia,t,platoKey,btn){
-  const k=dia+'|'+t;
-  selecciones[k]=platoKey;
-  document.getElementById('topc-'+k).querySelectorAll('.opcion-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  actualizarBtnPedir();
-}
-
-function hayAlMenosUna(){return Object.values(tiemposActivos).some(v=>v);}
-function todasSeleccionadas(){
-  return Object.entries(tiemposActivos).every(([k,v])=>!v||selecciones[k]!==undefined);
-}
-
-function actualizarBtnPedir(){
-  const btn=document.getElementById('btn-pedir-main');
-  const txt=document.getElementById('progreso-txt');
-  if(!btn) return;
-  const yp=yaPidio(allPedidos);
-  if(yp){btn.disabled=true;txt.textContent='✦ Ya estás inscrita — ¡gracias!';return;}
-  if(menuCerrado){btn.disabled=true;txt.textContent='Las inscripciones están cerradas';return;}
-  if(!hayAlMenosUna()){btn.disabled=true;txt.textContent='Activa al menos un tiempo de comida para continuar';return;}
-  if(!todasSeleccionadas()){
-    const f=Object.entries(tiemposActivos).filter(([k,v])=>v&&!selecciones[k]).length;
-    btn.disabled=true;txt.textContent='Faltan '+f+' elección'+(f!==1?'es':'')+' en los tiempos activados';return;
-  }
-  btn.disabled=false;txt.textContent='¡Todo listo! Confirma tu inscripción';
-}
-
-// PASOS
 function limpiarErr(iid,eid){
   document.getElementById(iid).classList.remove('error');
   document.getElementById(eid).classList.remove('show');
 }
 
-function irPaso2(){
-  const nom=document.getElementById('f-nombre').value.trim();
-  const lid=document.getElementById('f-lider').value.trim();
-  const igl=document.getElementById('f-iglesia-input').value.trim();
+// ════════════════════════════════════════
+// ── MENÚ COMPLETO ──
+// ════════════════════════════════════════
+
+// Calcula cuántas comidas hay en total
+function mGetComidas(){
+  const req=[];
+  Object.entries(DIAS).forEach(([d,info])=>Object.keys(info.comidas).forEach(t=>req.push(d+'|'+t)));
+  return req;
+}
+
+function mRenderDias(){
+  const g=document.getElementById('m-dias-grid');if(!g)return;
+  let h='';
+  Object.entries(DIAS).forEach(([dKey,dInfo])=>{
+    const cKeys=Object.keys(dInfo.comidas);
+    const hechas=cKeys.filter(t=>mSel[dKey+'|'+t]!==undefined).length;
+    h+=`<div class="dia-block">
+      <div class="dia-header">
+        <div class="dia-num">${dInfo.num}</div>
+        <div style="flex:1">
+          <div class="dia-nombre">${dInfo.nombre}</div>
+          <div class="dia-comidas-lbl">${cKeys.map(t=>dInfo.comidas[t].label).join(' · ')}</div>
+        </div>
+        <div class="dia-status${hechas===cKeys.length?' completo':''}" id="mst-${dKey}">${hechas} / ${cKeys.length}</div>
+      </div>`;
+    Object.entries(dInfo.comidas).forEach(([tKey,tInfo])=>{
+      const platos=getPlatosFor(dKey,tKey);
+      h+=`<div class="comida-section">
+        <div class="comida-label">${tInfo.emoji} ${tInfo.label}</div>
+        <div class="opciones-grid">
+          ${platos.map(p=>{
+            const sel=mSel[dKey+'|'+tKey]===p.key;
+            return `<button class="opcion-btn texto-only${sel?' sel':''}" onclick="mElegir('${dKey}','${tKey}','${p.key}',this)">
+              <div class="opcion-texto">
+                <span class="opcion-nombre">${p.nombre}</span>
+                ${p.desc?`<span class="opcion-sub">${p.desc}</span>`:''}
+              </div>
+              <div class="check-mark">✓</div>
+            </button>`;
+          }).join('')}
+        </div>
+        ${tInfo.acomp?`<div class="acompan">✦ ${tInfo.acomp}</div>`:''}
+      </div>`;
+    });
+    h+='</div>';
+  });
+  g.innerHTML=h;
+  mActualizarBtn();
+}
+
+function mElegir(dia,t,platoKey,btn){
+  const k=dia+'|'+t;
+  mSel[k]=platoKey;
+  // limpiar otros botones del mismo tiempo
+  btn.closest('.comida-section').querySelectorAll('.opcion-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  // actualizar status día
+  const dInfo=DIAS[dia];
+  const cKeys=Object.keys(dInfo.comidas);
+  const hechas=cKeys.filter(tt=>mSel[dia+'|'+tt]!==undefined).length;
+  const el=document.getElementById('mst-'+dia);
+  if(el){el.textContent=hechas+' / '+cKeys.length;el.className='dia-status'+(hechas===cKeys.length?' completo':'');}
+  mActualizarBtn();
+}
+
+function mActualizarBtn(){
+  const btn=document.getElementById('m-btn-pedir');
+  const txt=document.getElementById('m-progreso-txt');
+  if(!btn)return;
+  const req=mGetComidas();
+  const yp=yaPidio(allPedidos);
+  if(yp){btn.disabled=true;txt.textContent='✦ Ya estás inscrita — ¡gracias!';return;}
+  if(menuCerrado){btn.disabled=true;txt.textContent='Las inscripciones están cerradas';return;}
+  const falt=req.filter(k=>mSel[k]===undefined).length;
+  if(falt>0){btn.disabled=true;txt.textContent='Faltan '+falt+' elección'+(falt!==1?'es':'')+' por hacer';return;}
+  btn.disabled=false;txt.textContent='¡Todo listo! Confirma tu inscripción';
+}
+
+function mIrPaso2(){
+  const nom=document.getElementById('m-nombre').value.trim();
+  const lid=document.getElementById('m-lider').value.trim();
+  const igl=document.getElementById('m-iglesia').value.trim();
   let ok=true;
-  if(!nom){document.getElementById('err-nombre').classList.add('show');document.getElementById('f-nombre').classList.add('error');ok=false;}
-  if(!lid){document.getElementById('err-lider').classList.add('show');document.getElementById('f-lider').classList.add('error');ok=false;}
-  if(!igl){document.getElementById('err-iglesia').classList.add('show');document.getElementById('f-iglesia-input').classList.add('error');ok=false;}
-  if(!ok) return;
-  document.getElementById('datos-resumen-mini').innerHTML=
-    `<span class="drm-icon">✦</span><div><div class="drm-nombre">${nom}</div><div class="drm-detalle">Líder: ${lid} · ${igl}</div></div><button class="drm-edit" onclick="irPaso1()">Editar</button>`;
-  document.getElementById('paso-1').style.display='none';
-  document.getElementById('paso-2').style.display='block';
-  document.getElementById('step-ind-1').classList.replace('active','done');
-  document.getElementById('step-ind-2').classList.add('active');
-  document.getElementById('sl-12').classList.add('done');
+  if(!nom){document.getElementById('m-err-nombre').classList.add('show');document.getElementById('m-nombre').classList.add('error');ok=false;}
+  if(!lid){document.getElementById('m-err-lider').classList.add('show');document.getElementById('m-lider').classList.add('error');ok=false;}
+  if(!igl){document.getElementById('m-err-iglesia').classList.add('show');document.getElementById('m-iglesia').classList.add('error');ok=false;}
+  if(!ok)return;
+  document.getElementById('m-resumen-mini').innerHTML=
+    `<span class="drm-icon">✦</span><div><div class="drm-nombre">${nom}</div><div class="drm-detalle">Líder: ${lid} · ${igl}</div></div><button class="drm-edit" onclick="mIrPaso1()">Editar</button>`;
+  document.getElementById('m-paso-1').style.display='none';
+  document.getElementById('m-paso-2').style.display='block';
+  document.getElementById('m-step-1').classList.replace('active','done');
+  document.getElementById('m-step-2').classList.add('active');
+  document.getElementById('m-sl-12').classList.add('done');
   window.scrollTo({top:0,behavior:'smooth'});
-  renderComidas();
+  mRenderDias();
+}
+function mIrPaso1(){
+  document.getElementById('m-paso-1').style.display='block';
+  document.getElementById('m-paso-2').style.display='none';
+  document.getElementById('m-step-1').classList.remove('done');
+  document.getElementById('m-step-1').classList.add('active');
+  document.getElementById('m-step-2').classList.remove('active');
+  document.getElementById('m-sl-12').classList.remove('done');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function irPaso1(){
-  document.getElementById('paso-1').style.display='block';
-  document.getElementById('paso-2').style.display='none';
-  document.getElementById('step-ind-1').classList.remove('done');
-  document.getElementById('step-ind-1').classList.add('active');
-  document.getElementById('step-ind-2').classList.remove('active');
-  document.getElementById('sl-12').classList.remove('done');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-// MODAL
-function abrirModal(){
-  if(!hayAlMenosUna()||!todasSeleccionadas()){toast('Completa tus elecciones primero','error');return;}
+function mAbrirModal(){
+  const req=mGetComidas();
+  if(req.some(k=>mSel[k]===undefined)){toast('Selecciona una opción en cada comida','error');return;}
   if(yaPidio(allPedidos)){toast('Ya estás inscrita','error');return;}
-  const nom=document.getElementById('f-nombre').value.trim();
-  const lid=document.getElementById('f-lider').value.trim();
-  const igl=document.getElementById('f-iglesia-input').value.trim();
+  const nom=document.getElementById('m-nombre').value.trim();
+  const lid=document.getElementById('m-lider').value.trim();
+  const igl=document.getElementById('m-iglesia').value.trim();
   let h='<h4>Tu menú ✦</h4>';
   Object.entries(DIAS).forEach(([dia,dInfo])=>{
     Object.entries(dInfo.comidas).forEach(([t,tInfo])=>{
-      const k=dia+'|'+t;
-      if(!tiemposActivos[k]) return;
-      const plato=platosDB[selecciones[k]];
-      if(!plato) return;
-      h+=`<div class="res-item"><strong>${dInfo.label} · ${tInfo.label}</strong><span>${plato.nombre}</span></div>`;
+      const p=platosDB[mSel[dia+'|'+t]];
+      if(p) h+=`<div class="res-item"><strong>${dInfo.label} · ${tInfo.label}</strong><span>${p.nombre}</span></div>`;
     });
   });
   h+=`<div class="res-item" style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px"><strong>Nombre</strong><span>${nom}</span></div>`;
   h+=`<div class="res-item"><strong>Líder</strong><span>${lid}</span></div>`;
   h+=`<div class="res-item"><strong>Iglesia</strong><span>${igl}</span></div>`;
-  document.getElementById('modal-resumen').innerHTML=h;
-  document.getElementById('overlay').classList.add('show');
+  document.getElementById('m-modal-resumen').innerHTML=h;
+  document.getElementById('m-overlay').classList.add('show');
 }
-function cerrarModal(){document.getElementById('overlay').classList.remove('show');}
 
-function confirmar(){
+function mConfirmar(){
   db.ref('cupos_dd').once('value',cs=>{
     const d=cs.val()||{total:100,cerrado:false};
-    if(!!d.cerrado||calcLibres(d,allPedidos)<=0){cerrarModal();toast('Las inscripciones están cerradas','error');return;}
-    if(yaPidio(allPedidos)){cerrarModal();toast('Ya estás inscrita','error');return;}
-    const nom=document.getElementById('f-nombre').value.trim();
-    const lid=document.getElementById('f-lider').value.trim();
-    const igl=document.getElementById('f-iglesia-input').value.trim();
+    if(!!d.cerrado||calcLibres(d,allPedidos)<=0){document.getElementById('m-overlay').classList.remove('show');toast('Las inscripciones están cerradas','error');return;}
+    if(yaPidio(allPedidos)){document.getElementById('m-overlay').classList.remove('show');toast('Ya estás inscrita','error');return;}
+    const nom=document.getElementById('m-nombre').value.trim();
+    const lid=document.getElementById('m-lider').value.trim();
+    const igl=document.getElementById('m-iglesia').value.trim();
+    const hora=new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+    const elecciones={};
+    Object.entries(DIAS).forEach(([dia,dInfo])=>{
+      elecciones[dia]={};
+      Object.entries(dInfo.comidas).forEach(([t])=>{
+        const p=platosDB[mSel[dia+'|'+t]];
+        elecciones[dia][t]=p?p.nombre:'—';
+      });
+    });
+    db.ref('pedidos_dd').push({nombre:nom,lider:lid,iglesia:igl,elecciones,tipo:'completo',hora,session:getSession(),ts:Date.now()});
+    document.getElementById('m-overlay').classList.remove('show');
+    toast('✦ ¡Inscripción confirmada!','success');
+    mSel={};
+    document.getElementById('m-nombre').value='';
+    document.getElementById('m-lider').value='';
+    document.getElementById('m-iglesia').value='';
+    mIrPaso1();
+    mActualizarBtn();
+  });
+}
+
+// ════════════════════════════════════════
+// ── MENÚ INDIVIDUAL ──
+// ════════════════════════════════════════
+
+function iRenderComidas(){
+  const g=document.getElementById('i-comidas-grid');if(!g)return;
+  let h='';
+  Object.entries(DIAS).forEach(([dKey,dInfo])=>{
+    Object.entries(dInfo.comidas).forEach(([tKey,tInfo])=>{
+      const k=dKey+'|'+tKey;
+      const activo=!!iTiempos[k];
+      const platos=getPlatosFor(dKey,tKey);
+      h+=`<div class="tiempo-block">
+        <div class="tiempo-header">
+          <span class="tiempo-emoji">${tInfo.emoji}</span>
+          <div class="tiempo-info">
+            <div class="tiempo-nombre">${dInfo.label} · ${tInfo.label}</div>
+            <div class="tiempo-sub">${platos.length} opciones disponibles</div>
+          </div>
+          <div class="tiempo-toggle-wrap">
+            <span class="toggle-lbl" id="itlbl-${k}">${activo?'Sí quiero':'No aplica'}</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="itgl-${k}" ${activo?'checked':''} onchange="iToogleTiempo('${k}',this.checked)">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="tiempo-opciones ${activo?'abierto':''}" id="itopc-${k}">
+          <div class="opciones-grid">
+            ${platos.map(p=>{
+              const sel=iSel[k]===p.key;
+              const fotoEl=p.foto
+                ?`<img class="opcion-foto" src="${p.foto}" alt="${p.nombre}" loading="lazy">`
+                :`<div class="opcion-foto-placeholder">${tInfo.emoji}</div>`;
+              return `<button class="opcion-btn${sel?' sel':''}" onclick="iElegir('${dKey}','${tKey}','${p.key}',this)">
+                ${fotoEl}
+                <div class="opcion-texto">
+                  <span class="opcion-nombre">${p.nombre}</span>
+                  ${p.desc?`<span class="opcion-sub">${p.desc}</span>`:''}
+                </div>
+                <div class="check-mark">✓</div>
+              </button>`;
+            }).join('')}
+          </div>
+          ${tInfo.acomp?`<div class="acompan" style="margin-top:10px">✦ ${tInfo.acomp}</div>`:''}
+        </div>
+      </div>`;
+    });
+  });
+  g.innerHTML=h;
+  iActualizarBtn();
+}
+
+function iToogleTiempo(k,checked){
+  iTiempos[k]=checked;
+  document.getElementById('itlbl-'+k).textContent=checked?'Sí quiero':'No aplica';
+  const sec=document.getElementById('itopc-'+k);
+  checked?sec.classList.add('abierto'):sec.classList.remove('abierto');
+  if(!checked) delete iSel[k];
+  iActualizarBtn();
+}
+
+function iElegir(dia,t,platoKey,btn){
+  const k=dia+'|'+t;
+  iSel[k]=platoKey;
+  document.getElementById('itopc-'+k).querySelectorAll('.opcion-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  iActualizarBtn();
+}
+
+function iHayAlMenosUna(){return Object.values(iTiempos).some(v=>v);}
+function iTodasSeleccionadas(){return Object.entries(iTiempos).every(([k,v])=>!v||iSel[k]!==undefined);}
+
+function iActualizarBtn(){
+  const btn=document.getElementById('i-btn-pedir');
+  const txt=document.getElementById('i-progreso-txt');
+  if(!btn)return;
+  const yp=yaPidio(allPedidos);
+  if(yp){btn.disabled=true;txt.textContent='✦ Ya estás inscrita — ¡gracias!';return;}
+  if(menuCerrado){btn.disabled=true;txt.textContent='Las inscripciones están cerradas';return;}
+  if(!iHayAlMenosUna()){btn.disabled=true;txt.textContent='Activa al menos un tiempo de comida para continuar';return;}
+  if(!iTodasSeleccionadas()){
+    const f=Object.entries(iTiempos).filter(([k,v])=>v&&!iSel[k]).length;
+    btn.disabled=true;txt.textContent='Faltan '+f+' elección'+(f!==1?'es':'')+' en los tiempos activados';return;
+  }
+  btn.disabled=false;txt.textContent='¡Todo listo! Confirma tu inscripción';
+}
+
+function iIrPaso2(){
+  const nom=document.getElementById('i-nombre').value.trim();
+  const lid=document.getElementById('i-lider').value.trim();
+  const igl=document.getElementById('i-iglesia').value.trim();
+  let ok=true;
+  if(!nom){document.getElementById('i-err-nombre').classList.add('show');document.getElementById('i-nombre').classList.add('error');ok=false;}
+  if(!lid){document.getElementById('i-err-lider').classList.add('show');document.getElementById('i-lider').classList.add('error');ok=false;}
+  if(!igl){document.getElementById('i-err-iglesia').classList.add('show');document.getElementById('i-iglesia').classList.add('error');ok=false;}
+  if(!ok)return;
+  document.getElementById('i-resumen-mini').innerHTML=
+    `<span class="drm-icon">✦</span><div><div class="drm-nombre">${nom}</div><div class="drm-detalle">Líder: ${lid} · ${igl}</div></div><button class="drm-edit" onclick="iIrPaso1()">Editar</button>`;
+  document.getElementById('i-paso-1').style.display='none';
+  document.getElementById('i-paso-2').style.display='block';
+  document.getElementById('i-step-1').classList.replace('active','done');
+  document.getElementById('i-step-2').classList.add('active');
+  document.getElementById('i-sl-12').classList.add('done');
+  window.scrollTo({top:0,behavior:'smooth'});
+  iRenderComidas();
+}
+function iIrPaso1(){
+  document.getElementById('i-paso-1').style.display='block';
+  document.getElementById('i-paso-2').style.display='none';
+  document.getElementById('i-step-1').classList.remove('done');
+  document.getElementById('i-step-1').classList.add('active');
+  document.getElementById('i-step-2').classList.remove('active');
+  document.getElementById('i-sl-12').classList.remove('done');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function iAbrirModal(){
+  if(!iHayAlMenosUna()||!iTodasSeleccionadas()){toast('Completa tus elecciones primero','error');return;}
+  if(yaPidio(allPedidos)){toast('Ya estás inscrita','error');return;}
+  const nom=document.getElementById('i-nombre').value.trim();
+  const lid=document.getElementById('i-lider').value.trim();
+  const igl=document.getElementById('i-iglesia').value.trim();
+  let h='<h4>Tu menú ✦</h4>';
+  Object.entries(DIAS).forEach(([dia,dInfo])=>{
+    Object.entries(dInfo.comidas).forEach(([t,tInfo])=>{
+      const k=dia+'|'+t;
+      if(!iTiempos[k])return;
+      const p=platosDB[iSel[k]];
+      if(p) h+=`<div class="res-item"><strong>${dInfo.label} · ${tInfo.label}</strong><span>${p.nombre}</span></div>`;
+    });
+  });
+  h+=`<div class="res-item" style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px"><strong>Nombre</strong><span>${nom}</span></div>`;
+  h+=`<div class="res-item"><strong>Líder</strong><span>${lid}</span></div>`;
+  h+=`<div class="res-item"><strong>Iglesia</strong><span>${igl}</span></div>`;
+  document.getElementById('i-modal-resumen').innerHTML=h;
+  document.getElementById('i-overlay').classList.add('show');
+}
+
+function iConfirmar(){
+  db.ref('cupos_dd').once('value',cs=>{
+    const d=cs.val()||{total:100,cerrado:false};
+    if(!!d.cerrado||calcLibres(d,allPedidos)<=0){document.getElementById('i-overlay').classList.remove('show');toast('Las inscripciones están cerradas','error');return;}
+    if(yaPidio(allPedidos)){document.getElementById('i-overlay').classList.remove('show');toast('Ya estás inscrita','error');return;}
+    const nom=document.getElementById('i-nombre').value.trim();
+    const lid=document.getElementById('i-lider').value.trim();
+    const igl=document.getElementById('i-iglesia').value.trim();
     const hora=new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
     const elecciones={};
     Object.entries(DIAS).forEach(([dia,dInfo])=>{
       Object.entries(dInfo.comidas).forEach(([t])=>{
         const k=dia+'|'+t;
-        if(!tiemposActivos[k]) return;
+        if(!iTiempos[k])return;
         if(!elecciones[dia]) elecciones[dia]={};
-        const p=platosDB[selecciones[k]];
+        const p=platosDB[iSel[k]];
         elecciones[dia][t]=p?p.nombre:'—';
       });
     });
-    db.ref('pedidos_dd').push({nombre:nom,lider:lid,iglesia:igl,elecciones,hora,session:getSession(),ts:Date.now()});
-    cerrarModal();
+    db.ref('pedidos_dd').push({nombre:nom,lider:lid,iglesia:igl,elecciones,tipo:'individual',hora,session:getSession(),ts:Date.now()});
+    document.getElementById('i-overlay').classList.remove('show');
     toast('✦ ¡Inscripción confirmada!','success');
-    selecciones={};tiemposActivos={};
-    document.getElementById('f-nombre').value='';
-    document.getElementById('f-lider').value='';
-    document.getElementById('f-iglesia-input').value='';
-    // Marca paso 3 visual
-    document.getElementById('step-ind-2').classList.replace('active','done');
-    document.getElementById('step-ind-3').classList.add('done');
-    document.getElementById('sl-23').classList.add('done');
-    irPaso1();
-    actualizarBtnPedir();
+    iSel={};iTiempos={};
+    document.getElementById('i-nombre').value='';
+    document.getElementById('i-lider').value='';
+    document.getElementById('i-iglesia').value='';
+    // Marca paso 3
+    document.getElementById('i-step-2').classList.replace('active','done');
+    document.getElementById('i-step-3').classList.add('done');
+    document.getElementById('i-sl-23').classList.add('done');
+    iIrPaso1();
+    iActualizarBtn();
   });
 }
 
-// STATS
+// ════════════════════════════════════════
+// ── STATS GLOBALES ──
+// ════════════════════════════════════════
 function updateStats(d){
   const lib=calcLibres(d,allPedidos);
   const ped=Object.keys(allPedidos).length;
@@ -775,7 +1059,8 @@ function updateStats(d){
     if(document.getElementById('btn-cerrar-adm'))document.getElementById('btn-cerrar-adm').style.display='block';
     if(document.getElementById('menu-estado-txt'))document.getElementById('menu-estado-txt').textContent='Abierto — se cierra al completar '+tot+' inscritas';
   }
-  actualizarBtnPedir();
+  mActualizarBtn();
+  iActualizarBtn();
 }
 
 function updateTabBadge(){
@@ -785,8 +1070,12 @@ function updateTabBadge(){
   if(document.getElementById('admin-ped-count'))document.getElementById('admin-ped-count').textContent='('+n+' inscritas)';
 }
 
-// LISTAS
+// ════════════════════════════════════════
+// ── LISTAS INSCRITAS ──
+// ════════════════════════════════════════
+let filtroActual='todos';
 function filtrar(f,el){
+  filtroActual=f;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   if(el)el.classList.add('active');
   renderPedidosFiltrados();
@@ -797,6 +1086,7 @@ function renderPedidosFiltrados(){
   let list=Object.entries(allPedidos);
   const q=(document.getElementById('search-input')||{}).value||'';
   if(q)list=list.filter(([,p])=>p.nombre.toLowerCase().includes(q.toLowerCase()));
+  if(filtroActual!=='todos') list=list.filter(([,p])=>p.tipo===filtroActual);
   list=list.slice().reverse();
   if(!list.length){l.innerHTML='<div class="empty">Sin inscripciones aún…</div>';return;}
   l.innerHTML=list.map(([,p],i)=>`
@@ -806,18 +1096,19 @@ function renderPedidosFiltrados(){
         <div class="ped-nombre">${p.nombre}</div>
         <div class="ped-iglesia-tag">Líder: ${p.lider||'—'} · ${p.iglesia||''}</div>
         <div class="ped-dias">${buildElecHtml(p.elecciones)}</div>
+        <span class="ped-tipo ${p.tipo==='individual'?'individual':'completo'}">${p.tipo==='individual'?'Individual':'Menú completo'}</span>
         <div class="ped-hora">${p.hora||''}</div>
       </div>
     </div>`).join('');
 }
 
 function buildElecHtml(el){
-  if(!el) return '';
+  if(!el)return '';
   let h='';
   Object.entries(DIAS).forEach(([dia,dInfo])=>{
-    if(!el[dia]) return;
+    if(!el[dia])return;
     Object.entries(dInfo.comidas).forEach(([t,tInfo])=>{
-      if(!el[dia][t]) return;
+      if(!el[dia][t])return;
       h+=`<div class="ped-dia-item"><strong>${dInfo.label}·${tInfo.label}</strong><span>${el[dia][t]}</span></div>`;
     });
   });
@@ -833,7 +1124,7 @@ function renderAdminPedidos(){
   if(!list.length){l.innerHTML='<div class="empty">Sin inscripciones.</div>';return;}
   l.innerHTML=list.map(([id,p],i)=>`
     <div class="adm-ped-row">
-      <div class="adm-ped-nombre">${list.length-i}. ${p.nombre}</div>
+      <div class="adm-ped-nombre">${list.length-i}. ${p.nombre} <span style="font-size:10px;color:var(--taupe)">[${p.tipo==='individual'?'Individual':'Completo'}]</span></div>
       <div class="adm-ped-meta">Líder: ${p.lider||'—'}</div>
       <div class="adm-ped-iglesia">✦ ${p.iglesia||'—'}</div>
       <div>${buildElecAdm(p.elecciones)}</div>
@@ -845,12 +1136,12 @@ function renderAdminPedidos(){
 }
 
 function buildElecAdm(el){
-  if(!el) return '';
+  if(!el)return '';
   let h='';
   Object.entries(DIAS).forEach(([dia,dInfo])=>{
-    if(!el[dia]) return;
+    if(!el[dia])return;
     Object.entries(dInfo.comidas).forEach(([t,tInfo])=>{
-      if(!el[dia][t]) return;
+      if(!el[dia][t])return;
       h+=`<div class="adm-ped-dia"><strong>${dInfo.label}·${tInfo.label}</strong><span>${el[dia][t]}</span></div>`;
     });
   });
@@ -862,11 +1153,15 @@ function renderResumen(){
   db.ref('cupos_dd').once('value',cs=>{
     const d=cs.val()||{total:100};
     const lib=calcLibres(d,allPedidos);
+    const comp=ped.filter(p=>p.tipo==='completo').length;
+    const ind=ped.filter(p=>p.tipo==='individual').length;
     document.getElementById('resumen-grid').innerHTML=[
       ['Total inscritas',ped.length,''],
+      ['Menú completo',comp,''],
+      ['Individual',ind,''],
       ['Cupos libres',lib,'de '+d.total],
       ['% completado',Math.round(ped.length/d.total*100)+'%','']
-    ].map(([l,v,s])=>`<div class="res-card"><div class="rc-lbl">${l}</div><div class="rc-val">${v}</div>${s?`<div class="rc-sub">${s}</div>`:''}</div>`).join('');
+    ].map(([lbl,v,s])=>`<div class="res-card"><div class="rc-lbl">${lbl}</div><div class="rc-val">${v}</div>${s?`<div class="rc-sub">${s}</div>`:''}</div>`).join('');
   });
 }
 
@@ -879,7 +1174,7 @@ function renderStatsPlatos(){
       const titulo=dInfo.label+' · '+tInfo.label;
       const counts={};
       ped.forEach(p=>{if(p.elecciones&&p.elecciones[dia]&&p.elecciones[dia][t]){const o=p.elecciones[dia][t];counts[o]=(counts[o]||0)+1;}});
-      if(!Object.keys(counts).length) return;
+      if(!Object.keys(counts).length)return;
       const maxV=Math.max(...Object.values(counts),1);
       h+=`<div style="margin-bottom:18px"><p style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose-d);font-weight:500;margin-bottom:9px">${titulo}</p>`;
       Object.entries(counts).forEach(([nombre,c])=>{
@@ -891,32 +1186,29 @@ function renderStatsPlatos(){
   document.getElementById('stats-platos').innerHTML=h||'<div class="empty" style="padding:1rem">Sin datos aún</div>';
 }
 
-// ══ GESTIÓN PLATOS ══
+// ════════════════════════════════════════
+// ── GESTIÓN DE PLATOS (ADMIN) ──
+// ════════════════════════════════════════
 function renderPlatosAdm(){
-  // Tabs
   const tabsEl=document.getElementById('platos-tabs');
   const selEl=document.getElementById('new-plato-tiempo');
-  let tH=`<button class="plato-tab-btn${admFiltro==='todos'?' active':''}" onclick="verFiltroPlatos('todos',this)">Todos</button>`;
+  let tH=`<button class="ptab${admFiltro==='todos'?' active':''}" onclick="verFiltroPlatos('todos',this)">Todos</button>`;
   let optH='<option value="">Selecciona...</option>';
-  Object.entries(DIAS).forEach(([diaKey,dInfo])=>{
+  Object.entries(DIAS).forEach(([dKey,dInfo])=>{
     Object.entries(dInfo.comidas).forEach(([tKey,tInfo])=>{
-      const val=diaKey+'|'+tKey;
+      const val=dKey+'|'+tKey;
       const lbl=dInfo.label+' · '+tInfo.label;
-      tH+=`<button class="plato-tab-btn${admFiltro===val?' active':''}" onclick="verFiltroPlatos('${val}',this)">${lbl}</button>`;
+      tH+=`<button class="ptab${admFiltro===val?' active':''}" onclick="verFiltroPlatos('${val}',this)">${lbl}</button>`;
       optH+=`<option value="${val}">${lbl}</option>`;
     });
   });
   tabsEl.innerHTML=tH;
   selEl.innerHTML=optH;
 
-  // Lista
-  const listEl=document.getElementById('platos-adm-list');
   let entries=Object.entries(platosDB);
-  if(admFiltro!=='todos'){
-    const [fd,ft]=admFiltro.split('|');
-    entries=entries.filter(([,p])=>p.dia===fd&&p.tiempo===ft);
-  }
-  entries.sort((a,b)=>((a[1].dia+a[1].tiempo)+(a[1].orden||0)).localeCompare((b[1].dia+b[1].tiempo)+(b[1].orden||0)));
+  if(admFiltro!=='todos'){const[fd,ft]=admFiltro.split('|');entries=entries.filter(([,p])=>p.dia===fd&&p.tiempo===ft);}
+  entries.sort((a,b)=>((a[1].dia||'')+(a[1].tiempo||'')+String(a[1].orden||0)).localeCompare((b[1].dia||'')+(b[1].tiempo||'')+String(b[1].orden||0)));
+  const listEl=document.getElementById('platos-adm-list');
   if(!entries.length){listEl.innerHTML='<div class="empty" style="padding:1rem">Sin platos en esta categoría</div>';return;}
   listEl.innerHTML=entries.map(([key,p])=>{
     const dLabel=DIAS[p.dia]?DIAS[p.dia].label:'';
@@ -936,12 +1228,8 @@ function renderPlatosAdm(){
   }).join('');
 }
 
-function verFiltroPlatos(val,el){
-  admFiltro=val;
-  renderPlatosAdm();
-}
+function verFiltroPlatos(val){admFiltro=val;renderPlatosAdm();}
 
-// Foto modal
 function abrirFotoModal(key,nombre,fotoActual){
   document.getElementById('foto-plato-key').value=key;
   document.getElementById('foto-modal-titulo').textContent=nombre;
@@ -954,13 +1242,12 @@ function abrirFotoModal(key,nombre,fotoActual){
 }
 
 function prevFotoEditar(inp){
-  if(!inp.files||!inp.files[0]) return;
+  if(!inp.files||!inp.files[0])return;
   const r=new FileReader();
   r.onload=e=>{
     fotoEditarB64=e.target.result;
     const w=document.getElementById('foto-wrap-editar');
-    const f=w.querySelector('input');
-    w.innerHTML='';w.appendChild(f);
+    const f=w.querySelector('input');w.innerHTML='';w.appendChild(f);
     const img=new Image();img.className='foto-prev-img';img.src=fotoEditarB64;w.appendChild(img);
     const t=document.createElement('div');t.className='up-txt';t.textContent='Foto lista ✓';w.appendChild(t);
   };
@@ -972,20 +1259,18 @@ function guardarFotoPlato(){
   if(!key){toast('Error: plato no identificado','error');return;}
   if(!fotoEditarB64){toast('Selecciona una foto primero','error');return;}
   db.ref('platos_dd/'+key+'/foto').set(fotoEditarB64,err=>{
-    if(err){toast('Error guardando foto','error');}
+    if(err) toast('Error guardando foto','error');
     else{toast('Foto guardada ✦','success');document.getElementById('overlay-foto').classList.remove('show');}
   });
 }
 
-// Agregar plato
 function prevFotoNuevo(inp){
-  if(!inp.files||!inp.files[0]) return;
+  if(!inp.files||!inp.files[0])return;
   const r=new FileReader();
   r.onload=e=>{
     fotoNuevoB64=e.target.result;
     const w=document.getElementById('foto-wrap-new');
-    const f=w.querySelector('input');
-    w.innerHTML='';w.appendChild(f);
+    const f=w.querySelector('input');w.innerHTML='';w.appendChild(f);
     const img=new Image();img.className='foto-prev-img';img.src=fotoNuevoB64;w.appendChild(img);
     const t=document.createElement('div');t.className='up-txt';t.textContent='Foto lista ✓';w.appendChild(t);
   };
@@ -998,7 +1283,7 @@ function agregarPlato(){
   const desc=document.getElementById('new-plato-desc').value.trim();
   if(!tVal){toast('Selecciona el tiempo de comida','error');return;}
   if(!nombre){toast('Escribe el nombre del plato','error');return;}
-  const [dia,tiempo]=tVal.split('|');
+  const[dia,tiempo]=tVal.split('|');
   const existentes=getPlatosFor(dia,tiempo);
   const orden=existentes.length?Math.max(...existentes.map(p=>p.orden||0))+1:0;
   db.ref('platos_dd').push({dia,tiempo,nombre,desc:desc||'',foto:fotoNuevoB64||'',orden},err=>{
@@ -1021,7 +1306,7 @@ function confirmarEliminarPlato(key,nombre){
   document.getElementById('confirm-overlay').classList.add('show');
 }
 
-// CUPOS / MENÚ
+// ── CUPOS / MENÚ ADMIN ──
 function setCupos(){
   const v=parseInt(document.getElementById('cupos-in').value);
   if(isNaN(v)||v<1){toast('Ingresa un número válido','error');return;}
@@ -1051,16 +1336,16 @@ function confirmarEliminar(id,nombre){
 }
 function cerrarConfirm(){document.getElementById('confirm-overlay').classList.remove('show');}
 
-// CSV
+// ── CSV ──
 function exportarCSV(){
   const ped=Object.values(allPedidos);
   if(!ped.length){toast('No hay inscripciones','error');return;}
-  const cols=['Nombre','Líder','Iglesia'];
+  const cols=['Tipo','Nombre','Líder','Iglesia'];
   Object.entries(DIAS).forEach(([dia,dInfo])=>{Object.entries(dInfo.comidas).forEach(([t,tInfo])=>cols.push(dInfo.label+'-'+tInfo.label));});
   cols.push('Hora');
   const rows=[cols];
   ped.forEach(p=>{
-    const row=[p.nombre,p.lider||'',p.iglesia||''];
+    const row=[p.tipo||'completo',p.nombre,p.lider||'',p.iglesia||''];
     Object.entries(DIAS).forEach(([dia,dInfo])=>{Object.entries(dInfo.comidas).forEach(([t])=>row.push((p.elecciones&&p.elecciones[dia]&&p.elecciones[dia][t])||''));});
     row.push(p.hora||'');rows.push(row);
   });
@@ -1071,9 +1356,9 @@ function exportarCSV(){
   URL.revokeObjectURL(url);toast('CSV descargado','success');
 }
 
-// TABS
+// ── TABS ──
 function goTab(name,el){
-  if(name==='pedidos'&&!adminOk) return;
+  if(name==='pedidos'&&!adminOk)return;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   if(el)el.classList.add('active');
@@ -1083,7 +1368,7 @@ function goTab(name,el){
   if(name==='pedidos'&&adminOk) renderPedidosFiltrados();
 }
 
-// LOGIN
+// ── LOGIN ──
 function checkPass(){
   const val=document.getElementById('admin-pass').value;
   if(val===ADMIN_PASSWORD){
@@ -1114,7 +1399,7 @@ function cerrarSesionAdmin(){
   toast('Sesión cerrada');
 }
 
-// TOAST
+// ── TOAST ──
 function toast(msg,type=''){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast'+(type?' '+type:'')+' show';
