@@ -985,6 +985,13 @@ function iIrPaso1(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+function iHayAlMenosUna(){
+  return Object.keys(iSel).length > 0;
+}
+function iTodasSeleccionadas(){
+  return Object.entries(iTiempos).every(([k,v])=>!v||iSel[k]!==undefined);
+}
+
 function iAbrirModal(){
   if(!iHayAlMenosUna()||!iTodasSeleccionadas()){toast('Completa tus elecciones primero','error');return;}
   if(yaPidio(allPedidos)){toast('Ya estás inscrita','error');return;}
