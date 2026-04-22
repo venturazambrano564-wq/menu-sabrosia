@@ -619,6 +619,8 @@ let platosDB={};
 let mSel={};
 // Selecciones menú individual
 let iSel={}, iTiempos={};
+// Datos personales menú individual (guardados al pasar al paso 2)
+let iDatos={nombre:'',lider:'',iglesia:''};
 
 let admFiltro='todos', fotoNuevoB64=null, fotoEditarB64=null;
 
@@ -961,6 +963,8 @@ function iIrPaso2(){
   if(!lid){document.getElementById('i-err-lider').classList.add('show');document.getElementById('i-lider').classList.add('error');ok=false;}
   if(!igl){document.getElementById('i-err-iglesia').classList.add('show');document.getElementById('i-iglesia').classList.add('error');ok=false;}
   if(!ok)return;
+  // Guardar datos en variables JS para que estén disponibles en iConfirmar()
+  iDatos={nombre:nom,lider:lid,iglesia:igl};
   document.getElementById('i-resumen-mini').innerHTML=
     `<span class="drm-icon">✦</span><div><div class="drm-nombre">${nom}</div><div class="drm-detalle">Líder: ${lid} · ${igl}</div></div><button class="drm-edit" onclick="iIrPaso1()">Editar</button>`;
   document.getElementById('i-paso-1').style.display='none';
@@ -984,9 +988,9 @@ function iIrPaso1(){
 function iAbrirModal(){
   if(!iHayAlMenosUna()||!iTodasSeleccionadas()){toast('Completa tus elecciones primero','error');return;}
   if(yaPidio(allPedidos)){toast('Ya estás inscrita','error');return;}
-  const nom=document.getElementById('i-nombre').value.trim();
-  const lid=document.getElementById('i-lider').value.trim();
-  const igl=document.getElementById('i-iglesia').value.trim();
+  const nom=iDatos.nombre;
+  const lid=iDatos.lider;
+  const igl=iDatos.iglesia;
   let h='<h4>Tu menú ✦</h4>';
   Object.entries(DIAS).forEach(([dia,dInfo])=>{
     Object.entries(dInfo.comidas).forEach(([t,tInfo])=>{
@@ -1008,9 +1012,10 @@ function iConfirmar(){
     const d=cs.val()||{total:100,cerrado:false};
     if(!!d.cerrado||calcLibres(d,allPedidos)<=0){document.getElementById('i-overlay').classList.remove('show');toast('Las inscripciones están cerradas','error');return;}
     if(yaPidio(allPedidos)){document.getElementById('i-overlay').classList.remove('show');toast('Ya estás inscrita','error');return;}
-    const nom=document.getElementById('i-nombre').value.trim();
-    const lid=document.getElementById('i-lider').value.trim();
-    const igl=document.getElementById('i-iglesia').value.trim();
+    const nom=iDatos.nombre;
+    const lid=iDatos.lider;
+    const igl=iDatos.iglesia;
+    if(!nom||!lid||!igl){document.getElementById('i-overlay').classList.remove('show');toast('Faltan tus datos personales','error');iIrPaso1();return;}
     const hora=new Date().toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
     const elecciones={};
     Object.entries(DIAS).forEach(([dia,dInfo])=>{
@@ -1025,7 +1030,7 @@ function iConfirmar(){
     db.ref('pedidos_dd').push({nombre:nom,lider:lid,iglesia:igl,elecciones,tipo:'individual',hora,session:getSession(),ts:Date.now()});
     document.getElementById('i-overlay').classList.remove('show');
     toast('✦ ¡Inscripción confirmada!','success');
-    iSel={};iTiempos={};
+    iSel={};iTiempos={};iDatos={nombre:'',lider:'',iglesia:''};
     document.getElementById('i-nombre').value='';
     document.getElementById('i-lider').value='';
     document.getElementById('i-iglesia').value='';
