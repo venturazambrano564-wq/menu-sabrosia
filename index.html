@@ -942,8 +942,8 @@ function iActualizarBtn(){
   const btn=document.getElementById('i-btn-pedir');
   const txt=document.getElementById('i-progreso-txt');
   if(!btn)return;
-  const yp=yaPidio(allPedidos);
-  if(yp){btn.disabled=true;txt.textContent='✦ Ya estás inscrita — ¡gracias!';return;}
+  const yaIndividual=Object.values(allPedidos).some(p=>p.session===getSession()&&p.tipo==='individual');
+  if(yaIndividual){btn.disabled=true;txt.textContent='✦ Ya estás inscrita — ¡gracias!';return;}
   if(menuCerrado){btn.disabled=true;txt.textContent='Las inscripciones están cerradas';return;}
   // Hay al menos una selección hecha
   const haySeleccion=Object.keys(iSel).length>0;
@@ -994,7 +994,8 @@ function iTodasSeleccionadas(){
 
 function iAbrirModal(){
   if(!iHayAlMenosUna()||!iTodasSeleccionadas()){toast('Completa tus elecciones primero','error');return;}
-  if(yaPidio(allPedidos)){toast('Ya estás inscrita','error');return;}
+  const yaIndividual=Object.values(allPedidos).some(p=>p.session===getSession()&&p.tipo==='individual');
+  if(yaIndividual){toast('Ya estás inscrita','error');return;}
   const nom=iDatos.nombre;
   const lid=iDatos.lider;
   const igl=iDatos.iglesia;
@@ -1018,7 +1019,9 @@ function iConfirmar(){
   db.ref('cupos_dd').once('value',cs=>{
     const d=cs.val()||{total:100,cerrado:false};
     if(!!d.cerrado||calcLibres(d,allPedidos)<=0){document.getElementById('i-overlay').classList.remove('show');toast('Las inscripciones están cerradas','error');return;}
-    if(yaPidio(allPedidos)){document.getElementById('i-overlay').classList.remove('show');toast('Ya estás inscrita','error');return;}
+    // Verificar solo pedidos de tipo individual para la sesión actual
+    const yaIndividual=Object.values(allPedidos).some(p=>p.session===getSession()&&p.tipo==='individual');
+    if(yaIndividual){document.getElementById('i-overlay').classList.remove('show');toast('Ya tienes un pedido individual registrado','error');return;}
     const nom=iDatos.nombre;
     const lid=iDatos.lider;
     const igl=iDatos.iglesia;
